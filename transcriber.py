@@ -3,11 +3,10 @@ import numpy as np
 import sounddevice as sd
 from pydub import AudioSegment
 from pydub.utils import make_chunks
-import openai
+from openai import OpenAI
+client = OpenAI()
 import os
 from workbench.LLM import request
-
-openai.api_key = "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"
 
 example_transcript = """
 John: Hi there! Shall we catch up?
@@ -107,7 +106,6 @@ def audio_bytes_to_text(audio_bytes):
     return text
 
 
-# openai.api_key = "YOUR_API_KEY_HERE"
 if __name__ == "__main__":
     os.chdir("/Users/ice/lectures/workbench")
 

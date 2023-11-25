@@ -3,7 +3,8 @@ import requests
 import base64
 import urllib.request
 import os
-import openai
+from openai import OpenAI
+client = OpenAI()
 from PIL import Image
 
 
@@ -58,23 +59,6 @@ def generate_image(prompt, size="512x512"):
     img = Image.open(save_fp)
     os.remove(save_fp)
     return img
-
-
-# openai.api_key = os.getenv("OPENAI_API_KEY")
-
-
-# def generate_image(prompt, n=1, size="512x512"):
-#     response = openai.Image.create(
-#         prompt=prompt,
-#         n=n,
-#         size=size
-#     )
-#     print(response)
-#     save_fp = "temp.png"
-#     urllib.request.urlretrieve(response["data"][0]["url"], save_fp)
-#     img = Image.open(save_fp)
-#     os.remove(save_fp)
-#     return img
 
 
 if __name__ == "__main__":

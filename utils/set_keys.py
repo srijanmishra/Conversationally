@@ -1,5 +1,6 @@
 import os
-import openai
+from openai import OpenAI
+client = OpenAI()
 from elevenlabs import set_api_key
 
 key_url_dict = {
@@ -16,15 +17,11 @@ def set_or_get_api_key(api_name):
     try:
         with open(f"{key_dir}/{api_name}_api_key.txt") as f:
             api_key = f.read()
-            # os.environ[f"{api_name.upper()}_API_KEY"] = api_key
+            os.environ[f"{api_name.upper()}_API_KEY"] = api_key
     except FileNotFoundError:
         save_api_key(api_name)
         return
     print(api_name, api_key)
-    if api_name == "openai":
-        openai.api_key = api_key
-    elif api_name == "elevenlabs":
-        set_api_key(api_key)
 
 
 def save_api_key(api_name):

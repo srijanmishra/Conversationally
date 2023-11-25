@@ -1,6 +1,7 @@
 import tiktoken
 import os
-import openai
+from openai import OpenAI
+client = OpenAI()
 from workbench.utils.count_tokens import count_tokens_in_messages
 from workbench.utils.set_keys import set_or_get_api_key
 
@@ -25,7 +26,7 @@ base_system_message = f"""
 
 def request(prompt, model="gpt-3.5-turbo-16k", temperature=0.8):
 
-    summary = openai.ChatCompletion.create(
+    summary = client.chat.completions.create(
         model=model,
         messages=[
             {"role": "system", "content": base_system_message},
@@ -56,7 +57,7 @@ class Chat():
     def __call__(self, prompt):
         self.messages.append({"role": "user", "content": prompt})
         print("Tokens used:", count_tokens_in_messages(self.messages))
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
             model="gpt-3.5-turbo-16k",
             messages=self.messages
         )

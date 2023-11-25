@@ -6,7 +6,8 @@ from elevenlabs import generate, play, save, stream
 from time import time
 import numpy as np
 import os
-import openai
+from openai import OpenAI
+client = OpenAI()
 from workbench.utils.set_keys import set_or_get_api_key
 
 set_or_get_api_key(api_name="elevenlabs")
