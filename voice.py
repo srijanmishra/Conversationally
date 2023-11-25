@@ -2,16 +2,16 @@
 import sounddevice as sd
 from pydub import AudioSegment
 from pydub.utils import make_chunks
-from elevenlabs import generate, play, save, stream
+from elevenlabs import generate, play, save, stream, voices
 from time import time
 import numpy as np
 import os
 from openai import OpenAI
-client = OpenAI()
 from workbench.utils.set_keys import set_or_get_api_key
 
 set_or_get_api_key(api_name="elevenlabs")
 
+client = OpenAI()
 
 def speak(text, voice="Nicole", _stream=True, play=True, save_fp=None):
     audio = generate(
@@ -64,7 +64,7 @@ def voice_to_text(duration=15):
     audio.export(temp_audio_filename, format="mp3")
 
     with open(temp_audio_filename, 'rb') as f:
-        text = openai.Audio.transcribe(
+        text = client.audio.transcriptions.create(
             model="whisper-1",
             file=f
         ).text

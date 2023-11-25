@@ -3,7 +3,9 @@ import sys  # noqa
 sys.path.append("/Users/ice/lectures/workbench")  # noqa
 from workbench.LLM import Chat
 from workbench.voice import speak, voice_to_text
+from elevenlabs import voices
 
+voices()
 
 guidelines = f"""
 Respond with at most two sentences at a time. 
@@ -15,7 +17,7 @@ You are a witty and professional AI assistant. You are here to help the user wit
 
 {guidelines}
 """
-voice = "Nicole"
+voice = "Bella"
 
 chat = Chat(system_message, ignore_base_system_message=True)
 
