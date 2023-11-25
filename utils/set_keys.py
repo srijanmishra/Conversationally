@@ -14,14 +14,16 @@ key_dir = os.path.expanduser("~/Desktop/Workbench Keys")
 def set_or_get_api_key(api_name):
     assert api_name in [
         "openai", "elevenlabs"], f'API "{api_name}" not recognized'
+    env_key_name = f"{api_name.upper()}_API_KEY"
     try:
         with open(f"{key_dir}/{api_name}_api_key.txt") as f:
             api_key = f.read()
-            os.environ[f"{api_name.upper()}_API_KEY"] = api_key
+            api_key = api_key[:-1] # TODO why is there a random newline at the end?
+            os.environ[env_key_name] = api_key
     except FileNotFoundError:
         save_api_key(api_name)
         return
-    print(api_name, api_key)
+    print(api_name, os.getenv(env_key_name))
 
 
 def save_api_key(api_name):
