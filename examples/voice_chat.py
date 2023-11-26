@@ -1,9 +1,15 @@
 # %%
 import sys  # noqa
-sys.path.append("/Users/ice/lectures/workbench")  # noqa
+sys.path.append("/Users/nis/projects/parapet/Parapet-Workbench")  # noqa
+print(sys.path)  # noqa
+
 from workbench.LLM import Chat
-from workbench.voice import speak, voice_to_text
-from elevenlabs import voices
+from voice import speak, voice_to_text
+
+# %%
+# from elevenlabs import voices
+print("hi")
+sh
 
 voices()
 
