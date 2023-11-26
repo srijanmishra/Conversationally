@@ -1,14 +1,25 @@
 # %%
+
 import requests
 import base64
 import urllib.request
 import os
+import openai
+
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
 from openai import OpenAI
+
+openai.api_key = os.environ["OPENAI_API_KEY"]
 client = OpenAI()
+
 from PIL import Image
 
 
-def generate_image(prompt, size="512x512"):
+def generate_image(prompt, api_key=os.getenv("STABILITY_API_KEY"), size="1024x1024"):
     height = int(size.split("x")[0])
     width = int(size.split("x")[1])
 
@@ -22,14 +33,8 @@ def generate_image(prompt, size="512x512"):
         "cfg_scale": 5,
         "samples": 1,
         "text_prompts": [
-            {
-                "text": prompt,
-                "weight": 1
-            },
-            {
-                "text": "blurry, bad",
-                "weight": -1
-            }
+            {"text": prompt, "weight": 1},
+            {"text": "blurry, bad", "weight": -1},
         ],
     }
 
@@ -62,5 +67,8 @@ def generate_image(prompt, size="512x512"):
 
 
 if __name__ == "__main__":
-    response = generate_image('a painting of a cat')
+    response = generate_image(
+        " A dog in the style of pixar.",
+        api_key=os.getenv("STABILITY_API_KEY"),
+    )
 # %%
