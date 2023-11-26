@@ -19,6 +19,7 @@ client = OpenAI()
 from PIL import Image
 
 
+
 def generate_image(prompt, api_key=os.getenv("STABILITY_API_KEY"), size="1024x1024"):
     height = int(size.split("x")[0])
     width = int(size.split("x")[1])
@@ -54,21 +55,24 @@ def generate_image(prompt, api_key=os.getenv("STABILITY_API_KEY"), size="1024x10
         raise Exception("Non-200 response: " + str(response.text))
 
     data = response.json()
+    print(data)
 
     save_fp = "temp.png"
     for i, image in enumerate(data["artifacts"]):
+        print('hello')
         with open(save_fp, "wb") as f:
             f.write(base64.b64decode(image["base64"]))
         break
 
+
     img = Image.open(save_fp)
-    os.remove(save_fp)
+    #os.remove(save_fp)
     return img
 
 
 if __name__ == "__main__":
     response = generate_image(
-        " A dog in the style of pixar.",
+        " A dragon made of eggs.",
         api_key=os.getenv("STABILITY_API_KEY"),
     )
 # %%
