@@ -17,7 +17,8 @@
 ### Run voice_chat.py example
 
 1. Open ```examples/voice_chat.py```
-2. Add ChatGPT API key
-2. Use ```SHIFT + ENTER``` to run the 'cell'
+2. Select appropriate 'conda python kernel'
+3. Add ChatGPT API key
+4. Use ```SHIFT + ENTER``` to run the 'cell'
 
 
