@@ -17,7 +17,6 @@ print(sys.path)  # noqa
 from workbench.LLM import Chat
 from voice import speak, voice_to_text
 
-
 # %%
 from elevenlabs import voices
 
