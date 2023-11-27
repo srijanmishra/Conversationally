@@ -12,8 +12,11 @@ from PIL import Image
 # Load environment variables from .env file
 load_dotenv()
 
+
 openai.api_key = os.environ["OPENAI_API_KEY"]
 client = OpenAI()
+
+
 
 
 def generate_image(prompt, api_key=os.getenv("STABILITY_API_KEY"), size="1024x1024"):
@@ -64,7 +67,7 @@ def generate_image(prompt, api_key=os.getenv("STABILITY_API_KEY"), size="1024x10
     os.remove(save_fp)
     return img
 
-def generate_dali_image(prompt, api_key=os.getenv("OPENAI_API_KEY"), size="1024x1024", quality="standard", n=1):
+def generate_dali_image(prompt, size="1024x1024", quality="standard", n=1):
     '''
     This function generates an image using the DALI api. The only required input is the prompt,
     but if you want you can also adjust size, quality, and number of images generated.
@@ -95,6 +98,7 @@ if __name__ == "__main__":
     #     api_key=os.getenv("STABILITY_API_KEY"),
     # )
     
+    #testing dali image generation
     response = generate_dali_image(
         prompt="a black and white cat"
     )
