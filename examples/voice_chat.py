@@ -1,15 +1,25 @@
 # %%
+## The 'path' code needs to be at the top/first before importing workbench ##
+import os  # noqa
 import sys  # noqa
-sys.path.append("/Users/nis/projects/parapet/Parapet-Workbench")  # noqa
+
+# Get the current user's home directory
+home_dir = os.path.expanduser("~")  # noqa
+
+# Append the rest of the path
+path_to_add = os.path.join(home_dir, "projects/parapet/Parapet-Workbench")  # noqa
+
+# Add the path to sys.path
+sys.path.append(path_to_add)  # noqa
 print(sys.path)  # noqa
+#######################################
 
 from workbench.LLM import Chat
 from voice import speak, voice_to_text
 
+
 # %%
-# from elevenlabs import voices
-print("hi")
-sh
+from elevenlabs import voices
 
 voices()
 
