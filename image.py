@@ -5,19 +5,15 @@ import base64
 import urllib.request
 import os
 import openai
-
 from dotenv import load_dotenv
+from openai import OpenAI
+from PIL import Image
 
 # Load environment variables from .env file
 load_dotenv()
 
-from openai import OpenAI
-
 openai.api_key = os.environ["OPENAI_API_KEY"]
 client = OpenAI()
-
-from PIL import Image
-
 
 
 def generate_image(prompt, api_key=os.getenv("STABILITY_API_KEY"), size="1024x1024"):
@@ -55,7 +51,6 @@ def generate_image(prompt, api_key=os.getenv("STABILITY_API_KEY"), size="1024x10
         raise Exception("Non-200 response: " + str(response.text))
 
     data = response.json()
-    print(data)
 
     save_fp = "temp.png"
     for i, image in enumerate(data["artifacts"]):
@@ -66,13 +61,46 @@ def generate_image(prompt, api_key=os.getenv("STABILITY_API_KEY"), size="1024x10
 
 
     img = Image.open(save_fp)
-    #os.remove(save_fp)
+    os.remove(save_fp)
     return img
 
+def generate_dali_image(prompt, api_key=os.getenv("OPENAI_API_KEY"), size="1024x1024", quality="standard", n=1):
+    '''
+    This function generates an image using the DALI api. The only required input is the prompt,
+    but if you want you can also adjust size, quality, and number of images generated.
+    '''
+    
+    client = OpenAI()
+    
+    response = client.images.generate(
+        model="dall-e-3",
+        #Dall E automatically embelishes your prompt. This is how they suggest keeping it short.
+        #The reason for me doing this is I suspect it uses less tokens to have a shorter prompt.
+        prompt="I NEED to test how the tool works with extremely simple prompts. DO NOT add any detail, just use it AS-IS: " + prompt,
+        size=size,
+        quality=quality,
+        n=n
+    )
+    print(f"DEBUG: {response}")
+    
+    #code works, response gives back a url
+    #still need to add additional functions to save the image to a file for later use.
+    image_url = response.data[0].url
+    
+    return image_url
 
 if __name__ == "__main__":
-    response = generate_image(
-        " A dragon made of eggs.",
-        api_key=os.getenv("STABILITY_API_KEY"),
+    # response = generate_image(
+    #     " A dragon made of eggs.",
+    #     api_key=os.getenv("STABILITY_API_KEY"),
+    # )
+    
+    response = generate_dali_image(
+        prompt="a black and white cat"
     )
+    #currently need to copy response into browser to view image
+    print(f"DEBUG: {response}")
+    
+    #the below line does not work
+    response.open()
 # %%
