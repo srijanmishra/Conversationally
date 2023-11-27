@@ -16,9 +16,13 @@
 
 ### Run voice_chat.py example
 
+#### Run via Visual Studio Code
 1. Open ```examples/voice_chat.py```
 2. Select appropriate 'conda python kernel'
 3. Add ChatGPT API key
 4. Use ```SHIFT + ENTER``` to run the 'cell'
 
+#### Run via Command Line
+1. Add ChatGPT API key
+2. <pre><code id="bash">/usr/local/anaconda3/bin/python3 examples/voice_chat.py</pre></code>
 
