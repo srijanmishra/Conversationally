@@ -8,10 +8,11 @@
 
 ### Setup
 
-1. ```git clone https://github.com/life-efficient/Parapet-Workbench.git```
-2. ```cd Parapet-Workbench```
-3. ```conda env create -f workbench.yml```
-4. ```conda activate workbench```
+<pre><code id="bash">git clone https://github.com/life-efficient/Parapet-Workbench.git</pre></code>
+<pre><code id="bash">cd Parapet-Workbench</pre></code>
+<pre><code id="bash">conda env create -f workbench.yml</pre></code>
+<pre><code id="bash">conda activate workbench</pre></code>
+
 
 ### Run voice_chat.py example
 
