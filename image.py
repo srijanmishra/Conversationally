@@ -16,6 +16,7 @@ import openai
 from dotenv import load_dotenv
 from openai import OpenAI
 from PIL import Image
+import urllib.request
 
 # Load environment variables from .env file
 load_dotenv()
@@ -32,7 +33,7 @@ def generate_image(prompt, provider, size="1024x1024"):
     Provider options: "STABILITY_AI", "DALL-E-3"
     '''
     
-    if provider == "DALL-E-3":  # if loop to pick provider
+    if provider == "DALL_E_3":  # if loop to pick provider
         img = generate_dali_image(prompt=prompt, size=size, quality="standard", n=1)
         return img
         
@@ -92,7 +93,7 @@ def generate_stable_diffusion_image(prompt, size="1024x1024"):
 
     img = Image.open(save_fp)
     img.show()
-    os.remove(save_fp)
+    os.remove(save_fp)#why is it remove save_fp and 
     return img
 
 
@@ -109,23 +110,29 @@ def generate_dali_image(prompt, size="1024x1024", quality="standard", n=1):
         model="dall-e-3",
         # Dall E automatically embelishes your prompt. This is how they suggest keeping it short.
         # The reason for me doing this is I suspect it uses less tokens to have a shorter prompt.
-        prompt="I NEED to test how the tool works with extremely simple prompts. DO NOT add any detail, just use it AS-IS: "
-        + prompt,
+        prompt="I NEED to test how the tool works with extremely simple prompts. DO NOT add any detail, just use it AS-IS: " + prompt,
         size=size,
         quality=quality,
         n=n,
     )
-    print(f"DEBUG: {response}")
+    #print(f"DEBUG: {response}")
 
     # code works, response gives back a url
     # still need to add additional functions to save the image to a file for later use.
     image_url = response.data[0].url
+    
+    save_fp = "temp.png"
+    
+    # Open the image directly from the URL using PIL (or Pillow?)
+    img = Image.open(requests.get(image_url, stream=True).raw)
+    
+    img.show()
 
-    return image_url
+    return img
 
 
 if __name__ == "__main__":
-    response = generate_image("the milky way", provider="DALL-E-3")
+    response = generate_image("a koala falling off a tree", provider="DALL_E_3")
     print(response)
 
 # %%
