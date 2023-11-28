@@ -123,7 +123,7 @@ def generate_dali_image(prompt, size="1024x1024", quality="standard", n=1):
 
     client = OpenAI()
 
-    response = client.images.generate
+    response = client.images.generate(
         model="dall-e-3",
         # Dall E automatically embelishes your prompt. This is how they suggest keeping it short.
         # The reason for me doing this is I suspect it uses less tokens to have a shorter prompt.
