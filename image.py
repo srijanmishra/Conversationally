@@ -24,14 +24,6 @@ load_dotenv()
 openai.api_key = os.environ["OPENAI_API_KEY"]
 client = OpenAI()
 
-
-dall_e_3_key = os.getenv("DALL-E-3_KEY")  # work in progress
-stable_diffusion_key = os.getenv("STABLE_DIFFUSION_KEY")  # work in progress
-midjourney_key = os.getenv(
-    "MIDJOURNEY_KEY"
-)  # Not available for developers as of 27/11/2023
-stability_ai_key = os.getenv("STABILITY_AI_API_KEY")
-
 #use this function to generate images
 def generate_image(prompt, provider, size="1024x1024"):
     '''
@@ -41,23 +33,13 @@ def generate_image(prompt, provider, size="1024x1024"):
     '''
     
     if provider == "DALL-E-3":  # if loop to pick provider
-        openai.api_key = os.getenv("OPENAI_API_KEY") # I think this line is redundant 
         img = generate_dali_image(prompt=prompt, size=size, quality="standard", n=1)
         return img
         
     elif provider == "STABILITY_AI":
-        #stability_ai_key = os.getenv("STABILITY_AI_API_KEY")
         img = generate_stable_diffusion_image(prompt=prompt)
         return img
-    #the rest of these are not relevant yet
-    #//@lizziem
-    # elif provider == "OPENAI":
-    #     dall_e_3_key = os.getenv("DALL-E-3_KEY")
-    # elif provider == "STABLE_DIFFUSION":
-    #     stable_diffusion_key = os.getenv("STABLE_DIFFUSION-KEY")
-    # elif provider == "MIDJOURNEY":
-    #     midjourney_key = os.getenv("MIDJOURNEY_KEY")
-    #//@lizziem
+   
 
 
 def generate_stable_diffusion_image(prompt, size="1024x1024"):
@@ -143,7 +125,7 @@ def generate_dali_image(prompt, size="1024x1024", quality="standard", n=1):
 
 
 if __name__ == "__main__":
-    response = generate_image("a dragon eating a crocodile", provider="STABILITY_AI")
+    response = generate_image("the milky way", provider="DALL-E-3")
     print(response)
 
 # %%
