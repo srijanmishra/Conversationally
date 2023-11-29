@@ -4,9 +4,10 @@ import sounddevice as sd
 from pydub import AudioSegment
 from pydub.utils import make_chunks
 from openai import OpenAI
-client = OpenAI()
 import os
 from workbench.LLM import request
+
+client = OpenAI()
 
 example_transcript = """
 John: Hi there! Shall we catch up?
@@ -33,7 +34,7 @@ def audio_file_to_transcript(filename):
         transcript += ' '
         with open(chunk_name, "rb") as temp_audio_file:
 
-            response = openai.Audio.transcribe(
+            response = client.audio.transcriptions.create(
                 model="whisper-1",
                 file=temp_audio_file,
                 prompt=example_transcript,
@@ -90,7 +91,7 @@ def audio_bytes_to_text(audio_bytes):
     # audio.export(temp_audio_filename, format="mp3")
 
     with open(temp_audio_filename, 'rb') as f:
-        text = openai.Audio.transcribe(
+        text = client.audio.transcriptions.create(
             model="whisper-1",
             file=f
         ).text
