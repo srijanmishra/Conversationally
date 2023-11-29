@@ -1,7 +1,7 @@
 <!-- a simple webpage with one button that makes a post request using fetch-->
 <html>
 <head>
-    <title>Chatline</title>
+    <title>Chat with an AI</title>
     <style>
         /* overall font */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
@@ -88,7 +88,6 @@
 
 </head>
 <body>
-    <h1>Dreamline</h1>
     <!-- fontawesome play icon in a button -->
     <!-- <button id="button">
         <i class="fas fa-play"></i>
@@ -147,9 +146,9 @@
     </div>
     
     <script>
-        let chunks = [];
-        let recorder;
-        let mediaStream;
+        let chunks = []; // here we will store all received chunks of our audio stream
+        let recorder; // MediaRecorder instance to capture audio
+        let mediaStream; // MediaStream instance to feed the recorder
 
         const startButton = document.getElementById("start");
         const stopButton = document.getElementById("stop");
@@ -158,11 +157,11 @@
         startButton.onclick = async () => {
             mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
             recorder = new MediaRecorder(mediaStream);
-            recorder.start();
+            recorder.start(); // Start recording
 
             // This event fires each time a chunk of audio data is available
             recorder.ondataavailable = (event) => {
-                chunks.push(event.data);
+                chunks.push(event.data); // Append the chunk to our array
             };
 
             startButton.disabled = true;
