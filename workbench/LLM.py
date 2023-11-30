@@ -2,9 +2,6 @@ import tiktoken
 import os
 from openai import OpenAI
 from workbench.utils.count_tokens import count_tokens_in_messages
-from dotenv import load_dotenv
-
-load_dotenv()
 
 client = OpenAI()
 
