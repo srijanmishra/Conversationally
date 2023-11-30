@@ -63,7 +63,8 @@
             outline: none;
             cursor: pointer;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            justify-content: space-around;
             align-items: center;
             /* drop shadow */
         }
@@ -107,13 +108,19 @@
     
     <div id="user-input">
 
-        <button id="start">
-                <i class="fas fa-microphone"></i>
-        </button>
-        <button id="stop" disabled>
-            <i class="fas fa-stop"></i>
-        </button>
-        <audio id="player" controls></audio>
+        <div id="ai">
+            AI
+
+        </div>
+        <div id="user">
+            <button id="start">
+                    <i class="fas fa-microphone"></i>
+            </button>
+            <button id="stop" disabled>
+                <i class="fas fa-stop"></i>
+            </button>
+            <audio id="player" controls></audio>
+        </div>
     </div>
     
     <script>
