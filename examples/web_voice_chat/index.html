@@ -127,6 +127,7 @@
         let chunks = []; // here we will store all received chunks of our audio stream
         let recorder; // MediaRecorder instance to capture audio
         let mediaStream; // MediaStream instance to feed the recorder
+        let messages = [];
 
         const startButton = document.getElementById("start");
         const stopButton = document.getElementById("stop");
@@ -173,18 +174,25 @@
                     console.log(base64StringAudio.substring(0, 10))
                     console.log('sending audio to server')
 
+                    let str_messages = JSON.stringify(messages)
+                    let payload = JSON.stringify({
+                        "audio": base64StringAudio,
+                        "messages": str_messages
+                    }, )
+                    console.log(payload)
                     fetch("http://localhost:8000/listen", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json' // necessary
                         },
-                        body: JSON.stringify({
-                            "audio": base64StringAudio
-                        })
+                        body: payload
                     })
                         .then(response => response.json())
                         .then(data => {
                             data = JSON.parse(data)
+
+                            messages = data.messages
+                            console.log("Returned messages:", messages)
                             let audio = data.audio
                             // log first 10 characters of the string
                             console.log(audio.substring(0, 10))
