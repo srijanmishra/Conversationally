@@ -2,7 +2,6 @@ import tiktoken
 import os
 from openai import OpenAI
 from workbench.utils.count_tokens import count_tokens_in_messages
-from workbench.utils.set_keys import set_or_get_api_key
 from dotenv import load_dotenv
 
 load_dotenv()

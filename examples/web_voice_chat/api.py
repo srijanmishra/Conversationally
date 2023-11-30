@@ -1,7 +1,5 @@
 # %%
 # a fastapi api running on localhost:8080 that calls a python function
-import sys  # noqa
-sys.path.append("/Users/ice/lectures/workbench")  # noqa
 from workbench.voice import speak
 from typing import Optional
 from pydantic import BaseModel
@@ -10,8 +8,6 @@ from fastapi.middleware.cors import CORSMiddleware
 import json
 import base64
 from workbench.transcriber import audio_bytes_to_text
-from workbench.voice import voice_to_text
-import io
 from workbench.LLM import Chat
 
 origins = [
