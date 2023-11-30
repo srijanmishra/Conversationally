@@ -10,10 +10,11 @@ from openai import OpenAI
 
 client = OpenAI()
 
-def speak(text, voice="Nicole", _stream=True, play=True, save_fp=None):
+def speak(text, voice="Nicole", play=True, save_fp=None):
     audio = generate(
         text=text,
-        stream=True if not save_fp else False,
+        stream=False,
+        # stream=True if not save_fp else False,
         # stream=_stream,
         voice=voice,
     )
