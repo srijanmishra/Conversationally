@@ -22,12 +22,13 @@
             font-size: 30px;
             margin-top: 100px;
         }
-        #button {
+        button {
             font-family: 'Poppins', sans-serif;
             width: 50px;
             height: 50px;
+            margin: 5px;
             border-radius: 100px;
-            background-color: #ffffff;
+            background-color: #ff5c5c;
             color: #000000;
             font-size: 30px;
             border: none;
@@ -36,7 +37,12 @@
             justify-content: center;
             align-items: center;
             /* drop shadow */
-            -webkit-box-shadow: 0px 0px 30px 0px rgba(255,255,255,1);
+            /* -webkit-box-shadow: 0px 0px 30px 0px rgba(255,255,255,1); */
+        }
+
+        button:disabled {
+            background-color: #614848;
+            cursor: not-allowed;
         }
 
         /* hide audio element */
@@ -49,13 +55,14 @@
 
         #user-input {
             width: 100%;
-            height: 50px;
-            background-color: #ffffff;
+            height: 100%;
+            /* background-color: #ffffff; */
             color: #000000;
             font-size: 30px;
             border: none;
             outline: none;
             cursor: pointer;
+            display: flex;
             justify-content: center;
             align-items: center;
             /* drop shadow */
@@ -91,43 +98,7 @@
     <!-- fontawesome play icon in a button -->
     <!-- <button id="button">
         <i class="fas fa-play"></i>
-    </button>
-
-
-
-
-
-    
-    <script>
-        document.getElementById("button").addEventListener("click", async function() {
-            console.log("button clicked");
-            fetch("http://localhost:8000/chat", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json' // necessary
-                },
-                body: JSON.stringify({
-                    "text": "what a time to be alive!"
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                data = JSON.parse(data)
-                let audio = data.audio
-                let fetchableUrl = 'data:audio/wav;base64,' + audio;
-                fetch(fetchableUrl)
-                    .then(response => response.blob())
-                    .then(blob => {
-                        let url = URL.createObjectURL(blob);
-                        let audioElement = document.createElement('audio');
-                        audioElement.src = url;
-                        document.body.appendChild(audioElement);
-                        audioElement.play();
-                    });
-            })
-            .catch(error => console.log(error));
-        });
-    </script> -->
+    </button> -->
 
 
 
@@ -238,3 +209,35 @@
         }};
     </script>
 </html>
+
+
+    <!-- <script>
+        document.getElementById("button").addEventListener("click", async function () {
+            console.log("button clicked");
+            fetch("http://localhost:8000/chat", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json' // necessary
+                },
+                body: JSON.stringify({
+                    "text": "what a time to be alive!"
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    data = JSON.parse(data)
+                    let audio = data.audio
+                    let fetchableUrl = 'data:audio/wav;base64,' + audio;
+                    fetch(fetchableUrl)
+                        .then(response => response.blob())
+                        .then(blob => {
+                            let url = URL.createObjectURL(blob);
+                            let audioElement = document.createElement('audio');
+                            audioElement.src = url;
+                            document.body.appendChild(audioElement);
+                            audioElement.play();
+                        });
+                })
+                .catch(error => console.log(error));
+        });
+    </script> --> 
