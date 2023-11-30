@@ -1,5 +1,7 @@
 # %%
 # a fastapi api running on localhost:8080 that calls a python function
+from dotenv import load_dotenv
+load_dotenv(override=True) # noqa
 from workbench.voice import speak
 from typing import Optional
 from pydantic import BaseModel
@@ -9,6 +11,11 @@ import json
 import base64
 from workbench.transcriber import audio_bytes_to_text
 from workbench.LLM import Chat
+
+
+import os
+
+print(os.getenv("OPENAI_API_KEY"))
 
 origins = [
     "http://localhost",
@@ -67,7 +74,7 @@ async def listen(audio: Audio):
     # print("Thinking...")
     # response = text.text
     audio = speak(response, voice="Nicole", _stream=False, play=False)
-    # print(audio)
+    print(audio)
     audio = base64.b64encode(audio).decode()
 
     return json.dumps({"audio": audio})
