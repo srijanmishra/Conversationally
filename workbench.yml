@@ -1,10 +1,11 @@
 name: workbench
 channels:
+  - conda-forge
   - defaults
 dependencies:
   - blas=1.0=mkl
   - bzip2=1.0.8=h1de35cc_0
-  - ca-certificates=2023.08.22=hecd8cb5_0
+  - ca-certificates=2023.11.17=h8857fd0_0
   - intel-openmp=2023.1.0=ha357a0b_43548
   - libcxx=14.0.6=h9765a3e_0
   - libffi=3.4.4=hecd8cb5_0
@@ -15,9 +16,10 @@ dependencies:
   - ncurses=6.4=hcec6c5f_0
   - numpy=1.26.0=py310h827a554_0
   - numpy-base=1.26.0=py310ha186be2_0
-  - openssl=3.0.12=hca72f7f_0
+  - openssl=3.2.0=hd75f5a5_1
   - pip=23.3.1=py310hecd8cb5_0
   - python=3.10.13=h5ee71fb_0
+  - python-dotenv=1.0.0=pyhd8ed1ab_1
   - readline=8.2=hca72f7f_0
   - setuptools=68.0.0=py310hecd8cb5_0
   - sqlite=3.41.2=h6c40b1e_0
