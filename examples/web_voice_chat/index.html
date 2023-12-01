@@ -8,6 +8,7 @@
 
         body {
             background-color: #18181b;
+            font: 20px 'Poppins', sans-serif;
             color: #ffffff;
             text-align: center;
             display: flex;
@@ -22,13 +23,14 @@
             font-size: 30px;
             margin-top: 100px;
         }
-        #button {
+        button {
             font-family: 'Poppins', sans-serif;
             width: 50px;
             height: 50px;
+            margin: 5px;
             border-radius: 100px;
-            background-color: #ffffff;
-            color: #000000;
+            background-color: #ff5c5c;
+            /* color: #000000; */
             font-size: 30px;
             border: none;
             outline: none;
@@ -36,7 +38,12 @@
             justify-content: center;
             align-items: center;
             /* drop shadow */
-            -webkit-box-shadow: 0px 0px 30px 0px rgba(255,255,255,1);
+            /* -webkit-box-shadow: 0px 0px 30px 0px rgba(255,255,255,1); */
+        }
+
+        button:disabled {
+            background-color: #614848;
+            cursor: not-allowed;
         }
 
         /* hide audio element */
@@ -49,14 +56,15 @@
 
         #user-input {
             width: 100%;
-            height: 50px;
-            background-color: #ffffff;
-            color: #000000;
+            height: 100%;
+            /* background-color: #ffffff; */
+            /* color: #000000; */
             font-size: 30px;
             border: none;
             outline: none;
-            cursor: pointer;
-            justify-content: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
             align-items: center;
             /* drop shadow */
         }
@@ -91,43 +99,7 @@
     <!-- fontawesome play icon in a button -->
     <!-- <button id="button">
         <i class="fas fa-play"></i>
-    </button>
-
-
-
-
-
-    
-    <script>
-        document.getElementById("button").addEventListener("click", async function() {
-            console.log("button clicked");
-            fetch("http://localhost:8000/chat", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json' // necessary
-                },
-                body: JSON.stringify({
-                    "text": "what a time to be alive!"
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                data = JSON.parse(data)
-                let audio = data.audio
-                let fetchableUrl = 'data:audio/wav;base64,' + audio;
-                fetch(fetchableUrl)
-                    .then(response => response.blob())
-                    .then(blob => {
-                        let url = URL.createObjectURL(blob);
-                        let audioElement = document.createElement('audio');
-                        audioElement.src = url;
-                        document.body.appendChild(audioElement);
-                        audioElement.play();
-                    });
-            })
-            .catch(error => console.log(error));
-        });
-    </script> -->
+    </button> -->
 
 
 
@@ -136,19 +108,26 @@
     
     <div id="user-input">
 
-        <button id="start">
-                <i class="fas fa-microphone"></i>
-        </button>
-        <button id="stop" disabled>
-            <i class="fas fa-stop"></i>
-        </button>
-        <audio id="player" controls></audio>
+        <div id="ai">
+            Talk with an AI 
+
+        </div>
+        <div id="user">
+            <button id="start">
+                    <i class="fas fa-microphone"></i>
+            </button>
+            <button id="stop" disabled>
+                <i class="fas fa-stop"></i>
+            </button>
+            <audio id="player" controls></audio>
+        </div>
     </div>
     
     <script>
         let chunks = []; // here we will store all received chunks of our audio stream
         let recorder; // MediaRecorder instance to capture audio
         let mediaStream; // MediaStream instance to feed the recorder
+        let messages = [];
 
         const startButton = document.getElementById("start");
         const stopButton = document.getElementById("stop");
@@ -195,18 +174,25 @@
                     console.log(base64StringAudio.substring(0, 10))
                     console.log('sending audio to server')
 
+                    let str_messages = JSON.stringify(messages)
+                    let payload = JSON.stringify({
+                        "audio": base64StringAudio,
+                        "messages": str_messages
+                    }, )
+                    console.log(payload)
                     fetch("http://localhost:8000/listen", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json' // necessary
                         },
-                        body: JSON.stringify({
-                            "audio": base64StringAudio
-                        })
+                        body: payload
                     })
                         .then(response => response.json())
                         .then(data => {
                             data = JSON.parse(data)
+
+                            messages = data.messages
+                            console.log("Returned messages:", messages)
                             let audio = data.audio
                             // log first 10 characters of the string
                             console.log(audio.substring(0, 10))
@@ -238,3 +224,35 @@
         }};
     </script>
 </html>
+
+
+    <!-- <script>
+        document.getElementById("button").addEventListener("click", async function () {
+            console.log("button clicked");
+            fetch("http://localhost:8000/chat", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json' // necessary
+                },
+                body: JSON.stringify({
+                    "text": "what a time to be alive!"
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    data = JSON.parse(data)
+                    let audio = data.audio
+                    let fetchableUrl = 'data:audio/wav;base64,' + audio;
+                    fetch(fetchableUrl)
+                        .then(response => response.blob())
+                        .then(blob => {
+                            let url = URL.createObjectURL(blob);
+                            let audioElement = document.createElement('audio');
+                            audioElement.src = url;
+                            document.body.appendChild(audioElement);
+                            audioElement.play();
+                        });
+                })
+                .catch(error => console.log(error));
+        });
+    </script> --> 

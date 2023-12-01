@@ -7,16 +7,14 @@ from time import time
 import numpy as np
 import os
 from openai import OpenAI
-from workbench.utils.set_keys import set_or_get_api_key
-
-set_or_get_api_key(api_name="elevenlabs")
 
 client = OpenAI()
 
-def speak(text, voice="Nicole", _stream=True, play=True, save_fp=None):
+def speak(text, voice="Nicole", play=True, save_fp=None):
     audio = generate(
         text=text,
-        stream=True if not save_fp else False,
+        stream=False,
+        # stream=True if not save_fp else False,
         # stream=_stream,
         voice=voice,
     )
