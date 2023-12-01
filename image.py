@@ -30,8 +30,14 @@ def generate_image(prompt, provider, size="1024x1024"):
     '''
     Call this function to generate an image.
     Input a prompt and a provider
-    Provider options: "STABILITY_AI", "DALL-E-3"
+    Provider options: "STABILITY_AI", "DALL_E_3"
     '''
+    
+    #Check to see if they have put a valid provider in
+    allowed_values = ["DALL_E_3", "STABILITY_AI"]
+
+    if provider not in allowed_values:
+        raise ValueError("Provider parameter must be 'DALL_E_3' or 'STABILITY_AI'")
     
     if provider == "DALL_E_3":  # if loop to pick provider
         img = generate_dali_image(prompt=prompt, size=size, quality="standard", n=1)
