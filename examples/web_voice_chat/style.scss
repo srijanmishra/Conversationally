@@ -5,6 +5,15 @@
 // font
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap");
 
+:root {
+  --col-gutter-x: 1rem;
+  --col-gutter-y: 0rem;
+  @include mediaOver("md") {
+    --col-gutter-x: 1.5rem;
+    --col-gutter-y: 0rem;
+  }
+}
+
 // styles
 *,
 *:after,
@@ -33,4 +42,14 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.d {
+  &-flex {
+    display: flex;
+  }
+}
+.text {
+  &-right {
+    text-align: right;
+  }
 }
