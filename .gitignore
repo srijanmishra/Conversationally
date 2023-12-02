@@ -2,6 +2,7 @@ temp.mp3
 .env
 **/__pycache__
 dependencies
+aws_lambda_artifact.zip
 
 ### macOS ###
 # General
