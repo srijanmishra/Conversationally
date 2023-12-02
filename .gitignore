@@ -1,6 +1,7 @@
 temp.mp3
 .env
 **/__pycache__
+dependencies
 
 ### macOS ###
 # General
