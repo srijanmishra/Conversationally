@@ -5,6 +5,7 @@ load_dotenv(override=True) # noqa
 from workbench.voice import speak
 from typing import Optional
 from pydantic import BaseModel
+import fastapi
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import json
@@ -12,7 +13,10 @@ import base64
 from workbench.transcriber import audio_bytes_to_text
 from workbench.LLM import Chat
 from pprint import pprint
+from mangum import Mangum
 
+print(fastapi.__file__)
+print(json.__file__)
 
 import os
 
@@ -23,6 +27,7 @@ origins = [
     "http://localhost:8080",
 ]
 app = FastAPI()
+handler = Mangum(app)
 
 app.add_middleware(
     CORSMiddleware,
