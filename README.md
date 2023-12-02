@@ -38,10 +38,18 @@ Activate the environment
 conda activate env
 ```
 
-# How to update the pip dependencies (for when deploying to AWS)
+# Deploying to AWS
+
+Download all dependencies locally because they need to be sent along with our code to the cloud
 
 ```
 pip3 install -t dependencies -r requirements.txt
+```
+
+Create lambda artifact for deploying to AWS
+
+```
+(cd dependencies; zip ../aws_lambda_artifact.zip -r .)
 ```
 
 ## Run voice_chat.py example
