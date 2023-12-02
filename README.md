@@ -29,7 +29,7 @@ conda config --env --set subdir osx-64
 Create the environment
 
 ```
-conda env create -f env.yml</pre></code>
+conda env create -f env.yml
 ```
 
 Activate the environment
