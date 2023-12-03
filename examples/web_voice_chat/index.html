@@ -180,7 +180,19 @@
                         "messages": str_messages
                     }, )
                     console.log(payload)
-                    fetch("http://localhost:8000/listen", {
+                    // fetch("https://iawmx3ntgn2whycqxqwtll7ewy0ihhff.lambda-url.eu-west-2.on.aws/", {
+                    //     // fetch("http://localhost:8000/listen", {
+                    //     method: "GET",
+                    //     headers: {
+                    //         'Content-Type': 'application/json' // necessary
+                    //     },
+                    // })
+                    // .then(response => response.json())
+                    // .then(data => console.log(data))
+                    // console.log('send test request')
+                    // console.log('sending audio to server')
+                    fetch("https://iawmx3ntgn2whycqxqwtll7ewy0ihhff.lambda-url.eu-west-2.on.aws/listen", {
+                    // fetch("http://localhost:8000/listen", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json' // necessary
