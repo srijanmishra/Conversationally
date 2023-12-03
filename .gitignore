@@ -3,6 +3,7 @@ temp.mp3
 **/__pycache__
 dependencies
 aws_lambda_artifact.zip
+aws_lambda_artifact
 
 ### macOS ###
 # General
