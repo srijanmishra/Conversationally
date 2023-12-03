@@ -11,5 +11,7 @@ COPY examples/web_voice_chat/api.py ${LAMBDA_TASK_ROOT}
 
 COPY workbench ${LAMBDA_TASK_ROOT}/workbench
 
+COPY .env ${LAMBDA_TASK_ROOT}
+
 # Set the CMD to your handler (could also be done as a parameter override outside of the Dockerfile)
 CMD [ "api.handler" ]
