@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv(override=True) # noqa
 import json
 import base64
-from workbench.transcriber import audio_bytes_to_text
+from workbench.voice.transcribe import audio_bytes_to_text
 from workbench.LLM import Chat
 print('imported chat')
 from workbench.voice.generate import speak
