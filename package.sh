@@ -3,4 +3,6 @@ cp .env dependencies &&
 cp examples/web_voice_chat/api.py dependencies &&
 cp -r workbench dependencies &&
 cd dependencies &&
-zip -r ../aws_lambda_artifact.zip .
+zip -r ../aws_lambda_artifact.zip . &&
+cd .. &&
+rm -rf dependencies
