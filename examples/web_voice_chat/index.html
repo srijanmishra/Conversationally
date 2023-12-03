@@ -191,8 +191,20 @@
                     // .then(data => console.log(data))
                     // console.log('send test request')
                     // console.log('sending audio to server')
+
+                    //Figuring out which api url to use based on the stage set in .env file
+                    const environmentStage = process.env.BACKEND_STAGE
+                    let apiUrl = ""
+
+                    switch(environmentStage) {
+                        case "DEV":
+                            apiUrl = "http://localhost:8000/listen"
+                        
+                        case "PROD":
+                            apiUrl = "https://iawmx3ntgn2whycqxqwtll7ewy0ihhff.lambda-url.eu-west-2.on.aws/listen"
+                    }
+
                     fetch("https://iawmx3ntgn2whycqxqwtll7ewy0ihhff.lambda-url.eu-west-2.on.aws/listen", {
-                    // fetch("http://localhost:8000/listen", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json' // necessary
