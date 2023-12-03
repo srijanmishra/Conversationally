@@ -1,32 +1,34 @@
 # %%
 # a fastapi api running on localhost:8080 that calls a python function
+print('updated version')
+print('hello word there') # noqa
 from dotenv import load_dotenv
 load_dotenv(override=True) # noqa
-from workbench.voice import speak
-from typing import Optional
-from pydantic import BaseModel
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+print('installing basic stuff')
 import json
 import base64
-from workbench.transcriber import audio_bytes_to_text
-from workbench.LLM import Chat
 from pprint import pprint
-
-
-import os
-
-print(os.getenv("OPENAI_API_KEY"))
+print('installing pydantic stuff')
+from typing import Optional
+from pydantic import BaseModel
+from mangum import Mangum
+print('installing fastapi stuff')
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+print('installing workbench stuff')
+from workbench.voice.transcribe import audio_bytes_to_text
+from workbench.LLM import Chat # causes import issue with regex
+from workbench.voice.generate import speak
 
 origins = [
-    "http://localhost",
-    "http://localhost:8080",
+    "*",
 ]
-app = FastAPI()
+api = FastAPI()
+handler = Mangum(api)
 
-app.add_middleware(
+api.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    # allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -51,9 +53,14 @@ class Payload(BaseModel):
 
 system_message = "You are a helpful assistant"
 
+print('starting api')
 
+@api.get("/")
+async def root():
+    print("hello world")
+    return "hello world"
 
-@app.post("/listen")
+@api.post("/listen")
 async def listen(payload: Payload):
     
     chat = Chat(system_message=system_message)
@@ -90,13 +97,24 @@ async def listen(payload: Payload):
     # print(audio)
     audio = base64.b64encode(audio).decode()
 
-    pprint
+    print('Returning response...')
 
-    return json.dumps({"audio": audio, "messages": chat.messages})
+    response = {"audio": audio, "messages": chat.messages}
+    # response = {
+    #  'headers': {
+    #         'Access-Control-Allow-Headers': 'Content-Type',
+    #         'Access-Control-Allow-Origin': '*',
+    #         # 'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+    #     },
+    #  "statusCode": 200,
+    # "body": response
+    #  }
+
+    return json.dumps(response)
 
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="localhost", port=8000)
+    uvicorn.run(api, host="0.0.0.0", port=8000)
 
 # %%
