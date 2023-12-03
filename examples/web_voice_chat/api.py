@@ -1,25 +1,26 @@
 # %%
 # a fastapi api running on localhost:8080 that calls a python function
+print('hello word there') # noqa
 from dotenv import load_dotenv
 load_dotenv(override=True) # noqa
-from workbench.voice import speak
-from typing import Optional
-from pydantic import BaseModel
-import fastapi
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 import json
 import base64
 from workbench.transcriber import audio_bytes_to_text
 from workbench.LLM import Chat
+print('imported chat')
+from workbench.voice.generate import speak
+from typing import Optional
+import fastapi
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pprint import pprint
 from mangum import Mangum
-
 print(fastapi.__file__)
 print(json.__file__)
 
 import os
-
+print('now I will import Pydantic')
+from pydantic import BaseModel
 print(os.getenv("OPENAI_API_KEY"))
 
 origins = [
