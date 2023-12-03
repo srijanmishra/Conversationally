@@ -1,7 +1,4 @@
-import tiktoken
-import os
 from openai import OpenAI
-from workbench.utils.count_tokens import count_tokens_in_messages
 
 client = OpenAI()
 
@@ -57,7 +54,6 @@ class Chat():
 
     def __call__(self, prompt):
         self.messages.append({"role": "user", "content": prompt})
-        print("Tokens used:", count_tokens_in_messages(self.messages))
         response = client.chat.completions.create(
             model="gpt-3.5-turbo-16k",
             messages=self.messages
