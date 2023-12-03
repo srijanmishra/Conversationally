@@ -53,3 +53,27 @@ nav {
     text-align: right;
   }
 }
+main {
+  height: calc(100vh - 40px); // navbar is 40px~ tall
+}
+.user {
+  &--micBtn {
+    border-radius: 500%;
+    width: 100%;
+    aspect-ratio: 1;
+    border: none;
+    background-color: #fd574d;
+    color: $color-main-secondary;
+  }
+}
+.justify-content {
+  &-center {
+    justify-content: center;
+  }
+}
+.feather {
+  &-mic {
+    height: 12rem;
+    width: 12rem;
+  }
+}
