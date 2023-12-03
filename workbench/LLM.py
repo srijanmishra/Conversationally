@@ -1,17 +1,18 @@
-import tiktoken
-import os
 from openai import OpenAI
-from workbench.utils.count_tokens import count_tokens_in_messages
 
 client = OpenAI()
 
-print(os.path.dirname(os.path.realpath(__file__)))
+# print(os.path.dirname(os.path.realpath(__file__)))
 
-prompt_dir = os.path.abspath(os.path.join(os.path.dirname(
-    os.path.realpath(__file__)), os.pardir, "background_instructions"))
+# prompt_dir = os.path.abspath(os.path.join(os.path.dirname(
+#     os.path.realpath(__file__)), os.pardir, "background_instructions"))
 
-with open(f"{prompt_dir}/persona.txt") as f:
-    personal_instructions = f.read()
+# with open(f"{prompt_dir}/persona.txt") as f:
+#     personal_instructions = f.read()
+
+personal_instructions = """
+You are a helpful assistant
+"""
 
 # with open(f"{prompt_dir}/business_context.txt") as f:
 #     business_context = f.read()
@@ -53,7 +54,6 @@ class Chat():
 
     def __call__(self, prompt):
         self.messages.append({"role": "user", "content": prompt})
-        print("Tokens used:", count_tokens_in_messages(self.messages))
         response = client.chat.completions.create(
             model="gpt-3.5-turbo-16k",
             messages=self.messages

@@ -1,34 +1,13 @@
-# %%
-import sounddevice as sd
-from pydub import AudioSegment
-from pydub.utils import make_chunks
-from elevenlabs import generate, play, save, stream, voices
 from time import time
+import sounddevice as sd
 import numpy as np
 import os
+from pydub import AudioSegment
+from pydub.utils import make_chunks
+
 from openai import OpenAI
 
 client = OpenAI()
-
-def speak(text, voice="Nicole", play=True, save_fp=None):
-    audio = generate(
-        text=text,
-        stream=False,
-        # stream=True if not save_fp else False,
-        # stream=_stream,
-        voice=voice,
-    )
-    if play:
-        stream(audio)
-    if save_fp:
-        save(audio, save_fp)
-
-    # play(audio)
-    # save audio file
-
-    # save audio as mp3
-    return audio
-
 
 def voice_to_text(duration=15):
 
@@ -70,27 +49,3 @@ def voice_to_text(duration=15):
     os.remove(temp_audio_filename)
 
     return text
-
-
-if __name__ == "__main__":
-    # audio = generate(
-    #     text="Hi! My name is Bella, nice to meet you!",
-    #     voice="Bella",
-    #     model="eleven_monolingual_v1"
-    # )
-
-    text = "Hello there, I'm your new AI assistant"
-    speak(text, save=False)
-    # audio = generate(text, voice="Nicole")
-    # stream(audio)
-
-# %%
-
-
-# audio = generate(
-#     text="Hello there, I'm your new AI assistant",
-#     voice="Bella",
-#     model='eleven_multilingual_v1'
-# )
-
-# play(audio)

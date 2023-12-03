@@ -1,6 +1,9 @@
 temp.mp3
 .env
 **/__pycache__
+dependencies
+aws_lambda_artifact.zip
+aws_lambda_artifact
 
 ### macOS ###
 # General
@@ -52,6 +55,7 @@ Temporary Items
 # Ignore all local history of files
 .history
 .ionide
+<<<<<<< HEAD
 
 ### react ###
 # Logs
@@ -67,3 +71,5 @@ node_modules
 dist
 dist-ssr
 *.local
+=======
+>>>>>>> main
