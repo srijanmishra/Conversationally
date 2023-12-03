@@ -52,6 +52,13 @@ Create lambda artifact for deploying to AWS
 (cd dependencies; zip ../aws_lambda_artifact.zip -r .)
 ```
 
+zip aws_lambda_artifact.zip -u examples/web_voice_chat/api.py
+zip aws_lambda_artifact.zip -u workbench -r
+
+- Allow function endpoints in advanced configuration
+- Ensure Lambda runs arm64 architecture rather than x86 during configuration
+- Set the correct function handler
+
 ## Run voice_chat.py example
 
 ### Run via Visual Studio Code
