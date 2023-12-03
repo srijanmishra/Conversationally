@@ -80,6 +80,9 @@ Add a file called `.env` in the root folder and set the appropriate values for y
 ```
 OPENAI_API_KEY=sk-scmsdkmskclsdmckdslcmsdkcsdcsdcdsc
 ELEVEN_API_KEY=csdcosmcosmcsdokcmsdocmdsoc
+
+BACKEND_STAGE = "DEV" #or "PROD"
+FRONTEND_STAGE = "DEV" #or "PROD"
 ```
 
 ## How to run the web-based voice chat locally for development
