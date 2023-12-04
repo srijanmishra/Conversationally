@@ -1,8 +1,6 @@
 import LogoutButton from '../components/Logout';
 import { useState } from 'react';
-
-
-// feather.replace();
+import { Mic } from "react-feather";
 
 
 
@@ -148,7 +146,7 @@ export const ChatPage = () => {
             <div className="container">
                 You
                 <button className="user--micBtn" disabled={recording} onClick={toggleRecording}>
-                <i className="feather-mic" data-feather="mic"></i>
+                    <Mic />
                 </button>
             </div>
             <audio id="player" src={audioSrc} controls></audio>

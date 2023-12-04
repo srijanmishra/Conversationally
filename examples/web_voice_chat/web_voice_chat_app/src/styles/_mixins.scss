@@ -28,7 +28,7 @@
             margin-left: calc((100% / $col-amount) * $i);
           }
         }
-        @for $i from 0 through $col-amount/2 {
+        @for $i from 0 through math.div($col-amount, 2) {
           .row-cols-#{$i} > * {
             flex: 0 0 auto;
             width: calc(100% / $i);
@@ -47,7 +47,7 @@
             margin-left: calc((100% / $col-amount) * $i);
           }
         }
-        @for $i from 0 through $col-amount/2 {
+        @for $i from 0 through math.div($col-amount, 2) {
           .row-cols-#{nth($bp-names, $j)}-#{$i} > * {
             flex: 0 0 auto;
             width: calc(100% / $i);
