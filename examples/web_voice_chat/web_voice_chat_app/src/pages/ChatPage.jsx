@@ -124,7 +124,6 @@ export const ChatPage = () => {
     const [recording, setRecording] = useState(false);
     const [messages, setMessages] = useState([]);
     const [audioSrc, setAudioSrc] = useState(null);
-    const [messages, setMessages] = useState([]);
 
     let chunks = []; // here we will store all received chunks of our audio stream
     let recorder; // MediaRecorder instance to capture audio
@@ -141,17 +140,19 @@ export const ChatPage = () => {
 
     // <script src="https://unpkg.com/feather-icons"></script> // not sure how we use this in React
     // <link rel="stylesheet" href="style.min.css" /> // or this
-    return  <>
-        <div className="container">
-            AI
-        </div>
-        <div className="container">
-            You
-            <button className="user--micBtn" disabled={recording} onClick={toggleRecording}>
-              <i className="feather-mic" data-feather="mic"></i>
-            </button>
-        </div>
-        <audio id="player" src={audioSrc} controls></audio>
-        <LogoutButton />
-    </>   
+    return  (
+        <>
+            <div className="container">
+                AI
+            </div>
+            <div className="container">
+                You
+                <button className="user--micBtn" disabled={recording} onClick={toggleRecording}>
+                <i className="feather-mic" data-feather="mic"></i>
+                </button>
+            </div>
+            <audio id="player" src={audioSrc} controls></audio>
+            <LogoutButton />
+        </>
+    )
 }
