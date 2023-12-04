@@ -120,34 +120,36 @@ const stopRecording = () => {
 }};
 
 export const ChatPage = () => {
-    const [recording, setRecording] = useState(false);
     const [messages, setMessages] = useState([]);
     const [audioSrc, setAudioSrc] = useState(null);
+    const [status, setStatus] = useState("standby");// standby, recording, responding (ai), thinking (ai)
 
     let chunks = []; // here we will store all received chunks of our audio stream
     let recorder; // MediaRecorder instance to capture audio
     let mediaStream; // MediaStream instance to feed the recorder
 
     const toggleRecording = () => {
-        if (recording) {
+        if (status === "recording") {
             stopRecording();
+            setStatus("standby");
         } else {
             startRecording();
+            setStatus("recording");
         }
-        setRecording(!recording);
     }
 
-    return  (
-        <>
-            <div className="container">
-                AI
-            </div>
-            <div className="container">
-                You
-                <UserActionButton status={recording ? "recording" : "standby"} disabled={recording} onClick={toggleRecording} />
-            </div>
-            <audio id="player" src={audioSrc} controls></audio>
-            <LogoutButton />
-        </>
-    )
+    return (
+      <>
+        <div className="container">AI</div>
+        <div className="container">
+          You
+          <UserActionButton
+            status={status}
+            onClick={toggleRecording}
+          />
+        </div>
+        <audio id="player" src={audioSrc} controls></audio>
+        <LogoutButton />
+      </>
+    );
 }
