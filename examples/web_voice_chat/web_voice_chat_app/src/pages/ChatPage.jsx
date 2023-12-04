@@ -1,6 +1,7 @@
 import LogoutButton from '../components/Logout';
 import { useState } from 'react';
 import { Mic } from "react-feather";
+import UserActionButton from '../components/UserActionButton/UserActionButton';
 
 
 
@@ -136,8 +137,6 @@ export const ChatPage = () => {
         setRecording(!recording);
     }
 
-    // <script src="https://unpkg.com/feather-icons"></script> // not sure how we use this in React
-    // <link rel="stylesheet" href="style.min.css" /> // or this
     return  (
         <>
             <div className="container">
@@ -145,9 +144,7 @@ export const ChatPage = () => {
             </div>
             <div className="container">
                 You
-                <button className="user--micBtn" disabled={recording} onClick={toggleRecording}>
-                    <Mic />
-                </button>
+                <UserActionButton status={recording ? "recording" : "standby"} disabled={recording} onClick={toggleRecording} />
             </div>
             <audio id="player" src={audioSrc} controls></audio>
             <LogoutButton />
