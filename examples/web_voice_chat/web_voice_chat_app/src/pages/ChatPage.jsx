@@ -1,6 +1,4 @@
-import LogoutButton from '../components/Logout';
 import { useState } from 'react';
-import { Mic } from "react-feather";
 import UserActionButton from '../components/UserActionButton/UserActionButton';
 
 
@@ -140,25 +138,28 @@ export const ChatPage = () => {
 
     return (
       <>
-        <div className="container">
-            <div className="row">
-                <div className="col-12">
-                    <p>AI</p>
+        <section>
+            <div className="container">
+                <div className="row justify-content-center">
+                    <div className="col-8">
+                        <p>AI</p>
+                        <audio id="player" src={audioSrc} controls></audio>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div className="container">
-            <div className="row justify-content-center">
-                <div className="col-8">
-                    <UserActionButton
-                        status={status}
-                        onClick={toggleRecording}
-                    />
+        </section>
+        <section>
+            <div className="container">
+                <div className="row justify-content-center">
+                    <div className="col-8">
+                        <UserActionButton
+                            status={status}
+                            onClick={toggleRecording}
+                        />
+                    </div>
                 </div>
             </div>
-        </div>
-        <audio id="player" src={audioSrc} controls></audio>
-        <LogoutButton />
+        </section>
       </>
     );
 }
