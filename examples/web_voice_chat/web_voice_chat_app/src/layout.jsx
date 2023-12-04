@@ -1,4 +1,4 @@
-import { Sun, Settings } from "react-feather";
+import { Sun, Settings, User } from "react-feather";
 import PropTypes from "prop-types";
 
 const Layout = ({ children }) => {
@@ -11,6 +11,7 @@ const Layout = ({ children }) => {
               <Sun />
             </div>
             <div className="col-6 text-right">
+              <User className="mr-2" />
               <Settings />
             </div>
           </div>
