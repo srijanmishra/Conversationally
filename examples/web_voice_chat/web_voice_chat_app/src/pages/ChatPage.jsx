@@ -140,13 +140,22 @@ export const ChatPage = () => {
 
     return (
       <>
-        <div className="container">AI</div>
         <div className="container">
-          You
-          <UserActionButton
-            status={status}
-            onClick={toggleRecording}
-          />
+            <div className="row">
+                <div className="col-12">
+                    <p>AI</p>
+                </div>
+            </div>
+        </div>
+        <div className="container">
+            <div className="row justify-content-center">
+                <div className="col-8">
+                    <UserActionButton
+                        status={status}
+                        onClick={toggleRecording}
+                    />
+                </div>
+            </div>
         </div>
         <audio id="player" src={audioSrc} controls></audio>
         <LogoutButton />
