@@ -1,5 +1,5 @@
 import './App.css'
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { LandingPage } from './pages/LandingPage.jsx';
 import { ChatPage } from './pages/ChatPage.jsx';
 
@@ -7,16 +7,15 @@ const App = () => {
 
   return (
     <>
-    <BrowserRouter>
       <Routes>
 
         <Route path="/login" element={<LandingPage />} />
+        {/* <Route path="/" element={<ChatPage />} /> */}
         <Route path="/" element={<ChatPage />} />
         {/* <Route path="/settings" element={<Settings />} /> */}
       </Routes>
 
       
-    </BrowserRouter>
       {/* <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
