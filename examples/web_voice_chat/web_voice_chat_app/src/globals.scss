@@ -4,7 +4,7 @@
 @import "./styles/_grid";
 
 // font
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
 
 :root {
   --col-gutter-x: 1rem;
@@ -29,6 +29,8 @@ html {
 body {
   background-color: $color-main-primary;
   color: $color-main-secondary;
+  font-family: "Inter", "Arial", sans-serif;
+  font-size: 1.5rem;
   --main-margin-x: 1.5rem;
   -webkit-font-smoothing: antialiased;
   -moz-osxfont-smoothing: grayscale;
@@ -80,4 +82,9 @@ main {
 }
 p {
   line-height: 1;
+}
+.text {
+  &-center {
+    text-align: center;
+  }
 }

@@ -4,27 +4,45 @@ import PropTypes from "prop-types";
 
 const UserActionButton = (props) => {
   let statusIcon,
+    statusText,
+    statusIconCommonProps = { className: "UserActionButton_icon" },
     isDisabled = false;
 
-  if (props.status === "standby") {
-    statusIcon = <Mic className="UserActionButton_icon" />;
-  } else {
-    statusIcon = <Square className="UserActionButton_icon" />;
+  switch (props.status) {
+    case "standby":
+      statusIcon = <Mic {...statusIconCommonProps} />;
+      statusText = "Start talking with the AI";
+      break;
+    case "recording":
+      statusIcon = <Square {...statusIconCommonProps} />;
+      statusText = "Recording your message ...";
+      break;
+    case "thinking":
+      statusText = "AI is thinking ...";
+      isDisabled = true;
+      break;
+    case "responding":
+      statusText = "AI is talking";
+      isDisabled = true;
+      break;
+    default:
+      statusIcon = <Mic {...statusIconCommonProps} />;
+      statusText = "Start talking with the AI";
+      break;
   }
 
-  // Ai acting
-  if (props.status === "responding" || props.status === "thinking")
-    isDisabled = true;
-
   return (
-    <button
-      className={`UserActionButton UserActionButton-${props.status} ${
-        isDisabled ? "disabled" : ""
-      }`}
-      onClick={props.onClick}
-    >
-      {statusIcon}
-    </button>
+    <>
+      <button
+        className={`UserActionButton UserActionButton-${props.status} ${
+          isDisabled ? "disabled" : ""
+        } mb-2`}
+        onClick={props.onClick}
+      >
+        {statusIcon}
+      </button>
+      <p className="text-center">{statusText}</p>
+    </>
   );
 };
 
