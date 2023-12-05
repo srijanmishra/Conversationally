@@ -17,7 +17,7 @@ const Layout = ({ children }) => {
           </div>
         </div>
       </nav>
-      <main>{children}</main>
+      <main className="py-5">{children}</main>
       <footer></footer>
     </>
   );

@@ -57,7 +57,10 @@ nav {
   }
 }
 main {
-  height: calc(100vh - 40px); // navbar is 40px~ tall
+  height: calc(100vh - 55px); // navbar is 55px tall
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 .user {
   &--micBtn {
@@ -80,7 +83,13 @@ main {
     width: 12rem;
   }
 }
-p {
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   line-height: 1;
 }
 .text {
