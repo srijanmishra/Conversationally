@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import UserActionButton from "../components/UserActionButton/UserActionButton";
 
 // const startButton = document.getElementById("start");
@@ -136,6 +136,14 @@ export const ChatPage = () => {
       setStatus("recording");
     }
   };
+
+  useEffect(() => {
+    document.body.classList.add("ChatPage");
+
+    return () => {
+      document.body.classList.remove("ChatPage");
+    };
+  }, []);
 
   return (
     <>
