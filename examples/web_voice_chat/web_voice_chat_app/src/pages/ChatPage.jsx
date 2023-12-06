@@ -120,19 +120,19 @@ export const ChatPage = () => {
 
     return (
         <>
-            <div style={{display: "flex", flexDirection: "column", justifyContent: "space-around", height: "90vh"}}>
-                <div className="container">
+            <div style={{display: "flex", flexDirection: "column", justifyContent: "space-around", height: "90vh", alignItems: "center"}}>
+                        <AIPortrait status={status} />
+                {/* <div className="container">
                     <div className="row justify-content-center">
                         <div className="col-4">
-                        <AIPortrait status={status} />
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-12 text-center">
-                        {/* <audio id="player-ai" src={audioSrc} controls></audio> */}
                         </div>
                     </div>
-                </div>
+                </div> */}
+                        {/* <audio id="player-ai" src={audioSrc} controls></audio> */}
                 <div className="container">
                     <div className="row justify-content-center">
                         <div className="col-12 text-center">
