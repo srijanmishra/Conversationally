@@ -131,7 +131,7 @@ export const ChatPage = () => {
                 </div>
                 <div className="row">
                     <div className="col-12 text-center">
-                    <audio id="player-ai" src={audioSrc} controls></audio>
+                    {/* <audio id="player-ai" src={audioSrc} controls></audio> */}
                     </div>
                 </div>
                 </div>
@@ -140,7 +140,7 @@ export const ChatPage = () => {
                 <div className="container">
                 <div className="row justify-content-center">
                     <div className="col-12 text-center">
-                    <audio id="player-user" src={audioSrc} controls></audio>
+                    {/* <audio id="player-user" src={audioSrc} controls></audio> */}
                     </div>
                     <div className="col-8">
                     <UserActionButton status={recording ? "recording" : "standby"} onClick={toggleRecording} />
