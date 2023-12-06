@@ -1,28 +1,85 @@
 import LogoutButton from '../components/Logout';
 import { useState } from 'react';
 
+class AudioRecordingHandler {
+    constructor() {
+        this.chunks = []; // here we will store all received chunks of our audio stream
+        // this.recorder; // MediaRecorder instance to capture audio
+        // this.mediaStream; // MediaStream instance to feed the recorder
+    }
 
-// feather.replace();
-
-
-
-// const startButton = document.getElementById("start");
-// const stopButton = document.getElementById("stop");
-// const audioElement = document.getElementById("player");
-
-const startRecording = async () => {
-    mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    recorder = new MediaRecorder(mediaStream);
-    recorder.start(); // Start recording
-
-    // This event fires each time a chunk of audio data is available
-    recorder.ondataavailable = (event) => {
-        chunks.push(event.data); // Append the chunk to our array
+    startRecording = async () => {
+        this.mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        this.recorder = new MediaRecorder(this.mediaStream);
+        this.recorder.start(); // Start recording
+    
+        // This event fires each time a chunk of audio data is available
+        this.recorder.ondataavailable = (event) => {
+            this.chunks.push(event.data); // Append the chunk to our array
+        };
     };
 
-    // startButton.disabled = true;
-    // stopButton.disabled = false;
-};
+    stopRecording = (messages, setMessages, setAudioSrc) => {
+        console.log("stop button clicked");
+        let hi = this.recorder.stop(); // This will trigger the 'dataavailable' event for the last time
+        console.log("onstop return", hi)
+        this.recorder.onstop = () => {
+            const blob = new Blob(this.chunks, { type: 'audio/wav' }); // When all chunks are available, concatenate them into a single Blob
+            const reader = new FileReader();
+            reader.readAsArrayBuffer(blob);
+    
+            reader.onloadend = async () => {
+                const arrayBuffer = reader.result; // Get the ArrayBuffer from the reader
+                const audioBytes = new Uint8Array(arrayBuffer); // Create a Uint8Array from the ArrayBuffer
+                const base64StringAudio = btoa(String.fromCharCode(...audioBytes)); // Convert the Uint8Array to a base64 string
+                console.log(base64StringAudio.substring(0, 10)) // log first 10 characters of the string
+                console.log('sending audio to server')
+    
+                let str_messages = JSON.stringify(messages)
+                let payload = JSON.stringify({
+                    "audio": base64StringAudio,
+                    "messages": str_messages
+                }, )
+                console.log(payload)
+                testRootEndpoint() // testing the GET request to the root endpoint
+                // console.log('sending audio to server')
+                fetch("https://iawmx3ntgn2whycqxqwtll7ewy0ihhff.lambda-url.eu-west-2.on.aws/listen", {
+                // fetch("http://localhost:8000/listen", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json' // necessary
+                    },
+                    body: payload
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        data = JSON.parse(data)
+    
+                        messages = data.messages
+                        console.log("Returned messages:", messages)
+                        setMessages(messages)
+                        let audio = data.audio
+                        // log first 10 characters of the string
+                        console.log(audio.substring(0, 10))
+                        let fetchableUrl = 'data:audio/wav;base64,' + audio;
+                        fetch(fetchableUrl)
+                            .then(response => response.blob())
+                            .then(blob => {
+                                let url = URL.createObjectURL(blob);
+                                setAudioSrc(url)
+                                console.log('audio url:', url)
+                                new Audio(url).play();
+                            });
+                    })
+                    .catch(error => console.log(error));
+            this.chunks = [];
+            this.recorder = null;
+            this.mediaStream.getTracks().forEach(track => track.stop());
+        };
+    }};
+
+}
+
 
 const testRootEndpoint = () => {
     fetch("https://iawmx3ntgn2whycqxqwtll7ewy0ihhff.lambda-url.eu-west-2.on.aws/", {
@@ -32,109 +89,24 @@ const testRootEndpoint = () => {
             'Content-Type': 'application/json' // necessary
         },
     })
-    .then(response => response.json())
-    .then(data => console.log(data))
+    // .then(response => response.json())
+    // .then(data => console.log(data))
     console.log('send test request')
 }
-
-const getSpeechResponse = (audio, messages) => {
-    
-}
-
-const stopRecording = () => {
-    console.log("stop button clicked");
-    // This will trigger the 'dataavailable' event for the last time
-    recorder.stop();
-
-    // When all chunks are available, concatenate them into a single Blob
-    recorder.onstop = () => {
-        const blob = new Blob(chunks, { type: 'audio/wav' });
-        
-
-        // Convert the Blob into a base64 string
-        const reader = new FileReader();
-        reader.readAsArrayBuffer(blob);
-
-        reader.onloadend = async () => {
-            // Get the ArrayBuffer from the reader
-            const arrayBuffer = reader.result;
-
-            // Create a Uint8Array from the ArrayBuffer
-            const audioBytes = new Uint8Array(arrayBuffer);
-
-            // Convert the Uint8Array to a base64 string
-            const base64StringAudio = btoa(String.fromCharCode(...audioBytes));
-            // log first 10 characters of the string
-            console.log(base64StringAudio.substring(0, 10))
-            console.log('sending audio to server')
-
-            let str_messages = JSON.stringify(messages)
-            let payload = JSON.stringify({
-                "audio": base64StringAudio,
-                "messages": str_messages
-            }, )
-            console.log(payload)
-            // testRootEndpoint() // testing the GET request to the root endpoint
-            // console.log('sending audio to server')
-            fetch("https://iawmx3ntgn2whycqxqwtll7ewy0ihhff.lambda-url.eu-west-2.on.aws/listen", {
-            // fetch("http://localhost:8000/listen", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json' // necessary
-                },
-                body: payload
-            })
-                .then(response => response.json())
-                .then(data => {
-                    data = JSON.parse(data)
-
-                    messages = data.messages
-                    console.log("Returned messages:", messages)
-                    let audio = data.audio
-                    // log first 10 characters of the string
-                    console.log(audio.substring(0, 10))
-                    let fetchableUrl = 'data:audio/wav;base64,' + audio;
-                    fetch(fetchableUrl)
-                        .then(response => response.blob())
-                        .then(blob => {
-                            let url = URL.createObjectURL(blob);
-                            // let audioElement = document.createElement('audio');
-                            // audioElement.src = url;
-                            // document.body.appendChild(audioElement);
-                            audioElement.play(); // TODO is this gonna work?
-                        });
-                })
-                .catch(error => console.log(error));
-
-
-        // put in the audio element
-        const url = URL.createObjectURL(blob);
-        // audioElement.src = url;
-
-        chunks = [];
-        recorder = null;
-        mediaStream.getTracks().forEach(track => track.stop());
-
-        // startButton.disabled = false;
-        // stopButton.disabled = true;
-    };
-}};
+const audioHandler = new AudioRecordingHandler()
 
 export const ChatPage = () => {
+
     const [recording, setRecording] = useState(false);
     const [messages, setMessages] = useState([]);
     const [audioSrc, setAudioSrc] = useState(null);
-    const [messages, setMessages] = useState([]);
-
-    let chunks = []; // here we will store all received chunks of our audio stream
-    let recorder; // MediaRecorder instance to capture audio
-    let mediaStream; // MediaStream instance to feed the recorder
 
     const toggleRecording = () => {
         if (recording) {
-            stopRecording();
+            audioHandler.stopRecording(messages, setMessages, setAudioSrc);
+            // TODO play audio once I get everything up to here working
         } else {
-            startRecording();
+            audioHandler.startRecording();
         }
         setRecording(!recording);
     }
@@ -147,7 +119,8 @@ export const ChatPage = () => {
         </div>
         <div className="container">
             You
-            <button className="user--micBtn" disabled={recording} onClick={toggleRecording}>
+            <button className="user--micBtn" onClick={toggleRecording}>
+                {recording ? "Stop" : "Start"}
               <i className="feather-mic" data-feather="mic"></i>
             </button>
         </div>
