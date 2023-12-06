@@ -55,7 +55,6 @@ Temporary Items
 # Ignore all local history of files
 .history
 .ionide
-<<<<<<< HEAD
 
 ### react ###
 # Logs
@@ -71,5 +70,3 @@ node_modules
 dist
 dist-ssr
 *.local
-=======
->>>>>>> main
