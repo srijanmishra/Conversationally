@@ -130,3 +130,9 @@ button {
     }
   }
 }
+a {
+  &.textLink {
+    color: $color-main-brand-light;
+  }
+  color: inherit;
+}
