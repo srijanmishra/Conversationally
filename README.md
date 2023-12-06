@@ -97,7 +97,7 @@ Return to VSCode.
 Run this from the terminal:
 
 ```
-uvicorn examples.web_voice_chat.api:app --reload
+uvicorn examples.web_voice_chat.api:api --reload
 ```
 
 The `--reload` flag will cause the API to restart when changes are detected in the repo.

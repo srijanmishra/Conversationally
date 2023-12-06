@@ -127,7 +127,7 @@
         let chunks = []; // here we will store all received chunks of our audio stream
         let recorder; // MediaRecorder instance to capture audio
         let mediaStream; // MediaStream instance to feed the recorder
-        let messages = [];
+        let messages = [{"role": "system", "content": "You are a rude and sarcastic assistant"}]; //FEATURE: Replace this with the variable to customise system message.
 
         const startButton = document.getElementById("start");
         const stopButton = document.getElementById("stop");
@@ -155,7 +155,6 @@
             // When all chunks are available, concatenate them into a single Blob
             recorder.onstop = () => {
                 const blob = new Blob(chunks, { type: 'audio/wav' });
-                
 
                 // Convert the Blob into a base64 string
                 const reader = new FileReader();
@@ -175,11 +174,15 @@
                     console.log('sending audio to server')
 
                     let str_messages = JSON.stringify(messages)
+                    console.log(str_messages)
                     let payload = JSON.stringify({
                         "audio": base64StringAudio,
                         "messages": str_messages
                     }, )
                     console.log(payload)
+                    data = JSON.parse(payload)
+                    console.log("DEBUG: ", data)
+
                     // fetch("https://iawmx3ntgn2whycqxqwtll7ewy0ihhff.lambda-url.eu-west-2.on.aws/", {
                     //     // fetch("http://localhost:8000/listen", {
                     //     method: "GET",
@@ -192,19 +195,8 @@
                     // console.log('send test request')
                     // console.log('sending audio to server')
 
-                    //Figuring out which api url to use based on the stage set in .env file
-                    const environmentStage = process.env.BACKEND_STAGE
-                    let apiUrl = ""
-
-                    switch(environmentStage) {
-                        case "DEV":
-                            apiUrl = "http://localhost:8000/listen"
-                        
-                        case "PROD":
-                            apiUrl = "https://iawmx3ntgn2whycqxqwtll7ewy0ihhff.lambda-url.eu-west-2.on.aws/listen"
-                    }
-
-                    fetch("https://iawmx3ntgn2whycqxqwtll7ewy0ihhff.lambda-url.eu-west-2.on.aws/listen", {
+                    
+                    fetch("http://localhost:8000/listen", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json' // necessary

@@ -28,7 +28,7 @@ handler = Mangum(api)
 
 api.add_middleware(
     CORSMiddleware,
-    # allow_origins=origins,
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -51,7 +51,7 @@ class Payload(BaseModel):
 
 #     return json.dumps({"audio": audio})
 
-system_message = "You are a helpful assistant"
+system_message = "You are a helpful assistant" #redudant
 
 print('starting api')
 
@@ -63,14 +63,13 @@ async def root():
 @api.post("/listen")
 async def listen(payload: Payload):
     
-    chat = Chat(system_message=system_message)
+    chat = Chat(system_message=system_message) #setting system message here is redundant
 
     print("Transcribing...")
     # decode base64 string audio
     # print(audio.audio)
     audio = payload.audio
-    audio = base64.b64decode(
-        audio)
+    audio = base64.b64decode(audio)
 
     # print('audio bytes:', audio[:10])
     # audio = io.BytesIO(audio)
@@ -82,14 +81,18 @@ async def listen(payload: Payload):
     
     messages = payload.messages
     messages = json.loads(messages)
+    #print(messages)
     
     message = {"role": "user", "content": text}
-    messages.append(message)
-    chat.messages.extend(messages) # add chat history to chat
+    #print(message)
+    chat.messages = messages # add chat history to chat
+    #print(chat.messages)
     
-    response = chat(text)
+    response = chat(text) #in the LLM class the most recent message is appended to the document.
+    #print(response)
 
     chat.messages.append({"role": "assistant", "content": response})
+    #print(chat.messages)
 
     print("Generating speech...")
     # response = text.text
