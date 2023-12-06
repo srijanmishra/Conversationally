@@ -112,6 +112,7 @@ export const ChatPage = () => {
         }
         setRecording(!recording);
     }
+  };
 
 //   useEffect(() => {
 //     document.body.classList.add("ChatPage");
