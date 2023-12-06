@@ -1,4 +1,4 @@
-import { Mic, Square } from "react-feather";
+import { Mic as MicIcon, Square as SquareIcon } from "react-feather";
 import "./UserActionButton.scss";
 import PropTypes from "prop-types";
 
@@ -10,23 +10,25 @@ const UserActionButton = (props) => {
 
   switch (props.status) {
     case "standby":
-      statusIcon = <Mic {...statusIconCommonProps} />;
+      statusIcon = <MicIcon {...statusIconCommonProps} />;
       statusText = "Start talking with the AI";
       break;
     case "recording":
-      statusIcon = <Square {...statusIconCommonProps} />;
+      statusIcon = <SquareIcon {...statusIconCommonProps} />;
       statusText = "Recording your message ...";
       break;
     case "thinking":
+      statusIcon = <MicIcon {...statusIconCommonProps} />;
       statusText = "AI is thinking ...";
       isDisabled = true;
       break;
     case "responding":
+      statusIcon = <MicIcon {...statusIconCommonProps} />;
       statusText = "AI is talking";
       isDisabled = true;
       break;
     default:
-      statusIcon = <Mic {...statusIconCommonProps} />;
+      statusIcon = <MicIcon {...statusIconCommonProps} />;
       statusText = "Start talking with the AI";
       break;
   }
@@ -38,6 +40,7 @@ const UserActionButton = (props) => {
           isDisabled ? "disabled" : ""
         } mb-2`}
         onClick={props.onClick}
+        disabled={isDisabled}
       >
         {statusIcon}
       </button>

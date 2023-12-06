@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import UserActionButton from "../components/UserActionButton/UserActionButton";
+import AIPortrait from "../components/AIPortrait/AIPortrait";
 
 // const startButton = document.getElementById("start");
 // const stopButton = document.getElementById("stop");
@@ -151,7 +152,7 @@ export const ChatPage = () => {
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-4">
-              <img src="/AI_portrait.png" />
+              <AIPortrait status={status} />
             </div>
           </div>
           <div className="row">
