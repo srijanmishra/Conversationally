@@ -105,10 +105,17 @@ const audioHandler = new AudioRecordingHandler()
 
 export const ChatPage = () => {
 
-    const [config, setConfig] = useState("Your name is Steve the dog, respond as if you think like a cute puppy")
+    const handleConfigChange = (config) => {
+        setConfig({...config})
+        setMessages([{"role": "system", "content": config.systemMessage}])
+    }
+
+    const [config, setConfig] = useState({
+        "systemMessage": "Your name is Steve the dog, respond as if you think like a cute puppy"
+    })
 
     const [recording, setRecording] = useState(false);
-    const [messages, setMessages] = useState([{"role": "system", "content": config}]);
+    const [messages, setMessages] = useState([{"role": "system", "content": config.systemMessage}]);
 
     const toggleRecording = () => {
         if (recording) {
@@ -130,7 +137,7 @@ export const ChatPage = () => {
 
     return (
         <>
-            <Navbar config={config} setConfig={setConfig} />
+            <Navbar config={config} handleConfigChange={handleConfigChange} />
             <div style={{display: "flex", flexDirection: "column", justifyContent: "space-around", height: "80vh", alignItems: "center"}}>
                         <AIPortrait status={status} />
                 {/* <div className="container">
@@ -162,6 +169,8 @@ export const ChatPage = () => {
 
 const Navbar = (props) => {
 
+    const [config, setConfig] = useState(props.config)
+
     const [open, setOpen] = useState(false);
 
     const toggleOpen = () => {
@@ -181,8 +190,8 @@ const Navbar = (props) => {
                     Set your system message
                 </DialogContentText>
                 <TextField onChange={e=>{
-                    props.setConfig(e.target.value)
-                }} value={props.config} />
+                    props.handleConfigChange({"systemMessage": e.target.value})
+                }} value={props.config.systemMessage} />
             </DialogContent>
             <DialogActions>
                 <Button onClick={toggleOpen}>Cancel</Button>
