@@ -1,4 +1,4 @@
-import LoginButton from "../components/Login.jsx";
+import LoginButton from "../components/Auth/LoginButton";
 
 export const LandingPage = () => {
   return (
