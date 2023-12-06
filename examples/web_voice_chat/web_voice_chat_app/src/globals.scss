@@ -31,7 +31,7 @@ body {
   background-color: $color-main-primary;
   color: $color-main-secondary;
   font-family: "Inter", "Arial", sans-serif;
-  font-size: 1.5rem;
+  font-size: 1.7rem;
   --main-margin-x: 1.5rem;
   -webkit-font-smoothing: antialiased;
   -moz-osxfont-smoothing: grayscale;
@@ -42,7 +42,7 @@ body {
 nav {
   background-color: $color-main-secondary;
   color: $color-main-primary;
-  padding: 1.5rem 2.7rem;
+  padding: $spacing-2 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -95,6 +95,12 @@ h5,
 h6 {
   line-height: 1;
 }
+h1 {
+  font-size: 5rem;
+}
+p {
+  font-size: inherit;
+}
 .text {
   &-center {
     text-align: center;
@@ -106,4 +112,21 @@ img {
 }
 audio {
   margin: $spacing-2 0;
+}
+button {
+  &.btn {
+    margin: $spacing-2;
+    background-color: $color-main-brand-light;
+    color: darken($color-main-primary, 35%);
+    font-weight: 700;
+    border: none;
+    padding: $spacing-2 $spacing-3;
+    width: max-content;
+    cursor: pointer;
+    font-size: inherit;
+    &:hover {
+      background-color: lighten($color-main-brand-light, 5%);
+      color: darken($color-main-primary, 55%);
+    }
+  }
 }
