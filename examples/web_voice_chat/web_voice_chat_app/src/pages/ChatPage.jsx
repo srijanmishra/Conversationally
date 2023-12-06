@@ -120,32 +120,31 @@ export const ChatPage = () => {
 
     return (
         <>
-            <section>
+            <div style={{display: "flex", flexDirection: "column", justifyContent: "space-around", height: "90vh"}}>
                 <div className="container">
-                <div className="row justify-content-center">
-                    <div className="col-4">
-                    <AIPortrait status={status} />
+                    <div className="row justify-content-center">
+                        <div className="col-4">
+                        <AIPortrait status={status} />
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-12 text-center">
+                        {/* <audio id="player-ai" src={audioSrc} controls></audio> */}
+                        </div>
                     </div>
                 </div>
-                <div className="row">
-                    <div className="col-12 text-center">
-                    {/* <audio id="player-ai" src={audioSrc} controls></audio> */}
-                    </div>
-                </div>
-                </div>
-            </section>
-            <section>
                 <div className="container">
-                <div className="row justify-content-center">
-                    <div className="col-12 text-center">
-                    {/* <audio id="player-user" src={audioSrc} controls></audio> */}
-                    </div>
-                    <div className="col-8">
-                    <UserActionButton status={recording ? "recording" : "standby"} onClick={toggleRecording} />
+                    <div className="row justify-content-center">
+                        <div className="col-12 text-center">
+                        {/* <audio id="player-user" src={audioSrc} controls></audio> */}
+                        </div>
+                        <div className="col-8">
+                        <UserActionButton status={recording ? "recording" : "standby"} onClick={toggleRecording} />
+                        </div>
                     </div>
                 </div>
-                </div>
-            </section>
+            </div>
         </>
   );
+
 };

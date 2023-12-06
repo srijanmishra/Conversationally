@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 const Layout = ({ children }) => {
   return (
     <>
-      <nav>
+      {/* <nav>
         <div className="container">
           <div className="row">
             <div className="col-4">
@@ -29,7 +29,7 @@ const Layout = ({ children }) => {
             </div>
           </div>
         </div>
-      </nav>
+      </nav> */}
       <main className="py-5">{children}</main>
       <footer></footer>
     </>

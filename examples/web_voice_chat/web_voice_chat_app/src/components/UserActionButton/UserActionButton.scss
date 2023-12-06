@@ -2,7 +2,8 @@
 
 .UserActionButton {
   border-radius: 500%;
-  width: 100%;
+  width: 100px;
+  height: 100px;
   aspect-ratio: 1;
   border: none;
   background-color: $color-userAction-standby;

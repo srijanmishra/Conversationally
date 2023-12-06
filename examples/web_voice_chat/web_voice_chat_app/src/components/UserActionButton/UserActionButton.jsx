@@ -31,6 +31,7 @@ const UserActionButton = (props) => {
 
   return (
     <>
+    <div style={{"display": "flex", "flexDirection": "column", "alignItems": "center"}}>
       <button
         className={`UserActionButton UserActionButton-${props.status} ${
           isDisabled ? "disabled" : ""
@@ -41,6 +42,7 @@ const UserActionButton = (props) => {
         {statusIcon}
       </button>
       <p className="text-center">{statusText}</p>
+    </div>
     </>
   );
 };
