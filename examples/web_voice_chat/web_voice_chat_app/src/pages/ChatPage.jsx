@@ -20,7 +20,7 @@ class AudioRecordingHandler {
         };
     };
 
-    stopRecording = (messages, setMessages, setAudioSrc) => {
+    stopRecording = (messages, setMessages) => {
         console.log("stop button clicked");
         let hi = this.recorder.stop(); // This will trigger the 'dataavailable' event for the last time
         console.log("onstop return", hi)
@@ -67,7 +67,6 @@ class AudioRecordingHandler {
                             .then(response => response.blob())
                             .then(blob => {
                                 let url = URL.createObjectURL(blob);
-                                setAudioSrc(url)
                                 console.log('audio url:', url)
                                 new Audio(url).play();
                             });
@@ -100,11 +99,10 @@ export const ChatPage = () => {
 
     const [recording, setRecording] = useState(false);
     const [messages, setMessages] = useState([]);
-    const [audioSrc, setAudioSrc] = useState(null);
 
     const toggleRecording = () => {
         if (recording) {
-            audioHandler.stopRecording(messages, setMessages, setAudioSrc);
+            audioHandler.stopRecording(messages, setMessages);
             // TODO play audio once I get everything up to here working
         } else {
             audioHandler.startRecording();
