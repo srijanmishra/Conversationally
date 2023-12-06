@@ -1,6 +1,5 @@
 import UserActionButton from "../components/UserActionButton/UserActionButton";
 import AIPortrait from "../components/AIPortrait/AIPortrait";
-import LogoutButton from '../components/Auth/LogoutButton';
 import { useState } from 'react';
 
 class AudioRecordingHandler {
