@@ -1,4 +1,6 @@
-import LogoutButton from '../components/Logout';
+import UserActionButton from "../components/UserActionButton/UserActionButton";
+import AIPortrait from "../components/AIPortrait/AIPortrait";
+import LogoutButton from '../components/Auth/LogoutButton';
 import { useState } from 'react';
 
 class AudioRecordingHandler {
@@ -111,20 +113,42 @@ export const ChatPage = () => {
         setRecording(!recording);
     }
 
-    // <script src="https://unpkg.com/feather-icons"></script> // not sure how we use this in React
-    // <link rel="stylesheet" href="style.min.css" /> // or this
-    return  <>
-        <div className="container">
-            AI
-        </div>
-        <div className="container">
-            You
-            <button className="user--micBtn" onClick={toggleRecording}>
-                {recording ? "Stop" : "Start"}
-              <i className="feather-mic" data-feather="mic"></i>
-            </button>
-        </div>
-        <audio id="player" src={audioSrc} controls></audio>
-        <LogoutButton />
-    </>   
-}
+//   useEffect(() => {
+//     document.body.classList.add("ChatPage");
+
+//     return () => {
+//       document.body.classList.remove("ChatPage");
+//     };
+//   }, []);
+
+    return (
+        <>
+            <section>
+                <div className="container">
+                <div className="row justify-content-center">
+                    <div className="col-4">
+                    <AIPortrait status={status} />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-12 text-center">
+                    <audio id="player-ai" src={audioSrc} controls></audio>
+                    </div>
+                </div>
+                </div>
+            </section>
+            <section>
+                <div className="container">
+                <div className="row justify-content-center">
+                    <div className="col-12 text-center">
+                    <audio id="player-user" src={audioSrc} controls></audio>
+                    </div>
+                    <div className="col-8">
+                    <UserActionButton status={recording ? "recording" : "standby"} onClick={toggleRecording} />
+                    </div>
+                </div>
+                </div>
+            </section>
+        </>
+  );
+};

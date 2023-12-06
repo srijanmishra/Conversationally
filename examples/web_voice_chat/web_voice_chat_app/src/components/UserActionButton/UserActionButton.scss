@@ -1,0 +1,32 @@
+@import "../../styles/vars";
+
+.UserActionButton {
+  border-radius: 500%;
+  width: 100%;
+  aspect-ratio: 1;
+  border: none;
+  background-color: $color-userAction-standby;
+  color: $color-main-secondary;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &_icon {
+    width: 50%;
+    height: 50%;
+  }
+  &-standby {
+    background-color: $color-userAction-standby;
+    color: $color-main-secondary;
+  }
+  &-recording {
+    background-color: $color-userAction-recording;
+    color: $color-main-secondary;
+    .UserActionButton_icon {
+      width: 40%;
+      height: 40%;
+    }
+  }
+  &.disabled {
+    opacity: 0.5;
+  }
+}

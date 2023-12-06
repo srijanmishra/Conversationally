@@ -1,0 +1,10 @@
+.AIPortrait {
+  border-radius: 500%;
+  border: 2px solid transparent;
+  &-thinking {
+    border-color: orange;
+  }
+  &-responding {
+    border-color: greenyellow;
+  }
+}
