@@ -36,8 +36,8 @@ class Chat():
     def add_assistant_msg(self, msg):
         self.messages.append({"role": "assistant", "content": msg})
 
-    def __call__(self, prompt): #removed the "prompt" 
-        self.messages.append({"role": "assistant", "content": prompt})
+    def __call__(self, prompt):
+        self.messages.append({"role": "user", "content": prompt})
         response = client.chat.completions.create(
             model="gpt-3.5-turbo-16k",
             messages=self.messages
