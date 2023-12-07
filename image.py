@@ -31,6 +31,9 @@ def generate_image(prompt, provider="DALL_E_3", size="1024x1024", format="url"):
     Input a prompt and a provider
     Provider options: "STABILITY_AI", "DALL_E_3"
     '''
+
+    allowed_formats = ["url", "pil"]
+    assert format in allowed_formats, f"Format must be one of {allowed_formats}"
     
     #Check to see if they have put a valid provider in
     allowed_values = ["DALL_E_3", "STABILITY_AI"]
