@@ -109,7 +109,6 @@ def generate_stable_diffusion_image(prompt, size="1024x1024"):
         break
 
     img = Image.open(save_fp)
-    img.show()
     os.remove(save_fp)#why is it remove save_fp and 
     return img
 
