@@ -48,6 +48,7 @@ def generate_image(prompt, provider="DALL_E_3", size="1024x1024", format="url"):
         if format == "url":
             raise ValueError("STABILITY_AI provider does not support url format")
         img = generate_stable_diffusion_image(prompt=prompt)
+        return img
 
     print('Image generated')
 
