@@ -1,6 +1,14 @@
 import UserActionButton from "../components/UserActionButton/UserActionButton";
 import AIPortrait from "../components/AIPortrait/AIPortrait";
 import { useState } from 'react';
+import { Link } from "react-router-dom";
+import Dialog from '@mui/material/Dialog';
+import Button from '@mui/material/Button';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import { TextField } from "@mui/material";
 
 class AudioRecordingHandler {
     constructor() {
@@ -97,8 +105,17 @@ const audioHandler = new AudioRecordingHandler()
 
 export const ChatPage = () => {
 
+    const handleConfigChange = (config) => {
+        setConfig({...config})
+        setMessages([{"role": "system", "content": config.systemMessage}])
+    }
+
+    const [config, setConfig] = useState({
+        "systemMessage": "Your name is Steve the dog, respond as if you think like a cute puppy"
+    })
+
     const [recording, setRecording] = useState(false);
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState([{"role": "system", "content": config.systemMessage}]);
 
     const toggleRecording = () => {
         if (recording) {
@@ -120,7 +137,8 @@ export const ChatPage = () => {
 
     return (
         <>
-            <div style={{display: "flex", flexDirection: "column", justifyContent: "space-around", height: "90vh", alignItems: "center"}}>
+            <Navbar config={config} handleConfigChange={handleConfigChange} />
+            <div style={{display: "flex", flexDirection: "column", justifyContent: "space-around", height: "80vh", alignItems: "center"}}>
                         <AIPortrait status={status} />
                 {/* <div className="container">
                     <div className="row justify-content-center">
@@ -148,3 +166,36 @@ export const ChatPage = () => {
   );
 
 };
+
+const Navbar = (props) => {
+
+    const [config, setConfig] = useState(props.config)
+
+    const [open, setOpen] = useState(false);
+
+    const toggleOpen = () => {
+        setOpen(!open);
+    }
+
+    console.log(props.config)
+
+    return <>
+        <Button onClick={toggleOpen}>
+            Settings
+        </Button>
+        <Dialog open={open}>
+            <DialogTitle>Settings</DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+                    Set your system message
+                </DialogContentText>
+                <TextField onChange={e=>{
+                    props.handleConfigChange({"systemMessage": e.target.value})
+                }} value={props.config.systemMessage} />
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={toggleOpen}>Cancel</Button>
+            </DialogActions>
+        </Dialog>
+    </>
+}
