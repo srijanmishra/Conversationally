@@ -8,7 +8,7 @@ client = OpenAI()
 from PIL import Image
 
 
-def generate_image(prompt, size="512x512"):
+def generate_image(prompt, size="512x512", format="url"):
     height = int(size.split("x")[0])
     width = int(size.split("x")[1])
 
@@ -50,15 +50,19 @@ def generate_image(prompt, size="512x512"):
 
     data = response.json()
 
-    save_fp = "temp.png"
-    for i, image in enumerate(data["artifacts"]):
-        with open(save_fp, "wb") as f:
-            f.write(base64.b64decode(image["base64"]))
-        break
+    if format == "url":
+        return data["artifacts"][0]["url"]
 
-    img = Image.open(save_fp)
-    os.remove(save_fp)
-    return img
+    else:
+        save_fp = "temp.png"
+        for i, image in enumerate(data["artifacts"]):
+            with open(save_fp, "wb") as f:
+                f.write(base64.b64decode(image["base64"]))
+            break
+
+        img = Image.open(save_fp)
+        os.remove(save_fp)
+        return img
 
 
 if __name__ == "__main__":

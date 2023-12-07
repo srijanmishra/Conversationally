@@ -17,8 +17,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 print('installing workbench stuff')
 from workbench.voice.transcribe import audio_bytes_to_text
-from workbench.LLM import Chat # causes import issue with regex
+from workbench.LLM import Chat, request # causes import issue with regex
 from workbench.voice.generate import speak
+from workbench.image import generate_image
 
 origins = [
     "*",
@@ -111,6 +112,17 @@ async def listen(payload: Payload):
     #  }
 
     return json.dumps(response)
+
+
+@api.post("/generate_avatar")
+async def generate_avatar(system_message: str):
+    print("Generating avatar...")
+
+    img_prompt = request(system_message)
+
+    url = generate_image(img_prompt, format="url")
+
+    return json.dumps({"url": url})
 
 
 if __name__ == "__main__":
