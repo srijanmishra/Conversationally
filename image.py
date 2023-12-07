@@ -22,11 +22,10 @@ import urllib.request
 load_dotenv()
 
 # Variables that get the keys from .env
-openai.api_key = os.environ["OPENAI_API_KEY"]
 client = OpenAI()
 
 #use this function to generate images
-def generate_image(prompt, provider, size="1024x1024"):
+def generate_image(prompt, provider, size="1024x1024", format="url"):
     '''
     Call this function to generate an image.
     Input a prompt and a provider
@@ -41,10 +40,22 @@ def generate_image(prompt, provider, size="1024x1024"):
     
     if provider == "DALL_E_3":  # if loop to pick provider
         img = generate_dali_image(prompt=prompt, size=size, quality="standard", n=1)
-        return img
         
     elif provider == "STABILITY_AI":
+        if format == "url":
+            raise ValueError("STABILITY_AI provider does not support url format")
         img = generate_stable_diffusion_image(prompt=prompt)
+
+    print('Image generated')
+
+    if format == "url":
+        return img
+    else:        
+        # Open the image directly from the URL using PIL (or Pillow?)
+        img = Image.open(requests.get(img, stream=True).raw)
+        
+        img.show()
+
         return img
    
 
@@ -90,11 +101,11 @@ def generate_stable_diffusion_image(prompt, size="1024x1024"):
 
     data = response.json()
 
-    save_fp = "temp.png"
     for i, image in enumerate(data["artifacts"]):
+        save_fp = "temp.png"
         with open(save_fp, "wb") as f:
             f.write(base64.b64decode(image["base64"]))
-            print('Image generated')
+
         break
 
     img = Image.open(save_fp)
@@ -126,16 +137,8 @@ def generate_dali_image(prompt, size="1024x1024", quality="standard", n=1):
     # code works, response gives back a url
     # still need to add additional functions to save the image to a file for later use.
     image_url = response.data[0].url
-    
-    save_fp = "temp.png"
-    
-    # Open the image directly from the URL using PIL (or Pillow?)
-    img = Image.open(requests.get(image_url, stream=True).raw)
-    
-    img.show()
 
-    return img
-
+    return image_url
 
 if __name__ == "__main__":
     response = generate_image("a koala falling off a tree", provider="DALL_E_3")
