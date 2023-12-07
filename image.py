@@ -25,7 +25,7 @@ load_dotenv()
 client = OpenAI()
 
 #use this function to generate images
-def generate_image(prompt, provider, size="1024x1024", format="url"):
+def generate_image(prompt, provider="DALL_E_3", size="1024x1024", format="url"):
     '''
     Call this function to generate an image.
     Input a prompt and a provider
