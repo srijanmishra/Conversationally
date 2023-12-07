@@ -8,11 +8,59 @@
 
 ## Setup
 
-- <pre><code id="bash">git clone https://github.com/life-efficient/Parapet-Workbench.git</pre></code>
-- <pre><code id="bash">cd Parapet-Workbench</pre></code>
-- If required, modify python version (`python=3.10`) in `workbench.yml`
-- <pre><code id="bash">conda env create -f workbench.yml</pre></code>
-- <pre><code id="bash">conda activate workbench</pre></code>
+Clone the repo
+
+```
+git clone https://github.com/life-efficient/Parapet-Workbench.git
+```
+
+Move into the repo
+
+```
+cd Parapet-Workbench
+```
+
+If using M1/M2 maxbook run this command before creating environment from workbench.yml file:
+
+```
+conda config --env --set subdir osx-64
+```
+
+Create the environment
+
+```
+conda env create -f env.yml
+```
+
+Activate the environment
+
+```
+conda activate env
+```
+
+# Deploying to AWS
+
+Download all dependencies locally because they need to be sent along with our code to the cloud
+
+```
+pip3 install -t dependencies -r requirements.txt
+```
+
+Create lambda artifact for deploying to AWS
+
+```
+(cd dependencies; zip ../aws_lambda_artifact.zip -r .)
+```
+
+zip aws_lambda_artifact.zip -u examples/web_voice_chat/api.py
+zip aws_lambda_artifact.zip -u workbench -r
+
+docker build -t speech2speech .
+docker run -p 8000:8000 --name speech2speech --rm speech2speech
+
+- Allow function endpoints in advanced configuration
+- Ensure Lambda runs arm64 architecture rather than x86 during configuration
+- Set the correct function handler
 
 ## Run voice_chat.py example
 
@@ -23,16 +71,16 @@
 3. Add ChatGPT API key
 4. Use `SHIFT + ENTER` to run the 'cell'
 
-### Run via Command Line
+## Authentication
 
-1. Add ChatGPT API key
-2. <pre><code id="bash">/usr/local/anaconda3/bin/python3 examples/voice_chat.py</pre></code>
+Many APIs used here require API keys.
 
-## Useful commands
+Add a file called `.env` in the root folder and set the appropriate values for your API keys.
 
-- <pre><code id="bash">conda env list</pre></code>
-- <pre><code id="bash">conda env remove --name workbench</pre></code>
-- <pre><code id="bash">conda install ipykernel # (allows Jupyter to use different Python kernels)</pre></code>
+```
+OPENAI_API_KEY=sk-scmsdkmskclsdmckdslcmsdkcsdcsdcdsc
+ELEVEN_API_KEY=csdcosmcosmcsdokcmsdocmdsoc
+```
 
 ## How to run the web-based voice chat locally for development
 

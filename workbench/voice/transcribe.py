@@ -1,11 +1,8 @@
 # %%
-import numpy as np
-import sounddevice as sd
 from pydub import AudioSegment
 from pydub.utils import make_chunks
 from openai import OpenAI
 import os
-from workbench.LLM import request
 
 client = OpenAI()
 
@@ -78,7 +75,7 @@ def audio_file_to_transcript(filename):
 
 
 def audio_bytes_to_text(audio_bytes):
-    temp_audio_filename = "temp.mp3"
+    temp_audio_filename = "/tmp/temp.mp3"
     with open(temp_audio_filename, "wb") as f:
         f.write(audio_bytes)
     # audio = AudioSegment(audio_bytes,
