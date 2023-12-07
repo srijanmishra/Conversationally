@@ -55,8 +55,6 @@ def generate_image(prompt, provider="DALL_E_3", size="1024x1024", format="url"):
     else:        
         # Open the image directly from the URL using PIL (or Pillow?)
         img = Image.open(requests.get(img, stream=True).raw)
-        
-        img.show()
 
         return img
    
