@@ -1,241 +1,40 @@
-<!-- a simple webpage with one button that makes a post request using fetch-->
-<html>
-<head>
-    <title>Chatline</title>
-    <style>
-        /* overall font */
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
-
-        body {
-            background-color: #18181b;
-            color: #ffffff;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-        h1 {
-            font-size: 30px;
-            margin-top: 100px;
-        }
-        #button {
-            font-family: 'Poppins', sans-serif;
-            width: 50px;
-            height: 50px;
-            border-radius: 100px;
-            background-color: #ffffff;
-            color: #000000;
-            font-size: 30px;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            justify-content: center;
-            align-items: center;
-            /* drop shadow */
-            -webkit-box-shadow: 0px 0px 30px 0px rgba(255,255,255,1);
-        }
-
-        /* hide audio element */
-        audio {
-            display: none;
-        }
-
-        /* font awesome */
-        @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css');
-
-        #user-input {
-            width: 100%;
-            height: 50px;
-            background-color: #ffffff;
-            color: #000000;
-            font-size: 30px;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            justify-content: center;
-            align-items: center;
-            /* drop shadow */
-        }
-
-        /* blue play button */
-        #button {
-            font-family: 'Poppins', sans-serif;
-            width: 50px;
-            height: 50px;
-            border-radius: 100px;
-            background-color: #ad4848;
-            color: #000000;
-            font-size: 30px;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            /* drop shadow */
-            -webkit-box-shadow: 0px 0px 30px 0px rgba(255,255,255,1);
-        }
-
-        /* icon */
-        .fa-play {
-            font-size: 30px;
-        }
-        
-        
-        </style>
-    <script src="https://kit.fontawesome.com/ff0a901d57.js" crossorigin="anonymous"></script>
-
-</head>
-<body>
-    <h1>Dreamline</h1>
-    <!-- fontawesome play icon in a button -->
-    <!-- <button id="button">
-        <i class="fas fa-play"></i>
-    </button>
-
-
-
-
-
-    
-    <script>
-        document.getElementById("button").addEventListener("click", async function() {
-            console.log("button clicked");
-            fetch("http://localhost:8000/chat", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json' // necessary
-                },
-                body: JSON.stringify({
-                    "text": "what a time to be alive!"
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                data = JSON.parse(data)
-                let audio = data.audio
-                let fetchableUrl = 'data:audio/wav;base64,' + audio;
-                fetch(fetchableUrl)
-                    .then(response => response.blob())
-                    .then(blob => {
-                        let url = URL.createObjectURL(blob);
-                        let audioElement = document.createElement('audio');
-                        audioElement.src = url;
-                        document.body.appendChild(audioElement);
-                        audioElement.play();
-                    });
-            })
-            .catch(error => console.log(error));
-        });
-    </script> -->
-
-
-
-
-    <!-- Listening Module -->
-    
-    <div id="user-input">
-
-        <button id="start">
-                <i class="fas fa-microphone"></i>
-        </button>
-        <button id="stop" disabled>
-            <i class="fas fa-stop"></i>
-        </button>
-        <audio id="player" controls></audio>
-    </div>
-    
-    <script>
-        let chunks = [];
-        let recorder;
-        let mediaStream;
-
-        const startButton = document.getElementById("start");
-        const stopButton = document.getElementById("stop");
-        const audioElement = document.getElementById("player");
-
-        startButton.onclick = async () => {
-            mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            recorder = new MediaRecorder(mediaStream);
-            recorder.start();
-
-            // This event fires each time a chunk of audio data is available
-            recorder.ondataavailable = (event) => {
-                chunks.push(event.data);
-            };
-
-            startButton.disabled = true;
-            stopButton.disabled = false;
-        };
-
-        stopButton.onclick = () => {
-            console.log("stop button clicked");
-            // This will trigger the 'dataavailable' event for the last time
-            recorder.stop();
-
-            // When all chunks are available, concatenate them into a single Blob
-            recorder.onstop = () => {
-                const blob = new Blob(chunks, { type: 'audio/wav' });
-                
-
-                // Convert the Blob into a base64 string
-                const reader = new FileReader();
-                reader.readAsArrayBuffer(blob);
-
-                reader.onloadend = async () => {
-                    // Get the ArrayBuffer from the reader
-                    const arrayBuffer = reader.result;
-
-                    // Create a Uint8Array from the ArrayBuffer
-                    const audioBytes = new Uint8Array(arrayBuffer);
-
-                    // Convert the Uint8Array to a base64 string
-                    const base64StringAudio = btoa(String.fromCharCode(...audioBytes));
-                    // log first 10 characters of the string
-                    console.log(base64StringAudio.substring(0, 10))
-                    console.log('sending audio to server')
-
-                    fetch("http://localhost:8000/listen", {
-                        method: "POST",
-                        headers: {
-                            'Content-Type': 'application/json' // necessary
-                        },
-                        body: JSON.stringify({
-                            "audio": base64StringAudio
-                        })
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            data = JSON.parse(data)
-                            let audio = data.audio
-                            // log first 10 characters of the string
-                            console.log(audio.substring(0, 10))
-                            let fetchableUrl = 'data:audio/wav;base64,' + audio;
-                            fetch(fetchableUrl)
-                                .then(response => response.blob())
-                                .then(blob => {
-                                    let url = URL.createObjectURL(blob);
-                                    let audioElement = document.createElement('audio');
-                                    audioElement.src = url;
-                                    document.body.appendChild(audioElement);
-                                    audioElement.play();
-                                });
-                        })
-                        .catch(error => console.log(error));
-
-
-                // put in the audio element
-                const url = URL.createObjectURL(blob);
-                audioElement.src = url;
-
-                chunks = [];
-                recorder = null;
-                mediaStream.getTracks().forEach(track => track.stop());
-
-                startButton.disabled = false;
-                stopButton.disabled = true;
-            };
-        }};
-    </script>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Parapeet</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1"
+    />
+    <link rel="stylesheet" href="style.min.css" />
+    <script src="https://unpkg.com/feather-icons"></script>
+  </head>
+  <body>
+    <nav>
+      <div class="container">
+        <div class="row">
+          <div class="col-6">
+            <i data-feather="sun"></i>
+          </div>
+          <div class="col-6 text-right">
+            <i data-feather="settings"></i>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <main>
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-8">
+            <button class="user--micBtn">
+              <i class="feather-mic" data-feather="mic"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer></footer>
+    <script src="script.js"></script>
+  </body>
 </html>

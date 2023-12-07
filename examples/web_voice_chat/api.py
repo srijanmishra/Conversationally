@@ -1,83 +1,120 @@
 # %%
 # a fastapi api running on localhost:8080 that calls a python function
-import sys  # noqa
-sys.path.append("/Users/ice/lectures/workbench")  # noqa
-from workbench.voice import speak
-from typing import Optional
-from pydantic import BaseModel
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+print('updated version')
+print('hello word there') # noqa
+from dotenv import load_dotenv
+load_dotenv(override=True) # noqa
+print('installing basic stuff')
 import json
 import base64
-from workbench.transcriber import voice_to_text, audio_bytes_to_text
-import io
-from workbench.LLM import Chat
+from pprint import pprint
+print('installing pydantic stuff')
+from typing import Optional
+from pydantic import BaseModel
+from mangum import Mangum
+print('installing fastapi stuff')
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+print('installing workbench stuff')
+from workbench.voice.transcribe import audio_bytes_to_text
+from workbench.LLM import Chat # causes import issue with regex
+from workbench.voice.generate import speak
 
 origins = [
-    "http://localhost",
-    "http://localhost:8080",
+    "*",
 ]
-app = FastAPI()
+api = FastAPI()
+handler = Mangum(api)
 
-app.add_middleware(
+api.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    # allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 
-class Text(BaseModel):
-    text: str
+
+class Payload(BaseModel):
+    audio: str # base64 encoded audio bytes
+    messages: str # the messages so far
 
 
-class Audio(BaseModel):
-    audio: str
+# @app.post("/chat")
+# async def chat(text: Text):
+#     print("Processing...")
+#     response = text.text
+#     audio = speak(response, voice="Nicole", _stream=False, play=False)
+#     print(audio)
+#     audio = base64.b64encode(audio).decode()
 
+#     return json.dumps({"audio": audio})
 
-@app.post("/chat")
-async def chat(text: Text):
-    print("Processing...")
-    response = text.text
-    audio = speak(response, voice="Nicole", _stream=False, play=False)
-    print(audio)
-    audio = base64.b64encode(audio).decode()
+system_message = "You are a helpful assistant"
 
-    return json.dumps({"audio": audio})
+print('starting api')
 
-system_message = "You are a sexy, flirty girlfriend on a phone call to your man."
+@api.get("/")
+async def root():
+    print("hello world")
+    return "hello world"
 
-chat = Chat(system_message=system_message)
+@api.post("/listen")
+async def listen(payload: Payload):
+    
+    chat = Chat(system_message=system_message)
 
-
-@app.post("/listen")
-async def listen(audio: Audio):
-    print("Listening...")
+    print("Transcribing...")
     # decode base64 string audio
-    print(audio.audio)
-    audio = audio.audio
+    # print(audio.audio)
+    audio = payload.audio
     audio = base64.b64decode(
         audio)
 
-    print('audio bytes:', audio[:10])
+    # print('audio bytes:', audio[:10])
     # audio = io.BytesIO(audio)
     # # transcribe using whisper API
     text = audio_bytes_to_text(audio)
     print(text)
+    
+    print("Thinking...")
+    
+    messages = payload.messages
+    messages = json.loads(messages)
+    
+    message = {"role": "user", "content": text}
+    messages.append(message)
+    chat.messages.extend(messages) # add chat history to chat
+    
     response = chat(text)
 
-    # print("Thinking...")
+    chat.messages.append({"role": "assistant", "content": response})
+
+    print("Generating speech...")
     # response = text.text
-    audio = speak(response, voice="Nicole", _stream=False, play=False)
+    audio = speak(response, voice="Nicole", play=False)
     # print(audio)
     audio = base64.b64encode(audio).decode()
 
-    return json.dumps({"audio": audio})
+    print('Returning response...')
+
+    response = {"audio": audio, "messages": chat.messages}
+    # response = {
+    #  'headers': {
+    #         'Access-Control-Allow-Headers': 'Content-Type',
+    #         'Access-Control-Allow-Origin': '*',
+    #         # 'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+    #     },
+    #  "statusCode": 200,
+    # "body": response
+    #  }
+
+    return json.dumps(response)
 
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="localhost", port=8000)
+    uvicorn.run(api, host="0.0.0.0", port=8000)
 
 # %%
