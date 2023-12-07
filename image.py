@@ -36,10 +36,8 @@ def generate_image(prompt, provider="DALL_E_3", size="1024x1024", format="url"):
     assert format in allowed_formats, f"Format must be one of {allowed_formats}"
     
     #Check to see if they have put a valid provider in
-    allowed_values = ["DALL_E_3", "STABILITY_AI"]
-
-    if provider not in allowed_values:
-        raise ValueError(f"Provider parameter must be one of {allowed_values}")
+    allowed_providers = ["DALL_E_3", "STABILITY_AI"]
+    assert provider in allowed_providers, f"Provider must be one of {allowed_providers}"
     
     if provider == "DALL_E_3":  # if loop to pick provider
         img = generate_dali_image(prompt=prompt, size=size, quality="standard", n=1)
