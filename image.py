@@ -101,8 +101,8 @@ def generate_stable_diffusion_image(prompt, size="1024x1024"):
 
     data = response.json()
 
+    save_fp = "tmp/temp.png"
     for i, image in enumerate(data["artifacts"]):
-        save_fp = "temp.png"
         with open(save_fp, "wb") as f:
             f.write(base64.b64decode(image["base64"]))
 
