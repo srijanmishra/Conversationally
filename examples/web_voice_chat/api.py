@@ -29,7 +29,7 @@ handler = Mangum(api)
 
 api.add_middleware(
     CORSMiddleware,
-    # allow_origins=origins,
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -40,6 +40,9 @@ api.add_middleware(
 class Payload(BaseModel):
     audio: str # base64 encoded audio bytes
     messages: str # the messages so far
+    
+class GenerateAvatarPayload(BaseModel):
+    system_message: str
 
 
 # @app.post("/chat")
@@ -52,7 +55,6 @@ class Payload(BaseModel):
 
 #     return json.dumps({"audio": audio})
 
-system_message = "You are a helpful assistant"
 
 print('starting api')
 
@@ -63,6 +65,7 @@ async def root():
 
 @api.post("/listen")
 async def listen(payload: Payload):
+    system_message = "You are a helpful assistant"
     
     chat = Chat(system_message=system_message)
 
@@ -115,12 +118,15 @@ async def listen(payload: Payload):
 
 
 @api.post("/generate_avatar")
-async def generate_avatar(system_message: str):
+async def generate_avatar(payload: GenerateAvatarPayload):
     print("Generating avatar...")
 
-    img_prompt = request(system_message)
+    system_message = payload.system_message
 
-    url = generate_image(img_prompt, format="url")
+    img_prompt = request(f'Describe what this thing would look like in one sentence: {system_message}')
+    print(img_prompt)
+
+    url = generate_image(prompt=img_prompt, provider="DALL_E_3", format="url")
 
     return json.dumps({"url": url})
 
