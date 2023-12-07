@@ -6,9 +6,6 @@ aws_lambda_artifact.zip
 aws_lambda_artifact
 **/.vite
 
-<<<<<<< HEAD
-.env
-=======
 ### macOS ###
 # General
 .DS_Store
@@ -74,4 +71,3 @@ node_modules
 dist
 dist-ssr
 *.local
->>>>>>> main
