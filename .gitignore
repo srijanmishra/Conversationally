@@ -4,6 +4,7 @@ temp.mp3
 dependencies
 aws_lambda_artifact.zip
 aws_lambda_artifact
+**/.vite
 
 ### macOS ###
 # General
@@ -55,3 +56,18 @@ Temporary Items
 # Ignore all local history of files
 .history
 .ionide
+
+### react ###
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
