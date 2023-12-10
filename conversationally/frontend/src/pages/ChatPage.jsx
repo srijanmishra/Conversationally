@@ -82,9 +82,11 @@ const Customisation = (props) => {
     }
 
     return <>
-        <div style={{margin: "20px"}}>
-            <Button onClick={toggleOpen} variant="outlined" size="large">
-                Customise
+        <div style={{margin: "10px"}}>
+            <Button onClick={toggleOpen} variant="text" size="large" color="secondary">
+                <div style={{fontSize: "14px"}}>
+                    Customise
+                </div>
             </Button>
         </div>
         <Dialog open={open} fullWidth={true}>
@@ -101,7 +103,7 @@ const Customisation = (props) => {
                 }} value={props.config.systemMessage} />
             </DialogContent>
             <DialogActions>
-                <Button onClick={toggleOpen}>Save</Button>
+                <Button onClick={toggleOpen} variant="contained">Save</Button>
             </DialogActions>
         </Dialog>
     </>
