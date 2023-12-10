@@ -90,15 +90,21 @@ const Customisation = (props) => {
             </Button>
         </div>
         <Dialog open={open} fullWidth={true} >
-            <DialogTitle>Customise</DialogTitle>
+            <DialogTitle>
+                <Typography variant="h4">
+                    Customise
+                </Typography>    
+            </DialogTitle>
             <div style={{display: "flex", alignItems:"center", flexDirection: "column"}}>
                 <Avatar src={props.config.avatarSrc} style={{height: "100px", width: "100px"}}/>
             </div>
             <DialogContent>
-                <Typography variant="h5">
-                        Describe the personality of your AI assistant, any background context it should be aware of, and guidelines for how it should respond.
-                </Typography>
-                <TextField fullWidth={true} onChange={e=>{
+                <DialogContentText>
+                    <Typography variant="h5">
+                            Describe the personality of your AI assistant, any background context it should be aware of, and guidelines for how it should respond.
+                    </Typography>
+                </DialogContentText>
+                <TextField fullWidth={true} multiline={true} onChange={e=>{
                     props.handleConfigChange({"systemMessage": e.target.value})
                 }} value={props.config.systemMessage} />
             </DialogContent>
