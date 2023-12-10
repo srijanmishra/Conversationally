@@ -8,7 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import { Avatar, TextField } from "@mui/material";
+import { Avatar, TextField, Typography } from "@mui/material";
 import AudioRecordingHandler from "../utils/audio";
 import img from "/AI_portrait.png";
 
@@ -89,15 +89,15 @@ const Customisation = (props) => {
                 </div>
             </Button>
         </div>
-        <Dialog open={open} fullWidth={true}>
+        <Dialog open={open} fullWidth={true} >
             <DialogTitle>Customise</DialogTitle>
             <div style={{display: "flex", alignItems:"center", flexDirection: "column"}}>
                 <Avatar src={props.config.avatarSrc} style={{height: "100px", width: "100px"}}/>
             </div>
             <DialogContent>
-                <DialogContentText>
-                    Describe the personality of your AI, any background context it should be aware of, and guidelines for how it should respond.
-                </DialogContentText>
+                <Typography variant="h5">
+                        Describe the personality of your AI assistant, any background context it should be aware of, and guidelines for how it should respond.
+                </Typography>
                 <TextField fullWidth={true} onChange={e=>{
                     props.handleConfigChange({"systemMessage": e.target.value})
                 }} value={props.config.systemMessage} />
