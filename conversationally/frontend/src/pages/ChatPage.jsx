@@ -1,7 +1,5 @@
 import UserActionButton from "../components/UserActionButton/UserActionButton";
-import AIPortrait from "../components/AIPortrait/AIPortrait";
 import { useState } from 'react';
-import { Link } from "react-router-dom";
 import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -11,8 +9,8 @@ import DialogContentText from '@mui/material/DialogContentText';
 import { Avatar, TextField, Typography } from "@mui/material";
 import AudioRecordingHandler from "../utils/audio";
 import img from "/AI_portrait.png";
-import theme from '../styles/theme';
 import useTheme from '@mui/material/styles/useTheme';
+import EditIcon from '@mui/icons-material/Edit';
 
 const audioHandler = new AudioRecordingHandler()
 
@@ -87,9 +85,10 @@ const Customisation = (props) => {
     return <>
         <div style={{margin: "10px"}}>
             <Button onClick={toggleOpen} variant="text" size="large" color="secondary">
-                <div style={{fontSize: "14px"}}>
+                <div style={{fontSize: "16px"}}>
                     Customise
                 </div>
+                <EditIcon style={{fontSize: "20px", marginLeft: "10px"}} />
             </Button>
         </div>
         <Dialog open={open} fullWidth={true} >
