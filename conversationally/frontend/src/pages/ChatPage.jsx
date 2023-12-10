@@ -11,7 +11,8 @@ import DialogContentText from '@mui/material/DialogContentText';
 import { Avatar, TextField, Typography } from "@mui/material";
 import AudioRecordingHandler from "../utils/audio";
 import img from "/AI_portrait.png";
-
+import theme from '../styles/theme';
+import useTheme from '@mui/material/styles/useTheme';
 
 const audioHandler = new AudioRecordingHandler()
 
@@ -81,6 +82,8 @@ const Customisation = (props) => {
         setOpen(!open);
     }
 
+    const theme = useTheme();
+
     return <>
         <div style={{margin: "10px"}}>
             <Button onClick={toggleOpen} variant="text" size="large" color="secondary">
@@ -104,9 +107,9 @@ const Customisation = (props) => {
                             Describe the personality of your AI assistant, any background context it should be aware of, and guidelines for how it should respond.
                     </Typography>
                 </DialogContentText>
-                <TextField fullWidth={true} multiline={true} onChange={e=>{
+                <TextField fullWidth={true} multiline={true} variant="outlined" onChange={e=>{
                     props.handleConfigChange({"systemMessage": e.target.value})
-                }} value={props.config.systemMessage} />
+                }} value={props.config.systemMessage} InputProps={{style: {color: theme.palette.secondary.main, fontSize: "16px"}}}/>
             </DialogContent>
             <DialogActions>
                 <Button onClick={toggleOpen} variant="contained">Save</Button>

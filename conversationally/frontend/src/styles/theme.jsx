@@ -24,6 +24,20 @@ const theme = createTheme({
         },
     },
     components: {
+        MuiTextField: {
+            defaultProps: {
+                variant: 'outlined',
+                color: 'secondary',
+                fullWidth: true,
+                sx: {
+                    '& .MuiTextField-root': {
+                            color: secondary,
+                            borderColor: secondary,
+                            fontSize: "20px"
+                        },
+                },
+            },
+        },
         MuiDialog: {
             defaultProps: {
                 sx: { //You can copy the code below in your theme
