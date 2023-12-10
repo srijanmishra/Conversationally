@@ -80,6 +80,9 @@ Add a file called `.env` in the root folder and set the appropriate values for y
 ```
 OPENAI_API_KEY=sk-scmsdkmskclsdmckdslcmsdkcsdcsdcdsc
 ELEVEN_API_KEY=csdcosmcosmcsdokcmsdocmdsoc
+
+BACKEND_STAGE = "DEV" #or "PROD"
+FRONTEND_STAGE = "DEV" #or "PROD"
 ```
 
 ## How to run the web-based voice chat locally for development
@@ -94,7 +97,7 @@ Return to VSCode.
 Run this from the terminal:
 
 ```
-uvicorn examples.web_voice_chat.api:app --reload
+uvicorn examples.web_voice_chat.api:api --reload
 ```
 
 The `--reload` flag will cause the API to restart when changes are detected in the repo.
