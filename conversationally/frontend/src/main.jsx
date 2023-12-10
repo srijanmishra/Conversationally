@@ -7,6 +7,7 @@ import { BrowserRouter } from "react-router-dom";
 import Layout from "./layout";
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './styles/theme';
+import CssBaseline from '@mui/material/CssBaseline';
 
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -20,6 +21,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         }}
       >
         <ThemeProvider theme={theme}>
+          <CssBaseline />
           <Layout>
             <App />
           </Layout>
