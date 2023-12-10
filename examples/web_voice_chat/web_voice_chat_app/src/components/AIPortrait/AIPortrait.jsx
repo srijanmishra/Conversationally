@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 import "./AIPortrait.scss";
 
-const AIPortrait = ({ status }) => {
+const AIPortrait = (props) => {
   return (
-    <img src="/AI_portrait.png" className={`AIPortrait AIPortrait-${status}`} />
+    <img src={props.src} className={`AIPortrait AIPortrait-${props.status}`} />
   );
 };
 

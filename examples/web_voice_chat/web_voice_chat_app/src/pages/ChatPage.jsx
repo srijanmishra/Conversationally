@@ -48,12 +48,14 @@ class AudioRecordingHandler {
                 let payload = JSON.stringify({
                     "audio": base64StringAudio,
                     "messages": str_messages
-                }, )
+                })
                 console.log(payload)
                 testRootEndpoint() // testing the GET request to the root endpoint
                 // console.log('sending audio to server')
                 fetch("https://iawmx3ntgn2whycqxqwtll7ewy0ihhff.lambda-url.eu-west-2.on.aws/listen", {
-                // fetch("http://localhost:8000/listen", {
+                
+                
+                //fetch("http://localhost:8000/listen", {
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/json' // necessary
@@ -105,13 +107,14 @@ const audioHandler = new AudioRecordingHandler()
 
 export const ChatPage = () => {
 
-    const handleConfigChange = (config) => {
-        setConfig({...config})
-        setMessages([{"role": "system", "content": config.systemMessage}])
+    const handleConfigChange = (newConfig) => {
+        setConfig(newConfig)
+        setMessages([{"role": "system", "content": newConfig.systemMessage}])
     }
 
     const [config, setConfig] = useState({
-        "systemMessage": "Your name is Steve the dog, respond as if you think like a cute puppy"
+        "systemMessage": "Your name is Steve the dog, respond as if you think like a cute puppy",
+        "src": "/AI_portrait.png"
     })
 
     const [recording, setRecording] = useState(false);
@@ -127,6 +130,25 @@ export const ChatPage = () => {
         setRecording(!recording);
     }
 
+    const updateAvatar = () => {
+        fetch("http://localhost:8000/generate_avatar", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json' // necessary
+                    },
+                    body: JSON.stringify({system_message: config.systemMessage})
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        data = JSON.parse(data)
+    
+                        const img = data.url
+                        console.log("Returned messages:", img)
+
+                        handleConfigChange({"systemMessage": config.systemMessage, "src": img})
+                    })
+                    .catch(error => console.log(error));
+    }
 //   useEffect(() => {
 //     document.body.classList.add("ChatPage");
 
@@ -137,9 +159,9 @@ export const ChatPage = () => {
 
     return (
         <>
-            <Navbar config={config} handleConfigChange={handleConfigChange} />
+            <Navbar config={config} handleConfigChange={handleConfigChange} updateAvatar={updateAvatar}/>
             <div style={{display: "flex", flexDirection: "column", justifyContent: "space-around", height: "80vh", alignItems: "center"}}>
-                        <AIPortrait status={status} />
+                        <AIPortrait status={status} src={config.src} />
                 {/* <div className="container">
                     <div className="row justify-content-center">
                         <div className="col-4">
@@ -169,12 +191,15 @@ export const ChatPage = () => {
 
 const Navbar = (props) => {
 
-    const [config, setConfig] = useState(props.config)
-
     const [open, setOpen] = useState(false);
 
     const toggleOpen = () => {
         setOpen(!open);
+    }
+
+    const save = () => {
+        toggleOpen()
+        props.updateAvatar()
     }
 
     console.log(props.config)
@@ -194,7 +219,7 @@ const Navbar = (props) => {
                 }} value={props.config.systemMessage} />
             </DialogContent>
             <DialogActions>
-                <Button onClick={toggleOpen}>Cancel</Button>
+                <Button onClick={save}>Save</Button>
             </DialogActions>
         </Dialog>
     </>
