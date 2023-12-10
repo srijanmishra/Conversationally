@@ -52,10 +52,10 @@ class AudioRecordingHandler {
                 console.log(payload)
                 testRootEndpoint() // testing the GET request to the root endpoint
                 // console.log('sending audio to server')
-                //fetch("https://iawmx3ntgn2whycqxqwtll7ewy0ihhff.lambda-url.eu-west-2.on.aws/listen", {
+                fetch("https://iawmx3ntgn2whycqxqwtll7ewy0ihhff.lambda-url.eu-west-2.on.aws/listen", {
                 
                 
-                fetch("http://localhost:8000/listen", {
+                //fetch("http://localhost:8000/listen", {
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/json' // necessary
