@@ -1,14 +1,10 @@
-import PropTypes from "prop-types";
 import "./AIPortrait.scss";
 
-const AIPortrait = ({ status }) => {
+const AIPortrait = (props) => {
+  console.log(props)
   return (
-    <img src="/AI_portrait.png" className={`AIPortrait AIPortrait-${status}`} />
+    <img src={props.avatarSrc} className={`AIPortrait AIPortrait-${props.status}`} style={{height: props.size }}/>
   );
-};
-
-AIPortrait.propTypes = {
-  status: PropTypes.string, // responding, thinking
 };
 
 export default AIPortrait;
