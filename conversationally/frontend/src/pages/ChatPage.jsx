@@ -19,7 +19,7 @@ export const ChatPage = () => {
 
     const [config, setConfig] = useState({
         "avatarSrc": img,
-        "systemMessage": "Your name is Steve the dog, respond as if you think like a cute puppy"
+        "systemMessage": "You are Steve Jobs, respond as such. Respond in less than two sentences."
     })
     const [recording, setRecording] = useState(false);
     const [messages, setMessages] = useState([{"role": "system", "content": config.systemMessage}]);
@@ -43,7 +43,7 @@ export const ChatPage = () => {
     return (
         <>
             <Customisation config={config} handleConfigChange={handleConfigChange} />
-            <div style={{display: "flex", flexDirection: "column", justifyContent: "space-around", height: "80vh", alignItems: "center"}}>
+            <div style={{display: "flex", flexDirection: "column", justifyContent: "space-around", height: "90vh", alignItems: "center"}}>
                 <Avatar src={config.avatarSrc} style={{height: "200px", width: "200px"}}/>
                 {/* <AIPortrait status={status} src={config.avatarSrc} /> */}
                 {/* <div className="container">
@@ -63,7 +63,7 @@ export const ChatPage = () => {
                         {/* <audio id="player-user" src={audioSrc} controls></audio> */}
                         </div>
                         <div className="col-8">
-                        <UserActionButton status={recording ? "recording" : "standby"} onClick={toggleRecording} />
+                            <UserActionButton status={recording ? "recording" : "standby"} onClick={toggleRecording} />
                         </div>
                     </div>
                 </div>
@@ -82,9 +82,11 @@ const Customisation = (props) => {
     }
 
     return <>
-        <Button onClick={toggleOpen}>
-            Customise
-        </Button>
+        <div style={{margin: "20px"}}>
+            <Button onClick={toggleOpen} variant="outlined" size="large">
+                Customise
+            </Button>
+        </div>
         <Dialog open={open} fullWidth={true}>
             <DialogTitle>Customise</DialogTitle>
             <div style={{display: "flex", alignItems:"center", flexDirection: "column"}}>
