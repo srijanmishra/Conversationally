@@ -67,14 +67,13 @@ async def root():
 async def listen(payload: Payload):
     system_message = "You are a helpful assistant"
     
-    chat = Chat(system_message=system_message)
+    chat = Chat(system_message=system_message) #setting system message here is redundant
 
     print("Transcribing...")
     # decode base64 string audio
     # print(audio.audio)
     audio = payload.audio
-    audio = base64.b64decode(
-        audio)
+    audio = base64.b64decode(audio)
 
     # print('audio bytes:', audio[:10])
     # audio = io.BytesIO(audio)
@@ -86,14 +85,18 @@ async def listen(payload: Payload):
     
     messages = payload.messages
     messages = json.loads(messages)
+    #print(messages)
     
     message = {"role": "user", "content": text}
-    messages.append(message)
-    chat.messages.extend(messages) # add chat history to chat
+    #print(message)
+    chat.messages = messages # add chat history to chat
+    #print(chat.messages)
     
-    response = chat(text)
+    response = chat(text) #in the LLM class the most recent message is appended to the document.
+    #print(response)
 
     chat.messages.append({"role": "assistant", "content": response})
+    #print(chat.messages)
 
     print("Generating speech...")
     # response = text.text
@@ -134,5 +137,5 @@ async def generate_avatar(payload: GenerateAvatarPayload):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(api, host="0.0.0.0", port=8000)
-
+    
 # %%
