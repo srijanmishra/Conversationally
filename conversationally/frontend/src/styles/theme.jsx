@@ -16,5 +16,8 @@ export default createTheme({
   },
   typography: {
     fontFamily: '"Poppins"',
+    allVariants: {
+      color: '#fcfaeb',
+    },
   },
 });
