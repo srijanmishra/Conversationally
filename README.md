@@ -1,4 +1,8 @@
-# Setup Local Environment
+# Conversationally
+
+Check out the deployed project using [this link](https://life-efficient.github.io/Conversationally/)
+
+# Getting started
 
 ## Prerequisites
 
