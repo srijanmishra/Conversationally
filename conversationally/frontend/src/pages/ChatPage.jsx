@@ -11,6 +11,10 @@ import AudioRecordingHandler from "../utils/audio";
 import img from "/AI_portrait.png";
 import useTheme from '@mui/material/styles/useTheme';
 import EditIcon from '@mui/icons-material/Edit';
+import Slide from '@mui/material/Slide';
+import Grow from '@mui/material/Grow';
+
+
 
 const audioHandler = new AudioRecordingHandler()
 
@@ -42,31 +46,21 @@ export const ChatPage = () => {
     return (
         <>
             <Customisation config={config} handleConfigChange={handleConfigChange} />
-            <div style={{display: "flex", flexDirection: "column", justifyContent: "space-around", height: "90vh", alignItems: "center"}}>
-                <Avatar src={config.avatarSrc} style={{height: "200px", width: "200px"}}/>
-                {/* <AIPortrait status={status} src={config.avatarSrc} /> */}
-                {/* <div className="container">
-                    <div className="row justify-content-center">
-                        <div className="col-4">
+                <Grow in={true} mountOnEnter unmountOnExit>
+                    <div style={{display: "flex", flexDirection: "column", justifyContent: "space-around", height: "90vh", alignItems: "center"}}>
+                        <Avatar src={config.avatarSrc} style={{height: "200px", width: "200px"}}/>
+                        <div className="container">
+                            <div className="row justify-content-center">
+                                <div className="col-12 text-center">
+                                {/* <audio id="player-user" src={audioSrc} controls></audio> */}
+                                </div>
+                                <div className="col-8">
+                                    <UserActionButton status={recording ? "recording" : "standby"} onClick={toggleRecording} />
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div className="row">
-                        <div className="col-12 text-center">
-                        </div>
-                    </div>
-                </div> */}
-                        {/* <audio id="player-ai" src={audioSrc} controls></audio> */}
-                <div className="container">
-                    <div className="row justify-content-center">
-                        <div className="col-12 text-center">
-                        {/* <audio id="player-user" src={audioSrc} controls></audio> */}
-                        </div>
-                        <div className="col-8">
-                            <UserActionButton status={recording ? "recording" : "standby"} onClick={toggleRecording} />
-                        </div>
-                    </div>
-                </div>
-            </div>
+                </Grow>
         </>
   );
 
