@@ -27,8 +27,8 @@ export const ChatPage = () => {
     const [recording, setRecording] = useState(false);
     const [messages, setMessages] = useState([{"role": "system", "content": config.systemMessage}]);
 
-    const handleConfigChange = (config) => {
-        setConfig({...config})
+    const handleConfigChange = (newConfig) => {
+        setConfig({...config, ...newConfig})
         setMessages([{"role": "system", "content": config.systemMessage}])
     }    
 
@@ -72,9 +72,19 @@ const Customisation = (props) => {
 
     const toggleOpen = () => {
         setOpen(!open);
+        setSysMsgValue(props.config.systemMessage) // resets to original value if escaped, but also updates internal state if saved
+        // if (open) {
+        // }
     }
 
     const theme = useTheme();
+
+    const [sysMsgValue, setSysMsgValue] = useState(props.config.systemMessage)
+
+    const save = () => {
+        props.handleConfigChange({"systemMessage": sysMsgValue})
+        toggleOpen()
+    }
 
     return <>
         <div style={{margin: "10px"}}>
@@ -85,7 +95,7 @@ const Customisation = (props) => {
                 <EditIcon style={{fontSize: "20px", marginLeft: "10px"}} />
             </Button>
         </div>
-        <Dialog open={open} fullWidth={true} >
+        <Dialog open={open} fullWidth={true} onClose={()=>{toggleOpen()}}>
             <DialogTitle>
                 <Typography variant="h4">
                     Customise
@@ -104,11 +114,11 @@ const Customisation = (props) => {
                     </Typography>
                 </DialogContentText>
                 <TextField fullWidth={true} multiline={true} variant="outlined" onChange={e=>{
-                    props.handleConfigChange({"systemMessage": e.target.value})
-                }} value={props.config.systemMessage} InputProps={{style: {color: theme.palette.secondary.main, fontSize: "14px"}}} style={{marginTop: "14px"}}/>
+                    setSysMsgValue(e.target.value)
+                }} value={sysMsgValue} InputProps={{style: {color: theme.palette.secondary.main, fontSize: "14px"}}} style={{marginTop: "14px"}}/>
             </DialogContent>
             <DialogActions>
-                <Button onClick={toggleOpen} variant="contained">Save</Button>
+                <Button onClick={save} variant="contained">Save</Button>
             </DialogActions>
         </Dialog>
     </>
