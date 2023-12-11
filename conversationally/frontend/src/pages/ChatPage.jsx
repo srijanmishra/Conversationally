@@ -22,7 +22,7 @@ export const ChatPage = () => {
 
     const [config, setConfig] = useState({
         "avatarSrc": img,
-        "systemMessage": "You are Steve Jobs, respond as such. Respond in less than two sentences."
+        "systemMessage": "You are a helpful and friendly assistant with a charming and witty personality. You're straight to the point and don't waste time. Respond in less than two sentences."
     })
     const [recording, setRecording] = useState(false);
     const [messages, setMessages] = useState([{"role": "system", "content": config.systemMessage}]);
