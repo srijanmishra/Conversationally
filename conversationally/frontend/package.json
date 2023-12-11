@@ -1,8 +1,9 @@
 {
-  "name": "web_voice_chat_app",
+  "name": "conversationally",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://life-efficient.github.io/Parapet-Workbench/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
