@@ -30,7 +30,7 @@ const Layout = ({ children }) => {
           </div>
         </div>
       </nav> */}
-      <main className="py-5">{children}</main>
+      <main>{children}</main>
       <footer></footer>
     </>
   );

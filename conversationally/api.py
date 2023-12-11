@@ -1,21 +1,15 @@
 # %%
 # a fastapi api running on localhost:8080 that calls a python function
-print('updated version')
-print('hello word there') # noqa
 from dotenv import load_dotenv
 load_dotenv(override=True) # noqa
-print('installing basic stuff')
 import json
 import base64
 from pprint import pprint
-print('installing pydantic stuff')
 from typing import Optional
 from pydantic import BaseModel
 from mangum import Mangum
-print('installing fastapi stuff')
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-print('installing workbench stuff')
 from workbench.voice.transcribe import audio_bytes_to_text
 from workbench.LLM import Chat, request # causes import issue with regex
 from workbench.voice.generate import speak
