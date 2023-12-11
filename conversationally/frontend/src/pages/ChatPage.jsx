@@ -91,10 +91,13 @@ const Customisation = (props) => {
                     Customise
                 </Typography>    
             </DialogTitle>
-            <div style={{display: "flex", alignItems:"center", flexDirection: "column"}}>
-                <Avatar src={props.config.avatarSrc} style={{height: "100px", width: "100px"}}/>
-            </div>
             <DialogContent>
+                <Typography variant="h5">
+                    You can change the personality of your assistant here.
+                </Typography>
+                <div style={{display: "flex", alignItems:"center", flexDirection: "column", margin: "16px"}}>
+                    <Avatar src={props.config.avatarSrc} style={{height: "100px", width: "100px"}}/>
+                </div>
                 <DialogContentText>
                     <Typography variant="h5">
                             Describe the personality of your AI assistant, any background context it should be aware of, and guidelines for how it should respond.
@@ -102,7 +105,7 @@ const Customisation = (props) => {
                 </DialogContentText>
                 <TextField fullWidth={true} multiline={true} variant="outlined" onChange={e=>{
                     props.handleConfigChange({"systemMessage": e.target.value})
-                }} value={props.config.systemMessage} InputProps={{style: {color: theme.palette.secondary.main, fontSize: "16px"}}}/>
+                }} value={props.config.systemMessage} InputProps={{style: {color: theme.palette.secondary.main, fontSize: "14px"}}} style={{marginTop: "14px"}}/>
             </DialogContent>
             <DialogActions>
                 <Button onClick={toggleOpen} variant="contained">Save</Button>
