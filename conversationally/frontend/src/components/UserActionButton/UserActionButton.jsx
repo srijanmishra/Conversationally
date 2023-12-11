@@ -1,6 +1,7 @@
 import { Mic as MicIcon, Square as SquareIcon } from "react-feather";
 import "./UserActionButton.scss";
 import PropTypes from "prop-types";
+import { Typography } from "@mui/material";
 
 const UserActionButton = (props) => {
   let statusIcon,
@@ -41,7 +42,7 @@ const UserActionButton = (props) => {
       >
         {statusIcon}
       </button>
-      <p className="text-center">{statusText}</p>
+      <Typography variant="h4" >{statusText}</Typography>
     </div>
     </>
   );

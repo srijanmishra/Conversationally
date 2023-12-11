@@ -1,17 +1,16 @@
 import UserActionButton from "../components/UserActionButton/UserActionButton";
-import AIPortrait from "../components/AIPortrait/AIPortrait";
 import { useState } from 'react';
-import { Link } from "react-router-dom";
 import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import { Avatar, TextField } from "@mui/material";
+import { Avatar, TextField, Typography } from "@mui/material";
 import AudioRecordingHandler from "../utils/audio";
 import img from "/AI_portrait.png";
-
+import useTheme from '@mui/material/styles/useTheme';
+import EditIcon from '@mui/icons-material/Edit';
 
 const audioHandler = new AudioRecordingHandler()
 
@@ -81,27 +80,38 @@ const Customisation = (props) => {
         setOpen(!open);
     }
 
+    const theme = useTheme();
+
     return <>
-        <div style={{margin: "20px"}}>
-            <Button onClick={toggleOpen} variant="outlined" size="large">
-                Customise
+        <div style={{margin: "10px"}}>
+            <Button onClick={toggleOpen} variant="text" size="large" color="secondary">
+                <div style={{fontSize: "16px"}}>
+                    Customise
+                </div>
+                <EditIcon style={{fontSize: "20px", marginLeft: "10px"}} />
             </Button>
         </div>
-        <Dialog open={open} fullWidth={true}>
-            <DialogTitle>Customise</DialogTitle>
+        <Dialog open={open} fullWidth={true} >
+            <DialogTitle>
+                <Typography variant="h4">
+                    Customise
+                </Typography>    
+            </DialogTitle>
             <div style={{display: "flex", alignItems:"center", flexDirection: "column"}}>
                 <Avatar src={props.config.avatarSrc} style={{height: "100px", width: "100px"}}/>
             </div>
             <DialogContent>
                 <DialogContentText>
-                    Describe the personality of your AI, any background context it should be aware of, and guidelines for how it should respond.
+                    <Typography variant="h5">
+                            Describe the personality of your AI assistant, any background context it should be aware of, and guidelines for how it should respond.
+                    </Typography>
                 </DialogContentText>
-                <TextField fullWidth={true} onChange={e=>{
+                <TextField fullWidth={true} multiline={true} variant="outlined" onChange={e=>{
                     props.handleConfigChange({"systemMessage": e.target.value})
-                }} value={props.config.systemMessage} />
+                }} value={props.config.systemMessage} InputProps={{style: {color: theme.palette.secondary.main, fontSize: "16px"}}}/>
             </DialogContent>
             <DialogActions>
-                <Button onClick={toggleOpen}>Save</Button>
+                <Button onClick={toggleOpen} variant="contained">Save</Button>
             </DialogActions>
         </Dialog>
     </>
