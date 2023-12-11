@@ -12,11 +12,11 @@ const UserActionButton = (props) => {
   switch (props.status) {
     case "recording":
       statusIcon = <SquareIcon {...statusIconCommonProps} />;
-      statusText = "Recording your message ...";
+      statusText = "Recording your message...";
       break;
     case "thinking":
       statusIcon = <MicIcon {...statusIconCommonProps} />;
-      statusText = "AI is thinking ...";
+      statusText = "AI is thinking...";
       isDisabled = true;
       break;
     case "responding":
@@ -26,7 +26,7 @@ const UserActionButton = (props) => {
       break;
     default:
       statusIcon = <MicIcon {...statusIconCommonProps} />;
-      statusText = "Tap to start talking with the AI";
+      statusText = "Tap to start talking with your AI assistant";
       break;
   }
 
