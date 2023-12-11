@@ -1,24 +1,19 @@
 # %%
 # a fastapi api running on localhost:8080 that calls a python function
-print('updated version')
-print('hello word there') # noqa
 from dotenv import load_dotenv
 load_dotenv(override=True) # noqa
-print('installing basic stuff')
 import json
 import base64
 from pprint import pprint
-print('installing pydantic stuff')
 from typing import Optional
 from pydantic import BaseModel
 from mangum import Mangum
-print('installing fastapi stuff')
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-print('installing workbench stuff')
 from workbench.voice.transcribe import audio_bytes_to_text
-from workbench.LLM import Chat # causes import issue with regex
+from workbench.LLM import Chat, request # causes import issue with regex
 from workbench.voice.generate import speak
+from workbench.image import generate_image
 
 origins = [
     "*",
@@ -39,6 +34,9 @@ api.add_middleware(
 class Payload(BaseModel):
     audio: str # base64 encoded audio bytes
     messages: str # the messages so far
+    
+class GenerateAvatarPayload(BaseModel):
+    system_message: str
 
 
 # @app.post("/chat")
@@ -51,7 +49,6 @@ class Payload(BaseModel):
 
 #     return json.dumps({"audio": audio})
 
-system_message = "You are a helpful assistant" #redudant
 
 print('starting api')
 
@@ -62,6 +59,7 @@ async def root():
 
 @api.post("/listen")
 async def listen(payload: Payload):
+    system_message = "You are a helpful assistant"
     
     chat = Chat(system_message=system_message) #setting system message here is redundant
 
@@ -114,6 +112,20 @@ async def listen(payload: Payload):
     #  }
 
     return json.dumps(response)
+
+
+@api.post("/generate_avatar")
+async def generate_avatar(payload: GenerateAvatarPayload):
+    print("Generating avatar...")
+
+    system_message = payload.system_message
+
+    img_prompt = request(f'Describe what this thing would look like in one sentence: {system_message}')
+    print(img_prompt)
+
+    url = generate_image(prompt=img_prompt, provider="DALL_E_3", format="url")
+
+    return json.dumps({"url": url})
 
 
 if __name__ == "__main__":

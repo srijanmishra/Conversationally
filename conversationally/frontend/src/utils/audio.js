@@ -1,16 +1,5 @@
-import UserActionButton from "../components/UserActionButton/UserActionButton";
-import AIPortrait from "../components/AIPortrait/AIPortrait";
-import { useState } from 'react';
-import { Link } from "react-router-dom";
-import Dialog from '@mui/material/Dialog';
-import Button from '@mui/material/Button';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import { TextField } from "@mui/material";
 
-class AudioRecordingHandler {
+export default class AudioRecordingHandler {
     constructor() {
         this.chunks = []; // here we will store all received chunks of our audio stream
         // this.recorder; // MediaRecorder instance to capture audio
@@ -48,12 +37,14 @@ class AudioRecordingHandler {
                 let payload = JSON.stringify({
                     "audio": base64StringAudio,
                     "messages": str_messages
-                }, )
+                })
                 console.log(payload)
                 testRootEndpoint() // testing the GET request to the root endpoint
                 // console.log('sending audio to server')
                 fetch("https://iawmx3ntgn2whycqxqwtll7ewy0ihhff.lambda-url.eu-west-2.on.aws/listen", {
-                // fetch("http://localhost:8000/listen", {
+                
+                
+                //fetch("http://localhost:8000/listen", {
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/json' // necessary
@@ -100,102 +91,4 @@ const testRootEndpoint = () => {
     // .then(response => response.json())
     // .then(data => console.log(data))
     console.log('send test request')
-}
-const audioHandler = new AudioRecordingHandler()
-
-export const ChatPage = () => {
-
-    const handleConfigChange = (config) => {
-        setConfig({...config})
-        setMessages([{"role": "system", "content": config.systemMessage}])
-    }
-
-    const [config, setConfig] = useState({
-        "systemMessage": "Your name is Steve the dog, respond as if you think like a cute puppy"
-    })
-
-    const [recording, setRecording] = useState(false);
-    const [messages, setMessages] = useState([{"role": "system", "content": config.systemMessage}]);
-
-    const toggleRecording = () => {
-        if (recording) {
-            audioHandler.stopRecording(messages, setMessages);
-            // TODO play audio once I get everything up to here working
-        } else {
-            audioHandler.startRecording();
-        }
-        setRecording(!recording);
-    }
-
-//   useEffect(() => {
-//     document.body.classList.add("ChatPage");
-
-//     return () => {
-//       document.body.classList.remove("ChatPage");
-//     };
-//   }, []);
-
-    return (
-        <>
-            <Navbar config={config} handleConfigChange={handleConfigChange} />
-            <div style={{display: "flex", flexDirection: "column", justifyContent: "space-around", height: "80vh", alignItems: "center"}}>
-                        <AIPortrait status={status} />
-                {/* <div className="container">
-                    <div className="row justify-content-center">
-                        <div className="col-4">
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-12 text-center">
-                        </div>
-                    </div>
-                </div> */}
-                        {/* <audio id="player-ai" src={audioSrc} controls></audio> */}
-                <div className="container">
-                    <div className="row justify-content-center">
-                        <div className="col-12 text-center">
-                        {/* <audio id="player-user" src={audioSrc} controls></audio> */}
-                        </div>
-                        <div className="col-8">
-                        <UserActionButton status={recording ? "recording" : "standby"} onClick={toggleRecording} />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </>
-  );
-
-};
-
-const Navbar = (props) => {
-
-    const [config, setConfig] = useState(props.config)
-
-    const [open, setOpen] = useState(false);
-
-    const toggleOpen = () => {
-        setOpen(!open);
-    }
-
-    console.log(props.config)
-
-    return <>
-        <Button onClick={toggleOpen}>
-            Settings
-        </Button>
-        <Dialog open={open}>
-            <DialogTitle>Settings</DialogTitle>
-            <DialogContent>
-                <DialogContentText>
-                    Set your system message
-                </DialogContentText>
-                <TextField onChange={e=>{
-                    props.handleConfigChange({"systemMessage": e.target.value})
-                }} value={props.config.systemMessage} />
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={toggleOpen}>Cancel</Button>
-            </DialogActions>
-        </Dialog>
-    </>
 }

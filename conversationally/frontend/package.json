@@ -1,11 +1,11 @@
 {
-  "name": "web_voice_chat_app",
+  "name": "conversationally",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build --base /Conversationally/",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -13,6 +13,7 @@
     "@auth0/auth0-react": "^2.2.3",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.14.19",
     "@mui/material": "^5.14.20",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

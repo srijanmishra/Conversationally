@@ -6,8 +6,13 @@ import {
 } from "react-feather";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { useTheme } from '@mui/material/styles';
+
+
 
 const Layout = ({ children }) => {
+  const theme = useTheme();
+
   return (
     <>
       {/* <nav>
@@ -30,7 +35,9 @@ const Layout = ({ children }) => {
           </div>
         </div>
       </nav> */}
-      <main className="py-5">{children}</main>
+      <main style={{backgroundColor: theme.palette.secondary}}>
+        {children}
+      </main>
       <footer></footer>
     </>
   );

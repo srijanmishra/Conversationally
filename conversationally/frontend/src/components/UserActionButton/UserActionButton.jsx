@@ -1,6 +1,7 @@
 import { Mic as MicIcon, Square as SquareIcon } from "react-feather";
 import "./UserActionButton.scss";
 import PropTypes from "prop-types";
+import { Typography } from "@mui/material";
 
 const UserActionButton = (props) => {
   let statusIcon,
@@ -11,11 +12,11 @@ const UserActionButton = (props) => {
   switch (props.status) {
     case "recording":
       statusIcon = <SquareIcon {...statusIconCommonProps} />;
-      statusText = "Recording your message ...";
+      statusText = "Recording your message...";
       break;
     case "thinking":
       statusIcon = <MicIcon {...statusIconCommonProps} />;
-      statusText = "AI is thinking ...";
+      statusText = "AI is thinking...";
       isDisabled = true;
       break;
     case "responding":
@@ -25,7 +26,7 @@ const UserActionButton = (props) => {
       break;
     default:
       statusIcon = <MicIcon {...statusIconCommonProps} />;
-      statusText = "Tap to start talking with the AI";
+      statusText = "Tap to start talking with your AI assistant";
       break;
   }
 
@@ -41,7 +42,7 @@ const UserActionButton = (props) => {
       >
         {statusIcon}
       </button>
-      <p className="text-center">{statusText}</p>
+      <Typography variant="h4" >{statusText}</Typography>
     </div>
     </>
   );
