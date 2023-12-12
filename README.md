@@ -21,7 +21,7 @@ git clone https://github.com/life-efficient/Parapet-Workbench.git
 Move into the repo
 
 ```
-cd Parapet-Workbench
+cd Conversationally
 ```
 
 If using M1/M2 maxbook run this command before creating environment from workbench.yml file:
@@ -66,15 +66,6 @@ docker run -p 8000:8000 --name speech2speech --rm speech2speech
 - Ensure Lambda runs arm64 architecture rather than x86 during configuration
 - Set the correct function handler
 
-## Run voice_chat.py example
-
-### Run via Visual Studio Code
-
-1. Open `examples/voice_chat.py`
-2. Select appropriate 'conda python kernel'
-3. Add ChatGPT API key
-4. Use `SHIFT + ENTER` to run the 'cell'
-
 ## Authentication
 
 Many APIs used here require API keys.
@@ -101,7 +92,7 @@ Return to VSCode.
 Run this from the terminal:
 
 ```
-uvicorn examples.web_voice_chat.api:api --reload
+uvicorn conversationally.api:api --reload
 ```
 
 The `--reload` flag will cause the API to restart when changes are detected in the repo.
