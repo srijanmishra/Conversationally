@@ -108,7 +108,7 @@ const Customisation = (props) => {
         setOpen(!open);
         setSysMsgValue(props.config.systemMessage) // resets to original value if escaped, but also updates internal state if saved
         
-        //DEBUGGING
+        //testing to see that the system message has changed:
         console.log(props.config.systemMessage)
     }
 
@@ -118,14 +118,7 @@ const Customisation = (props) => {
 
     const save = () => {
         props.updateConfig({"systemMessage": sysMsgValue})
-
-        //DEBUGGING
-        console.log(sysMsgValue)
-
         toggleOpen()
-
-        console.log(sysMsgValue)
-        //updateAvatar()
     }
 
     return <>
