@@ -14,7 +14,20 @@ import EditIcon from '@mui/icons-material/Edit';
 import Slide from '@mui/material/Slide';
 import Grow from '@mui/material/Grow';
 
+const styles = {
+    container: {
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-around",
+        height: "90vh",
+        alignItems: "center"
+    },
+    avatar: {
+        height: "200px",
+        width: "200px"
+    },
 
+}
 
 const audioHandler = new AudioRecordingHandler()
 
@@ -47,8 +60,8 @@ export const ChatPage = () => {
         <>
             <Customisation config={config} handleConfigChange={handleConfigChange} />
                 <Grow in={true} mountOnEnter unmountOnExit>
-                    <div style={{display: "flex", flexDirection: "column", justifyContent: "space-around", height: "90vh", alignItems: "center"}}>
-                        <Avatar src={config.avatarSrc} style={{height: "200px", width: "200px"}}/>
+                    <div style={styles.container}>
+                        <Avatar src={config.avatarSrc} style={styles.avatar}/>
                         <div className="container">
                             <div className="row justify-content-center">
                                 <div className="col-12 text-center">
