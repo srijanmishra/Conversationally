@@ -43,9 +43,6 @@ export const ChatPage = () => {
 
     const updateConfig = (configUpdates) => {
         let newConfig = {...config, ...configUpdates}
-        console.log("config", config)
-        console.log("config Updates", configUpdates)
-        console.log("new config", newConfig)
         setConfig(newConfig)
         setMessages([{"role": "system", "content": newConfig.systemMessage}])
     }
@@ -58,8 +55,6 @@ export const ChatPage = () => {
         }
         setRecording(!recording);
     }
-
-    console.log(config.avatarSrc)
 
     return (
         <>
@@ -105,7 +100,6 @@ const Customisation = (props) => {
             "avatarSrc": img
         })
         toggleOpen()
-        console.log("Save clicked")
         console.log(sysMsgValue)
     }
 
@@ -120,13 +114,8 @@ const Customisation = (props) => {
             .then(response => response.json())
             .then(data => {
                 data = JSON.parse(data)
-
                 const img = data.url
-                console.log("Returned messages:", img)
-
                 return img
-
-                // props.updateConfig({"avatarSrc": img})
             })
             .catch(error => console.log(error));
     }
