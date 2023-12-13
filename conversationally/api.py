@@ -120,8 +120,26 @@ async def generate_avatar(payload: GenerateAvatarPayload):
 
     system_message = payload.system_message
 
-    img_prompt = request(f'Describe what this thing would look like in one sentence: {system_message}')
+    img_prompt = request(f"""
+Describe an image of this thing that could be given to an AI image generator: {system_message}
+
+No background.
+""")
+    
+    img_prompt = f"""
+{img_prompt} 
+
+3d Pixar style animated character.
+
+Vivid, friendly.
+
+Close-up, head and shoulders, display profile, facing camera, straight on.
+
+No background.
+"""
+    
     print(img_prompt)
+
 
     url = generate_image(prompt=img_prompt, provider="DALL_E_3", format="url")
 

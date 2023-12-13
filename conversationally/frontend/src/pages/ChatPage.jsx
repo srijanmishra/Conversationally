@@ -13,6 +13,10 @@ import useTheme from '@mui/material/styles/useTheme';
 import EditIcon from '@mui/icons-material/Edit';
 import Slide from '@mui/material/Slide';
 import Grow from '@mui/material/Grow';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+
+const API_ROOT = import.meta.env.VITE_API_ROOT;
 
 const styles = {
     container: {
@@ -26,7 +30,12 @@ const styles = {
         height: "200px",
         width: "200px"
     },
-
+    backdrop: {
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center"
+    }
 }
 
 const audioHandler = new AudioRecordingHandler()
@@ -39,10 +48,11 @@ export const ChatPage = () => {
     const [recording, setRecording] = useState(false);
     const [messages, setMessages] = useState([{"role": "system", "content": config.systemMessage}]);
 
-    const handleConfigChange = (newConfig) => {
-        setConfig({...config, ...newConfig})
-        setMessages([{"role": "system", "content": config.systemMessage}])
-    }    
+    const updateConfig = (configUpdates) => {
+        let newConfig = {...config, ...configUpdates}
+        setConfig(newConfig)
+        setMessages([{"role": "system", "content": newConfig.systemMessage}])
+    }
 
     const toggleRecording = () => {
         if (recording) {
@@ -53,11 +63,9 @@ export const ChatPage = () => {
         setRecording(!recording);
     }
 
-    console.log(config.avatarSrc)
-
     return (
         <>
-            <Customisation config={config} handleConfigChange={handleConfigChange} />
+            <Customisation config={config} updateConfig={updateConfig} />
                 <Grow in={true} mountOnEnter unmountOnExit>
                     <div style={styles.container}>
                         <Avatar src={config.avatarSrc} style={styles.avatar}/>
@@ -81,21 +89,58 @@ export const ChatPage = () => {
 const Customisation = (props) => {
 
     const [open, setOpen] = useState(false);
+    const [loadingState, setLoadingState] = useState(false);
 
     const toggleOpen = () => {
         setOpen(!open);
         setSysMsgValue(props.config.systemMessage) // resets to original value if escaped, but also updates internal state if saved
-        // if (open) {
-        // }
+        console.log(props.config.systemMessage)
     }
 
     const theme = useTheme();
 
     const [sysMsgValue, setSysMsgValue] = useState(props.config.systemMessage)
 
-    const save = () => {
-        props.handleConfigChange({"systemMessage": sysMsgValue})
+    const save = async () => {
         toggleOpen()
+
+        // bullshit loading mode
+        setLoadingState("🧠 Processing personality...")
+        setTimeout(() => {
+            setLoadingState("📸 Taking assistant headshot...")
+        }, 3000);
+        setTimeout(() => {
+            setLoadingState("✨ Putting on the finishing touches...")
+        }, 6000);
+        // end of bullshit loading mode
+
+        // setLoadingState("📸 Taking assistant headshot...")
+        let img = await generateAvatarImgURL(sysMsgValue)
+        // setLoadingState("✨ Putting on the finishing touches...")
+        props.updateConfig({
+            "systemMessage": sysMsgValue,
+            "avatarSrc": img
+        })
+        console.log(sysMsgValue)
+        
+        setLoadingState(false)
+    }
+
+    const generateAvatarImgURL = (inputSysMsgValue) => {
+        return fetch(API_ROOT + "/generate_avatar", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json' // necessary
+            },
+            body: JSON.stringify({system_message: inputSysMsgValue})
+        })
+            .then(response => response.json())
+            .then(data => {
+                data = JSON.parse(data)
+                const img = data.url
+                return img
+            })
+            .catch(error => console.log(error));
     }
 
     return <>
@@ -133,5 +178,13 @@ const Customisation = (props) => {
                 <Button onClick={save} variant="contained">Save</Button>
             </DialogActions>
         </Dialog>
+        <Backdrop open={loadingState} sx={{zIndex: 1000, backgroundColor: "rgba(0, 0, 0, 0.9)"}}>
+            <div style={styles.backdrop}>
+                <CircularProgress />
+                <Typography variant="h4" style={{margin: "30px"}}>
+                    {loadingState}
+                </Typography>
+            </div>
+        </Backdrop>
     </>
 }
