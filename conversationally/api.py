@@ -4,23 +4,15 @@ from dotenv import load_dotenv
 load_dotenv(override=True) # noqa
 import json
 import base64
-print('imported basic stuff')
 from pprint import pprint
 from pydantic import BaseModel
-print('imported pydantic stuff')
 from mangum import Mangum
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-print('imported fastapi stuff')
 from workbench.voice.transcribe import audio_bytes_to_text
-print('imported transcribe stuff')
 from workbench.LLM import Chat, request
-print('imported LLM stuff')
 from workbench.voice.generate import speak
-print('imported speak stuff')
 from workbench.image import generate_image
-print('imported image stuff')
-print('imported all stuff')
 
 origins = [
     "*",
