@@ -5,13 +5,12 @@ load_dotenv(override=True) # noqa
 import json
 import base64
 from pprint import pprint
-from typing import Optional
 from pydantic import BaseModel
 from mangum import Mangum
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from workbench.voice.transcribe import audio_bytes_to_text
-from workbench.LLM import Chat, request # causes import issue with regex
+from workbench.LLM import Chat, request
 from workbench.voice.generate import speak
 from workbench.image import generate_image
 
@@ -23,7 +22,7 @@ handler = Mangum(api)
 
 api.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    # allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
