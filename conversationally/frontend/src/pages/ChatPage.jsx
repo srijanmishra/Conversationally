@@ -44,28 +44,9 @@ export const ChatPage = () => {
         let newConfig = {...config, ...configUpdates}
         setConfig(newConfig)
         setMessages([{"role": "system", "content": newConfig.systemMessage}])
+        updateAvatar()
     }
 
-    const updateAvatar = () => {
-        //fetch("http://localhost:8000/generate_avatar", {
-        fetch("https://iawmx3ntgn2whycqxqwtll7ewy0ihhff.lambda-url.eu-west-2.on.aws/listen", {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json' // necessary
-                    },
-                    body: JSON.stringify({system_message: config.systemMessage})
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        data = JSON.parse(data)
-
-                        const img = data.url
-                        console.log("Returned messages:", img)
-
-                        updateConfig({"systemMessage": config.systemMessage, "src": img})
-                    })
-                    .catch(error => console.log(error));
-    }
     const toggleRecording = () => {
         if (recording) {
             audioHandler.stopRecording(messages, setMessages);
@@ -107,9 +88,6 @@ const Customisation = (props) => {
     const toggleOpen = () => {
         setOpen(!open);
         setSysMsgValue(props.config.systemMessage) // resets to original value if escaped, but also updates internal state if saved
-        
-        //testing to see that the system message has changed:
-        console.log(props.config.systemMessage)
     }
 
     const theme = useTheme();
@@ -119,6 +97,30 @@ const Customisation = (props) => {
     const save = () => {
         props.updateConfig({"systemMessage": sysMsgValue})
         toggleOpen()
+        updateAvatar()
+        console.log("Save clicked")
+        console.log(sysMsgValue)
+    }
+
+    const updateAvatar = () => {
+        fetch("http://localhost:8000/generate_avatar", {
+        //fetch("https://iawmx3ntgn2whycqxqwtll7ewy0ihhff.lambda-url.eu-west-2.on.aws/listen", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json' // necessary
+                    },
+                    body: JSON.stringify({system_message: props.config.systemMessage})
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        data = JSON.parse(data)
+
+                        const img = data.url
+                        console.log("Returned messages:", img)
+
+                        props.updateConfig({"avatarSrc": img})
+                    })
+                    .catch(error => console.log(error));
     }
 
     return <>
