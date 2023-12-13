@@ -103,18 +103,30 @@ const Customisation = (props) => {
 
     const save = async () => {
         toggleOpen()
+
+        // bullshit loading mode
+        setLoadingState("🧠 Processing personality...")
+        setTimeout(() => {
+            setLoadingState("📸 Taking assistant headshot...")
+        }, 3000);
+        setTimeout(() => {
+            setLoadingState("✨ Putting on the finishing touches...")
+        }, 6000);
+        // end of bullshit loading mode
+
+        // setLoadingState("📸 Taking assistant headshot...")
         let img = await generateAvatarImgURL(sysMsgValue)
-        setLoadingState("✨ Putting on the finishing touches...")
+        // setLoadingState("✨ Putting on the finishing touches...")
         props.updateConfig({
             "systemMessage": sysMsgValue,
             "avatarSrc": img
         })
-        setLoadingState(false)
         console.log(sysMsgValue)
+        
+        setLoadingState(false)
     }
 
     const generateAvatarImgURL = (inputSysMsgValue) => {
-        setLoadingState("📸 Taking assistant headshot...")
         return fetch(API_ROOT + "/generate_avatar", {
             method: "POST",
             headers: {
