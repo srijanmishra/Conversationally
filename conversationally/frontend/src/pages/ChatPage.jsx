@@ -44,7 +44,6 @@ export const ChatPage = () => {
         let newConfig = {...config, ...configUpdates}
         setConfig(newConfig)
         setMessages([{"role": "system", "content": newConfig.systemMessage}])
-        updateAvatar()
     }
 
     const toggleRecording = () => {
