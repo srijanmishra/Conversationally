@@ -1,9 +1,11 @@
+const API_ROOT = import.meta.env.VITE_API_ROOT;
 
 export default class AudioRecordingHandler {
     constructor() {
         this.chunks = []; // here we will store all received chunks of our audio stream
         // this.recorder; // MediaRecorder instance to capture audio
         // this.mediaStream; // MediaStream instance to feed the recorder
+        testRootEndpoint() // testing the GET request to the root endpoint
     }
 
     startRecording = async () => {
@@ -39,10 +41,7 @@ export default class AudioRecordingHandler {
                     "messages": str_messages
                 })
                 console.log(payload)
-                testRootEndpoint() // testing the GET request to the root endpoint
-                // console.log('sending audio to server')
-                fetch("https://iawmx3ntgn2whycqxqwtll7ewy0ihhff.lambda-url.eu-west-2.on.aws/listen", {
-                //fetch("http://localhost:8000/listen", {
+                fetch(API_ROOT + "/listen", {
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/json' // necessary
@@ -79,8 +78,7 @@ export default class AudioRecordingHandler {
 
 
 const testRootEndpoint = () => {
-    fetch("https://iawmx3ntgn2whycqxqwtll7ewy0ihhff.lambda-url.eu-west-2.on.aws/", {
-    //fetch("http://localhost:8000/listen", {
+    fetch(API_ROOT + "/", {
         method: "GET",
         headers: {
             'Content-Type': 'application/json' // necessary
