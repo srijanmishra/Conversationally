@@ -13,6 +13,8 @@ import useTheme from '@mui/material/styles/useTheme';
 import EditIcon from '@mui/icons-material/Edit';
 import Slide from '@mui/material/Slide';
 import Grow from '@mui/material/Grow';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const API_ROOT = import.meta.env.VITE_API_ROOT;
 
@@ -28,7 +30,12 @@ const styles = {
         height: "200px",
         width: "200px"
     },
-
+    backdrop: {
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center"
+    }
 }
 
 const audioHandler = new AudioRecordingHandler()
@@ -82,6 +89,7 @@ export const ChatPage = () => {
 const Customisation = (props) => {
 
     const [open, setOpen] = useState(false);
+    const [loadingState, setLoadingState] = useState(false);
 
     const toggleOpen = () => {
         setOpen(!open);
@@ -94,16 +102,19 @@ const Customisation = (props) => {
     const [sysMsgValue, setSysMsgValue] = useState(props.config.systemMessage)
 
     const save = async () => {
+        toggleOpen()
         let img = await generateAvatarImgURL(sysMsgValue)
+        setLoadingState("✨ Putting on the finishing touches...")
         props.updateConfig({
             "systemMessage": sysMsgValue,
             "avatarSrc": img
         })
-        toggleOpen()
+        setLoadingState(false)
         console.log(sysMsgValue)
     }
 
     const generateAvatarImgURL = (inputSysMsgValue) => {
+        setLoadingState("📸 Taking assistant headshot...")
         return fetch(API_ROOT + "/generate_avatar", {
             method: "POST",
             headers: {
@@ -155,5 +166,13 @@ const Customisation = (props) => {
                 <Button onClick={save} variant="contained">Save</Button>
             </DialogActions>
         </Dialog>
+        <Backdrop open={loadingState} sx={{zIndex: 1000, backgroundColor: "rgba(0, 0, 0, 0.9)"}}>
+            <div style={styles.backdrop}>
+                <CircularProgress />
+                <Typography variant="h4" style={{margin: "30px"}}>
+                    {loadingState}
+                </Typography>
+            </div>
+        </Backdrop>
     </>
 }
