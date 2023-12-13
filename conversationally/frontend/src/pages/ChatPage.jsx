@@ -98,32 +98,37 @@ const Customisation = (props) => {
 
     const [sysMsgValue, setSysMsgValue] = useState(props.config.systemMessage)
 
-    const save = () => {
-        props.updateConfig({"systemMessage": sysMsgValue})//TODO incorrectly assumes that this line runs immediately
-        updateAvatar(sysMsgValue)
+    const save = async () => {
+        let img = await generateAvatarImgURL(sysMsgValue)
+        props.updateConfig({
+            "systemMessage": sysMsgValue,
+            "avatarSrc": img
+        })
         toggleOpen()
         console.log("Save clicked")
         console.log(sysMsgValue)
     }
 
-    const updateAvatar = (inputSysMsgValue) => {
-        fetch(API_ROOT + "/generate_avatar", {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json' // necessary
-                    },
-                    body: JSON.stringify({system_message: inputSysMsgValue})
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        data = JSON.parse(data)
+    const generateAvatarImgURL = (inputSysMsgValue) => {
+        return fetch(API_ROOT + "/generate_avatar", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json' // necessary
+            },
+            body: JSON.stringify({system_message: inputSysMsgValue})
+        })
+            .then(response => response.json())
+            .then(data => {
+                data = JSON.parse(data)
 
-                        const img = data.url
-                        console.log("Returned messages:", img)
+                const img = data.url
+                console.log("Returned messages:", img)
 
-                        props.updateConfig({"avatarSrc": img})
-                    })
-                    .catch(error => console.log(error));
+                return img
+
+                // props.updateConfig({"avatarSrc": img})
+            })
+            .catch(error => console.log(error));
     }
 
     return <>
