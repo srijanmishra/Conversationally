@@ -15,7 +15,7 @@ import os
 import openai
 from dotenv import load_dotenv
 from openai import OpenAI
-from PIL import Image
+# from PIL import Image // PIL cannot fit on lambda
 import urllib.request
 
 # Load environment variables from .env file
@@ -25,26 +25,26 @@ load_dotenv()
 client = OpenAI()
 
 #use this function to generate images
-def generate_image(prompt, provider="DALL_E_3", size="1024x1024", format="url"):
+def generate_image(prompt, provider="DALL-E", size="1024x1024", format="url"):
     '''
     Call this function to generate an image.
     Input a prompt and a provider
-    Provider options: "STABILITY_AI", "DALL_E_3"
+    Provider options: "STABILITY", "DALL-E"
     '''
 
-    allowed_formats = ["url", "pil"]
+    allowed_formats = ["url", "base64"]
     assert format in allowed_formats, f"Format must be one of {allowed_formats}"
     
     #Check to see if they have put a valid provider in
-    allowed_providers = ["DALL_E_3", "STABILITY_AI"]
+    allowed_providers = ["DALL-E", "STABILITY"]
     assert provider in allowed_providers, f"Provider must be one of {allowed_providers}"
     
-    if provider == "DALL_E_3":  # if loop to pick provider
+    if provider == "DALL-E":  # if loop to pick provider
         img = generate_dali_image(prompt=prompt, size=size, quality="standard", n=1)
         
-    elif provider == "STABILITY_AI":
-        if format == "url":
-            raise ValueError("STABILITY_AI provider does not support url format")
+    elif provider == "STABILITY":
+        if format != "base64":
+            raise ValueError("STABILITY provider only supports base64 format")
         img = generate_stable_diffusion_image(prompt=prompt)
         return img
 
@@ -52,11 +52,11 @@ def generate_image(prompt, provider="DALL_E_3", size="1024x1024", format="url"):
 
     if format == "url":
         return img
-    else:        
-        # Open the image directly from the URL using PIL (or Pillow?)
-        img = Image.open(requests.get(img, stream=True).raw)
+    # else:        
+    #     # Open the image directly from the URL using PIL (or Pillow?)
+    #     img = Image.open(requests.get(img, stream=True).raw)
 
-        return img
+    #     return img
    
 
 
@@ -100,16 +100,16 @@ def generate_stable_diffusion_image(prompt, size="1024x1024"):
         raise Exception("Non-200 response: " + str(response.text))
 
     data = response.json()
+    img = data["artifacts"][0]["image"]["base64"]
 
-    save_fp = "tmp/temp.png"
-    for i, image in enumerate(data["artifacts"]):
-        with open(save_fp, "wb") as f:
-            f.write(base64.b64decode(image["base64"]))
+    # save_fp = "tmp/temp.png"
+    # for i, image in enumerate(data["artifacts"]):
+    #     with open(save_fp, "wb") as f:
+    #         f.write(base64.b64decode(image["base64"]))
 
-        break
-
-    img = Image.open(save_fp)
-    os.remove(save_fp)#why is it remove save_fp and 
+    #     break
+    # img = Image.open(save_fp)
+    # os.remove(save_fp)#why is it remove save_fp and 
     return img
 
 
@@ -140,7 +140,7 @@ def generate_dali_image(prompt, size="1024x1024", quality="standard", n=1):
     return image_url
 
 if __name__ == "__main__":
-    response = generate_image("a koala falling off a tree", provider="DALL_E_3")
+    response = generate_image("a koala falling off a tree", provider="DALL-E")
     print(response)
 
 # %%
