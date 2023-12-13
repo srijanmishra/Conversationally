@@ -14,6 +14,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import Slide from '@mui/material/Slide';
 import Grow from '@mui/material/Grow';
 
+const API_ROOT = import.meta.env.VITE_API_ROOT;
+
 const styles = {
     container: {
         display: "flex",
@@ -41,6 +43,9 @@ export const ChatPage = () => {
 
     const updateConfig = (configUpdates) => {
         let newConfig = {...config, ...configUpdates}
+        console.log("config", config)
+        console.log("config Updates", configUpdates)
+        console.log("new config", newConfig)
         setConfig(newConfig)
         setMessages([{"role": "system", "content": newConfig.systemMessage}])
     }
@@ -86,6 +91,7 @@ const Customisation = (props) => {
     const toggleOpen = () => {
         setOpen(!open);
         setSysMsgValue(props.config.systemMessage) // resets to original value if escaped, but also updates internal state if saved
+        console.log(props.config.systemMessage)
     }
 
     const theme = useTheme();
@@ -93,21 +99,20 @@ const Customisation = (props) => {
     const [sysMsgValue, setSysMsgValue] = useState(props.config.systemMessage)
 
     const save = () => {
-        props.updateConfig({"systemMessage": sysMsgValue})
+        props.updateConfig({"systemMessage": sysMsgValue})//TODO incorrectly assumes that this line runs immediately
+        updateAvatar(sysMsgValue)
         toggleOpen()
-        updateAvatar()
         console.log("Save clicked")
         console.log(sysMsgValue)
     }
 
-    const updateAvatar = () => {
-        fetch("http://localhost:8000/generate_avatar", {
-        //fetch("https://iawmx3ntgn2whycqxqwtll7ewy0ihhff.lambda-url.eu-west-2.on.aws/listen", {
+    const updateAvatar = (inputSysMsgValue) => {
+        fetch(API_ROOT + "/generate_avatar", {
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/json' // necessary
                     },
-                    body: JSON.stringify({system_message: props.config.systemMessage})
+                    body: JSON.stringify({system_message: inputSysMsgValue})
                 })
                     .then(response => response.json())
                     .then(data => {
