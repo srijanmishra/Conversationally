@@ -22,7 +22,7 @@ handler = Mangum(api)
 
 api.add_middleware(
     CORSMiddleware,
-    # allow_origins=origins,
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -140,7 +140,9 @@ No background.
     print(img_prompt)
 
 
-    url = generate_image(prompt=img_prompt, provider="DALL_E_3", format="url")
+    url = generate_image(prompt=img_prompt, provider="DALL-E", format="url")
+
+    print(url)
 
     return json.dumps({"url": url})
 

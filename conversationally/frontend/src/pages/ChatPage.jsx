@@ -15,6 +15,7 @@ import Slide from '@mui/material/Slide';
 import Grow from '@mui/material/Grow';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 const API_ROOT = import.meta.env.VITE_API_ROOT;
 
@@ -41,9 +42,21 @@ const styles = {
 const audioHandler = new AudioRecordingHandler()
 
 export const ChatPage = () => {
+
+    //get the query string. 
+    const queryString = window.location.search;
+    //configure the queryString so that it is easier to deal with.
+    const urlParameters = new URLSearchParams(queryString);
+    
+    //get information from query strings and store in variables for use.
+    const urlSysMsg = urlParameters.get('sysMsg');
+    const urlImg = urlParameters.get('img');
+
+    console.log(urlImg)
+
     const [config, setConfig] = useState({
-        "avatarSrc": img,
-        "systemMessage": "You are a helpful and friendly assistant with a charming and witty personality. You're straight to the point and don't waste time. Respond in less than two sentences."
+        "avatarSrc": urlImg ? urlImg : img, //if urlImg exists then use that instead of the default image.
+        "systemMessage": urlSysMsg ? urlSysMsg : "You are a helpful and friendly assistant with a charming and witty personality. You're straight to the point and don't waste time. Respond in less than two sentences."
     })
     const [recording, setRecording] = useState(false);
     const [messages, setMessages] = useState([{"role": "system", "content": config.systemMessage}]);
@@ -65,22 +78,25 @@ export const ChatPage = () => {
 
     return (
         <>
-            <Customisation config={config} updateConfig={updateConfig} />
-                <Grow in={true} mountOnEnter unmountOnExit>
-                    <div style={styles.container}>
-                        <Avatar src={config.avatarSrc} style={styles.avatar}/>
-                        <div className="container">
-                            <div className="row justify-content-center">
-                                <div className="col-12 text-center">
-                                {/* <audio id="player-user" src={audioSrc} controls></audio> */}
-                                </div>
-                                <div className="col-8">
-                                    <UserActionButton status={recording ? "recording" : "standby"} onClick={toggleRecording} />
-                                </div>
+            <div style={{display: 'flex', flexDirection:'row', justifyContent: 'space-between'}}>
+                <Customisation config={config} updateConfig={updateConfig} />
+                <Share config={config} />
+            </div>
+            <Grow in={true} mountOnEnter unmountOnExit>
+                <div style={styles.container}>
+                    <Avatar src={config.avatarSrc} style={styles.avatar}/>
+                    <div className="container">
+                        <div className="row justify-content-center">
+                            <div className="col-12 text-center">
+                            {/* <audio id="player-user" src={audioSrc} controls></audio> */}
+                            </div>
+                            <div className="col-8">
+                                <UserActionButton status={recording ? "recording" : "standby"} onClick={toggleRecording} />
                             </div>
                         </div>
                     </div>
-                </Grow>
+                </div>
+            </Grow>
         </>
   );
 
@@ -186,5 +202,36 @@ const Customisation = (props) => {
                 </Typography>
             </div>
         </Backdrop>
+    </>
+}
+
+const Share = (props) => {
+
+    const urlBase = window.location.origin 
+    const urlPathName = window.location.pathname
+
+    let urlToCopy = urlBase + urlPathName + "?sysMsg=" + encodeURIComponent(props.config.systemMessage) + "&img=" + encodeURIComponent(props.config.avatarSrc)
+
+    const shareButtonClicked = () => {
+        navigator.clipboard.writeText(urlToCopy)
+            .then(() => {
+            // Success! Text has been copied to clipboard
+            alert('Text has been copied to clipboard: ' + urlToCopy);
+            })
+            .catch(err => {
+            // Unable to copy to clipboard
+            console.error('Unable to copy:', err);
+            });
+    }
+
+    return <>
+        <div style={{margin: "10px"}}>
+            <Button onClick={shareButtonClicked} variant="text" size="large" color="secondary">
+                <div style={{fontSize: "16px"}}>
+                    Copy Link
+                </div>
+                <ContentCopyIcon style={{fontSize: "20px", marginLeft: "10px"}} />
+            </Button>
+        </div>
     </>
 }
