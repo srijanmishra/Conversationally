@@ -19,8 +19,15 @@ const theme = createTheme({
     },
     typography: {
         fontFamily: '"Poppins"',
+        h1: {
+            fontSize: "8rem",
+            fontWeight: 800,
+        },
+        h4: {
+            fontWeight: 500,
+        },
         allVariants: {
-        color: secondary,
+            color: secondary,
         },
     },
     components: {
@@ -50,8 +57,18 @@ const theme = createTheme({
                     // }
                 }
             }
-        }
+        },
+        MuiButton: {
+            defaultProps: {
+                variant: 'contained',
+                color: 'primary',
+                size: 'large',
+            },
+        },
     }
 });
 
 export default theme;
+
+
+         

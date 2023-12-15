@@ -15,6 +15,7 @@ import Slide from '@mui/material/Slide';
 import Grow from '@mui/material/Grow';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import LogoutButton from "../components/Auth/LogoutButton";
 
 const API_ROOT = import.meta.env.VITE_API_ROOT;
 
@@ -65,22 +66,30 @@ export const ChatPage = () => {
 
     return (
         <>
-            <Customisation config={config} updateConfig={updateConfig} />
-                <Grow in={true} mountOnEnter unmountOnExit>
-                    <div style={styles.container}>
-                        <Avatar src={config.avatarSrc} style={styles.avatar}/>
-                        <div className="container">
-                            <div className="row justify-content-center">
-                                <div className="col-12 text-center">
-                                {/* <audio id="player-user" src={audioSrc} controls></audio> */}
-                                </div>
-                                <div className="col-8">
-                                    <UserActionButton status={recording ? "recording" : "standby"} onClick={toggleRecording} />
-                                </div>
+            <Slide direction="right" in={true} mountOnEnter unmountOnExit>
+            
+                <div>
+                    <div>
+                        <Customisation config={config} updateConfig={updateConfig} />
+                        <LogoutButton />
+                    </div>
+                </div>
+            </Slide>
+            <Grow in={true} mountOnEnter unmountOnExit>
+                <div style={styles.container}>
+                    <Avatar src={config.avatarSrc} style={styles.avatar}/>
+                    <div className="container">
+                        <div className="row justify-content-center">
+                            <div className="col-12 text-center">
+                            {/* <audio id="player-user" src={audioSrc} controls></audio> */}
+                            </div>
+                            <div className="col-8">
+                                <UserActionButton status={recording ? "recording" : "standby"} onClick={toggleRecording} />
                             </div>
                         </div>
                     </div>
-                </Grow>
+                </div>
+            </Grow>
         </>
   );
 
