@@ -1,4 +1,5 @@
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
 
 const Fold = (props) => {
@@ -11,7 +12,7 @@ const Fold = (props) => {
             display: "flex",
             flexDirection: "column",
             justifyContent: "flex-start",
-            alignItems: "center",
+            alignItems: "left",
             backgroundImage: `url(${props.background})`,
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
@@ -30,6 +31,9 @@ const Fold = (props) => {
         },
         benefit: {
             paddingTop: 8   ,
+        },
+        cta: {
+            alignSelf: "left",
         }
     }
     return (
@@ -46,6 +50,13 @@ const Fold = (props) => {
                         <Typography key={index} variant="h4">{benefit}</Typography>
                     </div>
                 })}
+            </div>
+            <div>
+                <Link to="/Conversationally/login">
+                    <Button variant="contained" >
+                        Talk now
+                    </Button>
+                </Link>
             </div>
         </div>
     )
