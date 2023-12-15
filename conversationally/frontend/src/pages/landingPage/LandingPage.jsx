@@ -1,13 +1,33 @@
 import LoginButton from "../../components/Auth/LoginButton";
-import { AppBar } from "@mui/material";
+import { AppBar, Toolbar, Button } from "@mui/material";
 import Fold from "./sections/Fold";
 import bkg from "../../../public/assistants.png";
+import { useAuth0 } from "@auth0/auth0-react";
+
 
 const Navbar = () => {
+
+    const styles = {
+        container: {
+            position: "absolute",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "flex-end",
+            alignItems: "center",
+            padding: 10,
+            paddingRight: "10%",
+            width: "100vw",
+            height: 50,
+        }
+    }
+
+    const { loginWithRedirect } = useAuth0();
+
     return (
-        <AppBar>
-            <LoginButton />
-        </AppBar>
+        <div style={styles.container}>
+
+                <Button size="large" edge="end" onClick={loginWithRedirect}>Login</Button>
+        </div>
     )
 }
 

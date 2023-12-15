@@ -30,6 +30,7 @@ html {
   font-size: 62.5%;
 }
 body {
+  position: relative;
   background-color: $color-main-primary;
   color: $color-main-secondary;
   font-family: "Inter", "Arial", sans-serif;
