@@ -1,6 +1,6 @@
 import { Button, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Fold = (props) => {
     const styles = {
@@ -36,10 +36,13 @@ const Fold = (props) => {
             alignSelf: "left",
         }
     }
+
+    const { loginWithRedirect } = useAuth0();
+
     return (
         <div style={styles.container}>
             <div style={styles.text}>
-                <Typography variant="h1"z>
+                <Typography variant="h1">
                     {props.headline}
                 </Typography>
                 <Typography variant="h4" style={styles.subheadline}>
@@ -52,11 +55,7 @@ const Fold = (props) => {
                 })}
             </div>
             <div>
-                <Link to="/Conversationally/login">
-                    <Button variant="contained" >
-                        Talk now
-                    </Button>
-                </Link>
+                <Button size="large" edge="end" onClick={loginWithRedirect}>Talk now</Button>
             </div>
         </div>
     )
