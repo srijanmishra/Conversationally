@@ -7,7 +7,7 @@ const LogoutButton = () => {
 
   const onClick = () =>
     logout({
-      logoutParams: { returnTo: window.location.origin + "/hello" },
+      logoutParams: { returnTo: window.location.origin + "/Conversationally" },
     })
 
   return (
