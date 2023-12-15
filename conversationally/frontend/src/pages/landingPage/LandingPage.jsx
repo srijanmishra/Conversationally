@@ -3,7 +3,7 @@ import { AppBar, Toolbar, Button } from "@mui/material";
 import Fold from "./sections/Fold";
 import bkg from "../../../public/assistants.png";
 import { useAuth0 } from "@auth0/auth0-react";
-
+import CTAButton from "../../components/CTAButton";
 
 const Navbar = () => {
 
@@ -23,7 +23,7 @@ const Navbar = () => {
 
     return (
         <div style={styles.container}>
-            <Button size="large" edge="end" onClick={loginWithRedirect}>Login</Button>
+            <CTAButton size="large" edge="end" onClick={loginWithRedirect}>Login</CTAButton>
         </div>
     )
 }

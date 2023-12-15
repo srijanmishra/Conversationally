@@ -1,6 +1,7 @@
-import { Button, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
+import CTAButton from "../../../components/CTAButton";
 
 const Fold = (props) => {
     const styles = {
@@ -55,7 +56,7 @@ const Fold = (props) => {
                 })}
             </div>
             <div>
-                <Button size="large" edge="end" onClick={loginWithRedirect}>Talk now</Button>
+                <CTAButton size="large" edge="end" onClick={loginWithRedirect}>Talk now</CTAButton>
             </div>
         </div>
     )

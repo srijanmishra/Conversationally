@@ -43,7 +43,7 @@ const App = () => {
           {
             isAuthenticated?
             <>
-              <Route path="" element={<ChatPage />} />
+              <Route path="chat" element={<ChatPage />} />
               <Route path="settings" element={<Settings />} />
               <Route path="payment" element={<Payment />} />
             </>
