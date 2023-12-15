@@ -15,9 +15,8 @@ const Navbar = () => {
             justifyContent: "flex-end",
             alignItems: "center",
             padding: 10,
-            paddingRight: "10%",
             width: "100vw",
-            height: 50,
+            height: 60,
         }
     }
 
@@ -25,8 +24,7 @@ const Navbar = () => {
 
     return (
         <div style={styles.container}>
-
-                <Button size="large" edge="end" onClick={loginWithRedirect}>Login</Button>
+            <Button size="large" edge="end" onClick={loginWithRedirect}>Login</Button>
         </div>
     )
 }

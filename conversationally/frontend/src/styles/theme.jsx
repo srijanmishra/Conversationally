@@ -57,7 +57,14 @@ const theme = createTheme({
                     // }
                 }
             }
-        }
+        },
+        MuiButton: {
+            defaultProps: {
+                variant: 'contained',
+                color: 'primary',
+                size: 'large',
+            },
+        },
     }
 });
 
