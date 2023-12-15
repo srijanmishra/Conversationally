@@ -14,9 +14,8 @@ const Navbar = () => {
             flexDirection: "row",
             justifyContent: "flex-end",
             alignItems: "center",
-            padding: 10,
+            padding: 5,
             width: "100vw",
-            height: 60,
         }
     }
 
