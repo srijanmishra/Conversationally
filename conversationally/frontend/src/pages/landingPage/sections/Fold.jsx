@@ -43,7 +43,7 @@ const Fold = (props) => {
     return (
         <div style={styles.container}>
             <div style={styles.text}>
-                <Typography variant="h1">
+                <Typography variant="h1" sx={{typography: {sm: "h1", xs: "h2"}}}>
                     {props.headline}
                 </Typography>
                 <Typography variant="h4" style={styles.subheadline}>
