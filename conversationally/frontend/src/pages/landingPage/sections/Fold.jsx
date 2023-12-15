@@ -49,8 +49,8 @@ const Fold = (props) => {
                     {props.subheadline}
                 </Typography>
                 {props.benefits.map((benefit, index) => {
-                    return <div style={styles.benefit}>
-                        <Typography key={index} variant="h4">{benefit}</Typography>
+                    return <div style={styles.benefit} key={index} >
+                        <Typography variant="h4">{benefit}</Typography>
                     </div>
                 })}
             </div>
