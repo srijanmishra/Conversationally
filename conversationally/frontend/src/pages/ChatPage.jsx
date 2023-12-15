@@ -16,6 +16,7 @@ import Grow from '@mui/material/Grow';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import { getChatPageURL } from "../utils/link";
 
 const API_ROOT = import.meta.env.VITE_API_ROOT;
 
@@ -207,10 +208,7 @@ const Customisation = (props) => {
 
 const Share = (props) => {
 
-    const urlBase = window.location.origin 
-    const urlPathName = window.location.pathname
-
-    let urlToCopy = urlBase + urlPathName + "?sysMsg=" + encodeURIComponent(props.config.systemMessage) + "&img=" + encodeURIComponent(props.config.avatarSrc)
+    const urlToCopy = getChatPageURL(props.config.systemMessage, props.config.avatarSrc);
 
     const shareButtonClicked = () => {
         navigator.clipboard.writeText(urlToCopy)
