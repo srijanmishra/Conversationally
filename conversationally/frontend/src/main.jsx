@@ -9,7 +9,6 @@ import { ThemeProvider } from '@mui/material/styles';
 import theme from './styles/theme';
 import CssBaseline from '@mui/material/CssBaseline';
 
-
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
