@@ -7,7 +7,7 @@ const Fold = (props) => {
     const styles = {
         container: {
             padding: 10,
-            paddingTop: "10%",
+            paddingTop: "120px",
             minHeight: "100vh",
             width: "100vw",
             display: "flex",
