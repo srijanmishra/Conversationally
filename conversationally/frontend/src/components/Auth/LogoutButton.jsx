@@ -11,12 +11,12 @@ const LogoutButton = () => {
     })
 
   return (
-    <div style={{margin: "10px"}}>
+    <div style={{margin: "5px"}}>
         <Button onClick={onClick} variant="text" size="large" color="secondary">
-            <div style={{fontSize: "16px"}}>
+            <div style={{fontSize: "14px"}}>
                 Logout
             </div>
-            <LogoutIcon style={{fontSize: "20px", marginLeft: "10px"}} />
+            <LogoutIcon style={{fontSize: "16px", marginLeft: "10px"}} />
         </Button>
     </div>
   );

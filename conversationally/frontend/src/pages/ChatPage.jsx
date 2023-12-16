@@ -185,12 +185,12 @@ const Customisation = (props) => {
     }
 
     return <>
-        <div style={{margin: "10px"}}>
+        <div style={{margin: "5px"}}>
             <Button onClick={toggleOpen} variant="text" size="large" color="secondary">
-                <div style={{fontSize: "16px"}}>
+                <div style={{fontSize: "14px"}}>
                     Customise
                 </div>
-                <EditIcon style={{fontSize: "20px", marginLeft: "10px"}} />
+                <EditIcon style={{fontSize: "16px", marginLeft: "10px"}} />
             </Button>
         </div>
         <Dialog open={open} fullWidth={true} onClose={()=>{toggleOpen()}}>
