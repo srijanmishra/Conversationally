@@ -10,7 +10,7 @@ export default class AudioRecordingHandler {
 
     startRecording = async () => {
         this.mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        this.recorder = new MediaRecorder(this.mediaStream, { mimeType: 'audio/webm' });
+        this.recorder = new MediaRecorder(this.mediaStream, { mimeType: 'audio/mp4' });
         this.recorder.start(); // Start recording
     
         // This event fires each time a chunk of audio data is available
@@ -24,7 +24,7 @@ export default class AudioRecordingHandler {
         let hi = this.recorder.stop(); // This will trigger the 'dataavailable' event for the last time
         console.log("onstop return", hi)
         this.recorder.onstop = () => {
-            const blob = new Blob(this.chunks, { type: 'audio/webm' }); // When all chunks are available, concatenate them into a single Blob
+            const blob = new Blob(this.chunks, { type: 'audio/mp4' }); // When all chunks are available, concatenate them into a single Blob
             const reader = new FileReader();
             reader.readAsArrayBuffer(blob);
     
