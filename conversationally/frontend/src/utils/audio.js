@@ -3,11 +3,12 @@ import MicRecorder from 'mic-recorder-to-mp3';
 const API_ROOT = import.meta.env.VITE_API_ROOT;
 
 export default class AudioRecordingHandler {
-    constructor() {
+    constructor(setConversationState) {
         // this.chunks = []; // here we will store all received chunks of our audio stream
         // this.recorder; // MediaRecorder instance to capture audio
         // this.mediaStream; // MediaStream instance to feed the recorder
         testRootEndpoint() // testing the GET request to the root endpoint
+        this.setConversationState = setConversationState
     }
     
     startRecording = async () => {
@@ -64,7 +65,12 @@ export default class AudioRecordingHandler {
                             .then(blob => {
                                 let url = URL.createObjectURL(blob);
                                 console.log('audio url:', url)
-                                new Audio(url).play();
+                                let audio = new Audio(url)
+                                audio.play()
+                                this.setConversationState("speaking")
+                                audio.onended = () => {
+                                    this.setConversationState("idle")
+                                }
                             });
                     })
                     .catch(error => console.log(error));

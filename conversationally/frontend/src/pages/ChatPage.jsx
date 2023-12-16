@@ -1,5 +1,5 @@
 import UserActionButton from "../components/UserActionButton/UserActionButton";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -39,27 +39,34 @@ const styles = {
     }
 }
 
-const audioHandler = new AudioRecordingHandler()
 
 export const ChatPage = () => {
+    
+    
     const [config, setConfig] = useState({
         "avatarSrc": img,
         "systemMessage": "You are a helpful and friendly assistant with a charming and witty personality. You're straight to the point and don't waste time. Respond in less than two sentences."
     })
+    
+    const [conversationState, setConversationState] = useState("idle") // "idle", "listening", "thinking", "speaking"
     const [recording, setRecording] = useState(false);
     const [messages, setMessages] = useState([{"role": "system", "content": config.systemMessage}]);
-
+    
     const updateConfig = (configUpdates) => {
         let newConfig = {...config, ...configUpdates}
         setConfig(newConfig)
         setMessages([{"role": "system", "content": newConfig.systemMessage}])
     }
+    
+    const [audioHandler, _] = useState(new AudioRecordingHandler(setConversationState))
 
     const toggleRecording = () => {
         if (recording) {
             audioHandler.stopRecording(messages, setMessages);
+            setConversationState("thinking")
         } else {
             audioHandler.startRecording();
+            setConversationState("listening")
         }
         setRecording(!recording);
     }
@@ -84,7 +91,7 @@ export const ChatPage = () => {
                             {/* <audio id="player-user" src={audioSrc} controls></audio> */}
                             </div>
                             <div className="col-8">
-                                <UserActionButton status={recording ? "recording" : "standby"} onClick={toggleRecording} />
+                                <UserActionButton status={conversationState} onClick={toggleRecording} />
                             </div>
                         </div>
                     </div>
