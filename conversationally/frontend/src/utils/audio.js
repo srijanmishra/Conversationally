@@ -10,7 +10,9 @@ export default class AudioRecordingHandler {
 
     startRecording = async () => {
         this.mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        this.recorder = new MediaRecorder(this.mediaStream, { mimeType: 'audio/mp4' });
+        this.recorder = new MediaRecorder(this.mediaStream, 
+            // { mimeType: 'audio/mp4' }
+        );
         this.recorder.start(); // Start recording
     
         // This event fires each time a chunk of audio data is available
@@ -34,6 +36,17 @@ export default class AudioRecordingHandler {
                 const base64StringAudio = btoa(String.fromCharCode(...audioBytes)); // Convert the Uint8Array to a base64 string
                 console.log(base64StringAudio.substring(0, 10)) // log first 10 characters of the string
                 console.log('sending audio to server')
+
+                // TEST
+                let fetchableUrl = 'data:audio/wav;base64,' + base64StringAudio;
+                        fetch(fetchableUrl)
+                            .then(response => response.blob())
+                            .then(blob => {
+                                let url = URL.createObjectURL(blob);
+                                console.log('audio url:', url)
+                                new Audio(url).play();
+                            });
+                // TEST
     
                 let str_messages = JSON.stringify(messages)
                 let payload = JSON.stringify({
