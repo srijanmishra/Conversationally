@@ -8,12 +8,12 @@ export default class AudioRecordingHandler {
         // this.recorder; // MediaRecorder instance to capture audio
         // this.mediaStream; // MediaStream instance to feed the recorder
         testRootEndpoint() // testing the GET request to the root endpoint
+    }
+    
+    startRecording = async () => {
         this.recorder = new MicRecorder({
         //   bitRate: 128
         });
-    }
-
-    startRecording = async () => {
         this.mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
         // this.recorder = new MediaRecorder(this.mediaStream, 
         //     // { mimeType: 'audio/mp4' }
