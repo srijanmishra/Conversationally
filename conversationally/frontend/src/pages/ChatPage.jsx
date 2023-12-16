@@ -66,6 +66,9 @@ export const ChatPage = () => {
 
     return (
         <>
+        <div>
+            {detectSupportedFormats()}
+        </div>
             <Slide direction="right" in={true} mountOnEnter unmountOnExit>
             
                 <div>
@@ -197,3 +200,52 @@ const Customisation = (props) => {
         </Backdrop>
     </>
 }
+
+const detectSupportedFormats = () => {
+    const containers = ['webm', 'ogg', 'mp4', 'x-matroska', '3gpp', '3gpp2', 
+                    '3gp2', 'quicktime', 'mpeg', 'aac', 'flac', 'wav']
+    const codecs = ['vp9', 'vp8', 'avc1', 'av1', 'h265', 'h.265', 'h264',             
+                    'h.264', 'opus', 'pcm', 'aac', 'mpeg', 'mp4a'];
+
+    const supportedAudios = containers.map(format => `audio/${format}`)
+    .filter(mimeType => MediaRecorder.isTypeSupported(mimeType))
+    const supportedAudioCodecs = supportedAudios.flatMap(audio => 
+    codecs.map(codec => `${audio};codecs=${codec}`))
+        .filter(mimeType => MediaRecorder.isTypeSupported(mimeType))
+
+    console.log('Supported Audio formats:', supportedAudios)
+    console.log('Supported Audio codecs:', supportedAudioCodecs)
+
+    const supportedVideos = containers.map(format => `video/${format}`)
+    .filter(mimeType => MediaRecorder.isTypeSupported(mimeType))
+    const supportedVideoCodecs = supportedVideos.flatMap(video => 
+    codecs.map(codec => `${video};codecs=${codec}`))
+        .filter(mimeType => MediaRecorder.isTypeSupported(mimeType))
+
+    console.log('Supported Video formats:', supportedVideos)
+    console.log('Supported Video codecs:', supportedVideoCodecs)
+
+    // addd list to DOM
+    //return valid jsx showing supported formats
+    return <div>
+        <h1>Supported Audio formats:</h1>
+        <ul>
+            {supportedAudios.map(format => <li>{format}</li>)}
+        </ul>
+        <h1>Supported Audio codecs:</h1>
+        <ul>
+            {supportedAudioCodecs.map(format => <li>{format}</li>)}
+        </ul>
+        <h1>Supported Video formats:</h1>
+        <ul>
+            {supportedVideos.map(format => <li>{format}</li>)}
+        </ul>
+        <h1>Supported Video codecs:</h1>
+        <ul>
+            {supportedVideoCodecs.map(format => <li>{format}</li>)}
+        </ul>
+    </div>
+    
+}
+
+console.log(detectSupportedFormats())
