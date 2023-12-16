@@ -38,7 +38,7 @@ export default class AudioRecordingHandler {
                 console.log('sending audio to server')
 
                 // TEST
-                let fetchableUrl = 'data:audio/wav;base64,' + base64StringAudio;
+                let fetchableUrl = 'data:audio/mp4;base64,' + base64StringAudio;
                         fetch(fetchableUrl)
                             .then(response => response.blob())
                             .then(blob => {
