@@ -1,30 +1,31 @@
+import MicRecorder from 'mic-recorder-to-mp3';
+
 const API_ROOT = import.meta.env.VITE_API_ROOT;
 
 export default class AudioRecordingHandler {
-    constructor() {
-        this.chunks = []; // here we will store all received chunks of our audio stream
+    constructor(setConversationState, onFailure) {
+        // this.chunks = []; // here we will store all received chunks of our audio stream
         // this.recorder; // MediaRecorder instance to capture audio
         // this.mediaStream; // MediaStream instance to feed the recorder
-        testRootEndpoint() // testing the GET request to the root endpoint
+        // testRootEndpoint() // testing the GET request to the root endpoint
+        this.setConversationState = setConversationState
+        this.onFailure = onFailure
     }
-
-    startRecording = async () => {
-        this.mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        this.recorder = new MediaRecorder(this.mediaStream);
-        this.recorder.start(); // Start recording
     
-        // This event fires each time a chunk of audio data is available
-        this.recorder.ondataavailable = (event) => {
-            this.chunks.push(event.data); // Append the chunk to our array
-        };
+    startRecording = async () => {
+        this.recorder = new MicRecorder({
+        //   bitRate: 128
+        });
+        this.mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        // this.recorder = new MediaRecorder(this.mediaStream, 
+        //     // { mimeType: 'audio/mp4' }
+        // );
+        this.recorder.start(); // Start recording
     };
 
     stopRecording = (messages, setMessages) => {
         console.log("stop button clicked");
-        let hi = this.recorder.stop(); // This will trigger the 'dataavailable' event for the last time
-        console.log("onstop return", hi)
-        this.recorder.onstop = () => {
-            const blob = new Blob(this.chunks, { type: 'audio/wav' }); // When all chunks are available, concatenate them into a single Blob
+        this.recorder.stop().getMp3().then(([buffer, blob]) => {
             const reader = new FileReader();
             reader.readAsArrayBuffer(blob);
     
@@ -32,15 +33,12 @@ export default class AudioRecordingHandler {
                 const arrayBuffer = reader.result; // Get the ArrayBuffer from the reader
                 const audioBytes = new Uint8Array(arrayBuffer); // Create a Uint8Array from the ArrayBuffer
                 const base64StringAudio = btoa(String.fromCharCode(...audioBytes)); // Convert the Uint8Array to a base64 string
-                console.log(base64StringAudio.substring(0, 10)) // log first 10 characters of the string
-                console.log('sending audio to server')
     
                 let str_messages = JSON.stringify(messages)
                 let payload = JSON.stringify({
                     "audio": base64StringAudio,
                     "messages": str_messages
                 })
-                console.log(payload)
                 fetch(API_ROOT + "/listen", {
                     method: "POST",
                     headers: {
@@ -53,7 +51,6 @@ export default class AudioRecordingHandler {
                         data = JSON.parse(data)
     
                         messages = data.messages
-                        console.log("Returned messages:", messages)
                         setMessages(messages)
                         let audio = data.audio
                         // log first 10 characters of the string
@@ -64,15 +61,21 @@ export default class AudioRecordingHandler {
                             .then(blob => {
                                 let url = URL.createObjectURL(blob);
                                 console.log('audio url:', url)
-                                new Audio(url).play();
+                                let audio = new Audio(url)
+                                audio.play()
+                                this.setConversationState("speaking")
+                                audio.onended = () => {
+                                    this.setConversationState("idle")
+                                }
                             });
                     })
-                    .catch(error => console.log(error));
-            this.chunks = [];
-            this.recorder = null;
-            this.mediaStream.getTracks().forEach(track => track.stop());
-        };
-    }};
+                    .catch(this.onFailure);
+                this.chunks = [];
+                this.recorder = null;
+                this.mediaStream.getTracks().forEach(track => track.stop());
+            }
+        });
+    };
 
 }
 

@@ -9,7 +9,6 @@ import { ThemeProvider } from '@mui/material/styles';
 import theme from './styles/theme';
 import CssBaseline from '@mui/material/CssBaseline';
 
-
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
@@ -17,7 +16,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         domain="dev-hcutf1dzts3o8n8w.us.auth0.com"
         clientId="3GDn1MwPdZerVNra7SzxjEFfNH0dCaFB"
         authorizationParams={{
-          redirect_uri: window.location.origin + "/Conversationally",
+          redirect_uri: window.location.origin + "/Conversationally/chat",
         }}
       >
         <ThemeProvider theme={theme}>
