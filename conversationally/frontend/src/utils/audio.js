@@ -1,18 +1,23 @@
+import MicRecorder from 'mic-recorder-to-mp3';
+
 const API_ROOT = import.meta.env.VITE_API_ROOT;
 
 export default class AudioRecordingHandler {
     constructor() {
-        this.chunks = []; // here we will store all received chunks of our audio stream
+        // this.chunks = []; // here we will store all received chunks of our audio stream
         // this.recorder; // MediaRecorder instance to capture audio
         // this.mediaStream; // MediaStream instance to feed the recorder
         testRootEndpoint() // testing the GET request to the root endpoint
+        this.recorder = new MicRecorder({
+        //   bitRate: 128
+        });
     }
 
     startRecording = async () => {
         this.mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        this.recorder = new MediaRecorder(this.mediaStream, 
-            // { mimeType: 'audio/mp4' }
-        );
+        // this.recorder = new MediaRecorder(this.mediaStream, 
+        //     // { mimeType: 'audio/mp4' }
+        // );
         this.recorder.start(); // Start recording
     
         // This event fires each time a chunk of audio data is available
@@ -23,10 +28,7 @@ export default class AudioRecordingHandler {
 
     stopRecording = (messages, setMessages) => {
         console.log("stop button clicked");
-        let hi = this.recorder.stop(); // This will trigger the 'dataavailable' event for the last time
-        console.log("onstop return", hi)
-        this.recorder.onstop = () => {
-            const blob = new Blob(this.chunks, { type: 'audio/m4a' }); // When all chunks are available, concatenate them into a single Blob
+        this.recorder.stop().getMp3().then(([buffer, blob]) => {
             const reader = new FileReader();
             reader.readAsArrayBuffer(blob);
     
@@ -38,7 +40,7 @@ export default class AudioRecordingHandler {
                 console.log('sending audio to server')
 
                 // TEST
-                let fetchableUrl = 'data:audio/m4a;base64,' + base64StringAudio;
+                let fetchableUrl = 'data:audio/mp4;base64,' + base64StringAudio;
                         fetch(fetchableUrl)
                             .then(response => response.blob())
                             .then(blob => {
@@ -81,11 +83,12 @@ export default class AudioRecordingHandler {
                             });
                     })
                     .catch(error => console.log(error));
-            this.chunks = [];
-            this.recorder = null;
-            this.mediaStream.getTracks().forEach(track => track.stop());
-        };
-    }};
+                this.chunks = [];
+                this.recorder = null;
+                this.mediaStream.getTracks().forEach(track => track.stop());
+            }
+        });
+    };
 
 }
 

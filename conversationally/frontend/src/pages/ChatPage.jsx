@@ -245,7 +245,7 @@ const detectSupportedFormats = () => {
             {supportedVideoCodecs.map(format => <li>{format}</li>)}
         </ul>
     </div>
-    
+
 }
 
 console.log(detectSupportedFormats())
