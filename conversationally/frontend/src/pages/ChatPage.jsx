@@ -17,6 +17,7 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import LogoutButton from "../components/Auth/LogoutButton";
 import Alert from '@mui/material/Alert';
+import bkg from "../../public/gradient.jpeg"
 
 const API_ROOT = import.meta.env.VITE_API_ROOT;
 
@@ -25,8 +26,12 @@ const styles = {
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-around",
-        height: "90vh",
-        alignItems: "center"
+        height: "100vh",
+        alignItems: "center",
+        backgroundImage: `url(${bkg})`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        boxShadow: "inset 0 0 0 2000px rgba(0, 0, 0, 0.7)",
     },
     avatar: {
         height: "200px",
@@ -37,6 +42,12 @@ const styles = {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center"
+    },
+    menu: {
+        position: "absolute",
+        top: "10px",
+        left: "10px"
+    
     }
 }
 
@@ -80,17 +91,17 @@ export const ChatPage = () => {
 
     return (
         <>
-            <Slide direction="right" in={true} mountOnEnter unmountOnExit>
-            
-                <div>
-                    <div>
-                        <Customisation config={config} updateConfig={updateConfig} />
-                        <LogoutButton />
-                    </div>
-                </div>
-            </Slide>
+
             <Grow in={true} mountOnEnter unmountOnExit>
                 <div style={styles.container}>
+                <Slide direction="right" in={true} mountOnEnter unmountOnExit>
+                    <div style={styles.menu}>
+                        <div>
+                            <Customisation config={config} updateConfig={updateConfig} />
+                            <LogoutButton />
+                        </div>
+                    </div>
+                </Slide> 
                     <Avatar src={config.avatarSrc} style={styles.avatar}/>
                     <div className="container">
                         <div className="row justify-content-center">
