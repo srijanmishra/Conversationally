@@ -1,5 +1,32 @@
 const API_ROOT = import.meta.env.VITE_API_ROOT;
 
+const detectSupportedFormats = () => {
+    const containers = ['webm', 'ogg', 'mp4', 'x-matroska', '3gpp', '3gpp2', 
+                    '3gp2', 'quicktime', 'mpeg', 'aac', 'flac', 'wav']
+    const codecs = ['vp9', 'vp8', 'avc1', 'av1', 'h265', 'h.265', 'h264',             
+                    'h.264', 'opus', 'pcm', 'aac', 'mpeg', 'mp4a'];
+
+    const supportedAudios = containers.map(format => `audio/${format}`)
+    .filter(mimeType => MediaRecorder.isTypeSupported(mimeType))
+    const supportedAudioCodecs = supportedAudios.flatMap(audio => 
+    codecs.map(codec => `${audio};codecs=${codec}`))
+        .filter(mimeType => MediaRecorder.isTypeSupported(mimeType))
+
+    console.log('Supported Audio formats:', supportedAudios)
+    console.log('Supported Audio codecs:', supportedAudioCodecs)
+
+    const supportedVideos = containers.map(format => `video/${format}`)
+    .filter(mimeType => MediaRecorder.isTypeSupported(mimeType))
+    const supportedVideoCodecs = supportedVideos.flatMap(video => 
+    codecs.map(codec => `${video};codecs=${codec}`))
+        .filter(mimeType => MediaRecorder.isTypeSupported(mimeType))
+
+    console.log('Supported Video formats:', supportedVideos)
+    console.log('Supported Video codecs:', supportedVideoCodecs)
+}
+
+detectSupportedFormats()
+
 export default class AudioRecordingHandler {
     constructor() {
         this.chunks = []; // here we will store all received chunks of our audio stream
@@ -10,7 +37,7 @@ export default class AudioRecordingHandler {
 
     startRecording = async () => {
         this.mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        this.recorder = new MediaRecorder(this.mediaStream);
+        this.recorder = new MediaRecorder(this.mediaStream, { mimeType: 'audio/webm' });
         this.recorder.start(); // Start recording
     
         // This event fires each time a chunk of audio data is available
@@ -24,7 +51,7 @@ export default class AudioRecordingHandler {
         let hi = this.recorder.stop(); // This will trigger the 'dataavailable' event for the last time
         console.log("onstop return", hi)
         this.recorder.onstop = () => {
-            const blob = new Blob(this.chunks, { type: 'audio/wav' }); // When all chunks are available, concatenate them into a single Blob
+            const blob = new Blob(this.chunks, { type: 'audio/webm' }); // When all chunks are available, concatenate them into a single Blob
             const reader = new FileReader();
             reader.readAsArrayBuffer(blob);
     
