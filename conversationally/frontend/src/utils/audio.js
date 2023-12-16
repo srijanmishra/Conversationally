@@ -23,6 +23,19 @@ const detectSupportedFormats = () => {
 
     console.log('Supported Video formats:', supportedVideos)
     console.log('Supported Video codecs:', supportedVideoCodecs)
+
+    // addd list to DOM
+    const audioList = document.getElementById('root')
+    const audioListElement = document.createElement('ul')
+    audioListElement.innerHTML = 'Supported Audio formats:'
+    supportedAudios.forEach(audio => {
+        const audioElement = document.createElement('li')
+        audioElement.innerHTML = audio
+        audioListElement.appendChild(audioElement)
+    }
+    )
+    audioList.appendChild(audioListElement)
+
 }
 
 detectSupportedFormats()
