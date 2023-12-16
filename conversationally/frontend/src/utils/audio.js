@@ -26,7 +26,7 @@ export default class AudioRecordingHandler {
         let hi = this.recorder.stop(); // This will trigger the 'dataavailable' event for the last time
         console.log("onstop return", hi)
         this.recorder.onstop = () => {
-            const blob = new Blob(this.chunks, { type: 'audio/mp4' }); // When all chunks are available, concatenate them into a single Blob
+            const blob = new Blob(this.chunks, { type: 'audio/m4a' }); // When all chunks are available, concatenate them into a single Blob
             const reader = new FileReader();
             reader.readAsArrayBuffer(blob);
     
@@ -38,7 +38,7 @@ export default class AudioRecordingHandler {
                 console.log('sending audio to server')
 
                 // TEST
-                let fetchableUrl = 'data:audio/mp4;base64,' + base64StringAudio;
+                let fetchableUrl = 'data:audio/m4a;base64,' + base64StringAudio;
                         fetch(fetchableUrl)
                             .then(response => response.blob())
                             .then(blob => {
