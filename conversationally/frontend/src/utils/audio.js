@@ -35,7 +35,7 @@ const detectSupportedFormats = () => {
     }
     )
     audioList.appendChild(audioListElement)
-
+    console.log('testing')
 }
 
 detectSupportedFormats()
