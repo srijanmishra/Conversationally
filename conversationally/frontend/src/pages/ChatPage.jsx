@@ -6,7 +6,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import { Avatar, TextField, Typography } from "@mui/material";
+import { Avatar, Snackbar, TextField, Typography } from "@mui/material";
 import AudioRecordingHandler from "../utils/audio";
 import img from "/AI_portrait.png";
 import useTheme from '@mui/material/styles/useTheme';
@@ -16,6 +16,7 @@ import Grow from '@mui/material/Grow';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import LogoutButton from "../components/Auth/LogoutButton";
+import Alert from '@mui/material/Alert';
 
 const API_ROOT = import.meta.env.VITE_API_ROOT;
 
@@ -58,8 +59,7 @@ export const ChatPage = () => {
         setMessages([{"role": "system", "content": newConfig.systemMessage}])
     }
     
-    const [audioHandler, _] = useState(new AudioRecordingHandler(setConversationState))
-
+    
     const toggleRecording = () => {
         if (recording) {
             audioHandler.stopRecording(messages, setMessages);
@@ -70,6 +70,13 @@ export const ChatPage = () => {
         }
         setRecording(!recording);
     }
+    
+    const [errorSnackBarOpen, setErrorSnackBarOpen] = useState(false);
+    const onFailure = ()=>{
+        setErrorSnackBarOpen(true)
+        setConversationState("idle")
+    }
+    const [audioHandler, _] = useState(new AudioRecordingHandler(setConversationState, onFailure));
 
     return (
         <>
@@ -97,6 +104,13 @@ export const ChatPage = () => {
                     </div>
                 </div>
             </Grow>
+            <Snackbar open={errorSnackBarOpen} autoHideDuration={1000} onClose={()=>{setErrorSnackBarOpen(false)}}>
+                <Alert severity="error" variant="filled">
+                    <Typography variant="h5">
+                        Something went wrong. Please try again.
+                    </Typography>
+                </Alert>
+            </Snackbar>
         </>
   );
 
