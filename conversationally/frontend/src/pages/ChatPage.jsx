@@ -59,6 +59,7 @@ const styles = {
 export const ChatPage = () => {
     
     const { user } = useAuth0();
+    const navigate = useNavigate()
     const [subscribed, setSubscribed] = useState(true)
     useEffect(() => {
         getUser(user).then((res) => {setSubscribed(res.subscribed)})
@@ -97,8 +98,6 @@ export const ChatPage = () => {
         setConversationState("idle")
     }
     const [audioHandler, _] = useState(new AudioRecordingHandler(setConversationState, onFailure));
-    
-    const navigate = useNavigate()
 
     return (
         <>
@@ -155,6 +154,13 @@ export const ChatPage = () => {
 };
 
 const Customisation = (props) => {
+    
+    const { user } = useAuth0();
+    const navigate = useNavigate()
+    const [subscribed, setSubscribed] = useState(true)
+    useEffect(() => {
+        getUser(user).then((res) => {setSubscribed(res.subscribed)})
+    }, [user])
 
     const [open, setOpen] = useState(false);
     const [loadingState, setLoadingState] = useState(false);
@@ -170,6 +176,12 @@ const Customisation = (props) => {
     const [sysMsgValue, setSysMsgValue] = useState(props.config.systemMessage)
 
     const save = async () => {
+
+        if (!subscribed) {
+            navigate("/Conversationally/payment")
+            return
+        }        
+
         toggleOpen()
 
         // bullshit loading mode
