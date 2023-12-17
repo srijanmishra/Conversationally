@@ -25,7 +25,7 @@ handler = Mangum(api)
 
 api.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    # allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -39,10 +39,6 @@ class Payload(BaseModel):
     
 class GenerateAvatarPayload(BaseModel):
     system_message: str
-
-class User(BaseModel):
-    email: str
-
 
 # @app.post("/chat")
 # async def chat(text: Text):
@@ -152,8 +148,7 @@ No background.
 
 
 @api.get("/user")
-async def get_user_info(email ):
-    print("hello world")
+async def get_user_info(email):
 
     user = {}
 
