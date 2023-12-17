@@ -6,7 +6,7 @@ const background = '#343541';
 
 const theme = createTheme({
     palette: {
-        mode: 'light',
+        mode: 'dark',
         background: {
             default: '#343541',
         },
