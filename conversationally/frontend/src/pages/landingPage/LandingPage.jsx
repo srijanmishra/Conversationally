@@ -4,6 +4,7 @@ import Fold from "./sections/Fold";
 import bkg from "../../../public/assistants.png";
 import { useAuth0 } from "@auth0/auth0-react";
 import CTAButton from "../../components/CTAButton";
+import Testimonials from "./sections/Testimonials";
 
 const Navbar = () => {
 
@@ -27,32 +28,31 @@ const Navbar = () => {
         </div>
     )
 
-    const testimonialData = [
-        {
-            text: "Highly recommend Conversationally, the assistants are so useful!",
-            img: "",
-            stars: 5,
-            name: "- Emily C",
-        },
-
-        {
-            text: "Really interesting platform with great potential, excited to see the what comes next. ",
-            img: "",
-            stars: 4,
-            name: "- Michael P",
-        },
-
-        {
-            text: "The future is now, Conversationally has been very helpful for my daily tasks!",
-            img: "",
-            stars: 5,
-            name: "-Morgan D",
-        },
-
-
-    ];
 }
+const testimonialData = [
+    {
+        text: "Highly recommend Conversationally, the assistants are so useful!",
+        img: "",
+        stars: 5,
+        name: "- Emily C",
+    },
 
+    {
+        text: "Really interesting platform with great potential, excited to see the what comes next. ",
+        img: "",
+        stars: 4,
+        name: "- Michael P",
+    },
+
+    {
+        text: "The future is now, Conversationally has been very helpful for my daily tasks!",
+        img: "",
+        stars: 5,
+        name: "-Morgan D",
+    },
+
+
+];
 
 const LandingPage = () => {
 
