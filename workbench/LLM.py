@@ -21,6 +21,36 @@ def request(prompt, system_message="you are a helpful assistant", model="gpt-3.5
 
     return summary.choices[0].message.content
 
+def voice_request(prompt, system_message="you are a helpful assistant", model="gpt-3.5-turbo-16k", temperature=0.8):
+    
+    avaliable_voices = {
+        "Nicole": "Friendly female voice with an american accent."
+    }
+    
+    schema = {
+        "type": "object",
+        "properties": {
+            "type": "string",
+            "description": "The exact name of one of the available voices."
+        }
+    }
+    
+    engineered_prompt = f"Based on this description of a character: {prompt}, choose which voice would be most suitable to represent it from this dictionary {avaliable_voices}. The response will be used directly in code and should be in the JSON format, so you must only provide the name of the voice as specified in the key of the dictionary with no changes to capitalisation or punctuation."
+    
+    messages=[
+        {"role": "system", "content": system_message},
+        {"role": "user", "content": engineered_prompt}
+    ]
+    
+    response = client.chat.completions.create(
+        model=model,
+        messages=messages,
+        temperature=temperature,
+        response_format={ "type": "json_object" }
+    )
+    print(response)
+    return response
+
 
 class Chat():
     def __init__(self, system_message, ignore_base_system_message=False):
