@@ -23,16 +23,26 @@ const UserActionButton = (props) => {
 
     const [mediaRecorder, setMediaRecorder] = useState(null);
 
+    const onClick = () => {
+        if (props.status === "idle") {
+            navigator.mediaDevices.getUserMedia({ audio: true }).then((mediaStream) => {
+                console.log('setting media recorder')
+                setMediaRecorder(new MediaRecorder(mediaStream));
+            })
+        }
+        else {
+            mediaRecorder.stop();
+            setMediaRecorder(null);
+        }
+        props.onClick();
+    }
+
     switch (props.status) {
         case "listening":
             statusIcon = <SquareIcon {...statusIconCommonProps} />;
             statusText = "Recording your voice note...";
-            navigator.mediaDevices.getUserMedia({ audio: true }).then((mediaStream) => {
-                setMediaRecorder(new MediaRecorder(mediaStream));
-            })
             break;
         case "thinking":
-            setMediaRecorder(null);
             statusIcon = <MicIcon {...statusIconCommonProps} />;
             statusText = "Thinking...";
             isDisabled = true;
@@ -57,7 +67,7 @@ const UserActionButton = (props) => {
                     className={`UserActionButton UserActionButton-${props.status} ${
                         isDisabled ? "disabled" : ""
                     } mb-2`}
-                    onClick={props.onClick}
+                    onClick={onClick}
                     disabled={isDisabled}
                 >
                     {statusIcon}
