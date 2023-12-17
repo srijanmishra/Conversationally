@@ -3,7 +3,7 @@ cp .env dependencies &&
 cp conversationally/api.py dependencies &&
 cp -r workbench dependencies &&
 cd dependencies &&
-zip -r ../aws_lambda_artifact.zip . -x "**/__pycache__" &&
+zip -r ../aws_lambda_artifact.zip . &&
 cd .. &&
 rm -rf dependencies
 stat -f%z aws_lambda_artifact.zip

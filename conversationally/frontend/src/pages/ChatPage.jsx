@@ -1,12 +1,12 @@
 import UserActionButton from "../components/UserActionButton/UserActionButton";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import { Avatar, TextField, Typography } from "@mui/material";
+import { Avatar, Snackbar, TextField, Typography } from "@mui/material";
 import AudioRecordingHandler from "../utils/audio";
 import img from "/AI_portrait.png";
 import useTheme from '@mui/material/styles/useTheme';
@@ -16,6 +16,13 @@ import Grow from '@mui/material/Grow';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import LogoutButton from "../components/Auth/LogoutButton";
+import Alert from '@mui/material/Alert';
+import bkg from "../../public/gradient.jpeg"
+import { getUser } from "../utils/client";
+import { useAuth0 } from '@auth0/auth0-react';
+import { useNavigate, Link } from "react-router-dom";
+import PaymentIcon from '@mui/icons-material/Payment';
 
 const API_ROOT = import.meta.env.VITE_API_ROOT;
 
@@ -23,9 +30,15 @@ const styles = {
     container: {
         display: "flex",
         flexDirection: "column",
+        paddingTop: "150px",
+        paddingBottom: "20px",
         justifyContent: "space-around",
-        height: "90vh",
-        alignItems: "center"
+        height: "100vh",
+        alignItems: "center",
+        backgroundImage: `url(${bkg})`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        boxShadow: "inset 0 0 0 2000px rgba(0, 0, 0, 0.7)",
     },
     avatar: {
         height: "200px",
@@ -36,10 +49,15 @@ const styles = {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center"
+    },
+    menu: {
+        position: "absolute",
+        top: "10px",
+        left: "10px"
+    
     }
 }
 
-const audioHandler = new AudioRecordingHandler()
 
 export const ChatPage = () => {
 
@@ -54,55 +72,103 @@ export const ChatPage = () => {
 
     console.log(urlImg)
 
+    
+    const { user } = useAuth0();
+    const navigate = useNavigate()
+    const [subscribed, setSubscribed] = useState(true)
+    useEffect(() => {
+        getUser(user).then((res) => {setSubscribed(res.subscribed)})
+    }, [user])
+    
     const [config, setConfig] = useState({
         "avatarSrc": urlImg ? urlImg : img, //if urlImg exists then use that instead of the default image.
         "systemMessage": urlSysMsg ? urlSysMsg : "You are a helpful and friendly assistant with a charming and witty personality. You're straight to the point and don't waste time. Respond in less than two sentences."
     })
+    
+    const [conversationState, setConversationState] = useState("idle") // "idle", "listening", "thinking", "speaking"
     const [recording, setRecording] = useState(false);
     const [messages, setMessages] = useState([{"role": "system", "content": config.systemMessage}]);
-
+    
     const updateConfig = (configUpdates) => {
         let newConfig = {...config, ...configUpdates}
         setConfig(newConfig)
         setMessages([{"role": "system", "content": newConfig.systemMessage}])
     }
-
+    
+    
     const toggleRecording = () => {
         if (recording) {
             audioHandler.stopRecording(messages, setMessages);
+            setConversationState("thinking")
         } else {
             audioHandler.startRecording();
+            setConversationState("listening")
         }
         setRecording(!recording);
     }
-
+    
+    const [errorSnackBarOpen, setErrorSnackBarOpen] = useState(false);
+    const onFailure = ()=>{
+        setErrorSnackBarOpen(true)
+        setConversationState("idle")
+    }
+    const [audioHandler, _] = useState(new AudioRecordingHandler(setConversationState, onFailure));
+    
     return (
         <>
-            <div style={{display: 'flex', flexDirection:'row', justifyContent: 'space-between'}}>
-                <Customisation config={config} updateConfig={updateConfig} />
-                <Share config={config} />
-            </div>
+
             <Grow in={true} mountOnEnter unmountOnExit>
                 <div style={styles.container}>
-                    <Avatar src={config.avatarSrc} style={styles.avatar}/>
-                    <div className="container">
-                        <div className="row justify-content-center">
-                            <div className="col-12 text-center">
-                            {/* <audio id="player-user" src={audioSrc} controls></audio> */}
-                            </div>
-                            <div className="col-8">
-                                <UserActionButton status={recording ? "recording" : "standby"} onClick={toggleRecording} />
-                            </div>
+                <Slide direction="right" in={true} mountOnEnter unmountOnExit>
+                    <div style={styles.menu}>
+                        <div>
+                            <Customisation config={config} updateConfig={updateConfig} />
+                            <Share config={config} />
+                            <Link to="https://billing.stripe.com/p/login/00g8wSfGWdyU36w144">
+                                <div style={{margin: "5px"}}>
+                                    <Button variant="text" size="large" color="secondary">
+                                        <div style={{fontSize: "14px"}}>
+                                            Your Subscription
+                                        </div>
+                                        <PaymentIcon style={{fontSize: "16px", marginLeft: "10px"}} />
+                                    </Button>
+                                </div>
+                            </Link>
+                            <LogoutButton />
                         </div>
                     </div>
+                </Slide> 
+                    <Avatar src={config.avatarSrc} style={styles.avatar}/>
+                    <UserActionButton status={conversationState} onClick={() => {
+                        if (subscribed) {
+                            toggleRecording()
+                        }
+                        else {
+                            navigate("/Conversationally/payment")
+                        }
+                    }} />
                 </div>
             </Grow>
+            <Snackbar open={errorSnackBarOpen} autoHideDuration={1000} onClose={()=>{setErrorSnackBarOpen(false)}}>
+                <Alert severity="error" variant="filled">
+                    <Typography variant="h5">
+                        Something went wrong. Please try again.
+                    </Typography>
+                </Alert>
+            </Snackbar>
         </>
   );
 
 };
 
 const Customisation = (props) => {
+    
+    const { user } = useAuth0();
+    const navigate = useNavigate()
+    const [subscribed, setSubscribed] = useState(true)
+    useEffect(() => {
+        getUser(user).then((res) => {setSubscribed(res.subscribed)})
+    }, [user])
 
     const [open, setOpen] = useState(false);
     const [loadingState, setLoadingState] = useState(false);
@@ -118,13 +184,22 @@ const Customisation = (props) => {
     const [sysMsgValue, setSysMsgValue] = useState(props.config.systemMessage)
 
     const save = async () => {
+
+        if (!subscribed) {
+            navigate("/Conversationally/payment")
+            return
+        }        
+
         toggleOpen()
 
         // bullshit loading mode
         setLoadingState("🧠 Processing personality...")
         setTimeout(() => {
             setLoadingState("📸 Taking assistant headshot...")
-        }, 3000);
+        }, 2000);
+        setTimeout(() => {
+            setLoadingState("🔊 Generating voice...")
+        }, 4000);
         setTimeout(() => {
             setLoadingState("✨ Putting on the finishing touches...")
         }, 6000);
@@ -159,13 +234,15 @@ const Customisation = (props) => {
             .catch(error => console.log(error));
     }
 
+    console.log('rendering. Subscribed?', subscribed)
+
     return <>
-        <div style={{margin: "10px"}}>
+        <div style={{margin: "5px"}}>
             <Button onClick={toggleOpen} variant="text" size="large" color="secondary">
-                <div style={{fontSize: "16px"}}>
+                <div style={{fontSize: "14px"}}>
                     Customise
                 </div>
-                <EditIcon style={{fontSize: "20px", marginLeft: "10px"}} />
+                <EditIcon style={{fontSize: "16px", marginLeft: "10px"}} />
             </Button>
         </div>
         <Dialog open={open} fullWidth={true} onClose={()=>{toggleOpen()}}>
@@ -225,7 +302,7 @@ const Share = (props) => {
     }
 
     return <>
-        <div style={{margin: "10px"}}>
+        <div style={{margin: "5px"}}>
             <Button onClick={shareButtonClicked} variant="text" size="large" color="secondary">
                 <div style={{fontSize: "16px"}}>
                     Copy Link
