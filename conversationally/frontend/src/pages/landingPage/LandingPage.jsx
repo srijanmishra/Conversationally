@@ -26,6 +26,31 @@ const Navbar = () => {
             <CTAButton size="large" edge="end" onClick={loginWithRedirect}>Login</CTAButton>
         </div>
     )
+
+    const testimonialData = [
+        {
+            text: "Highly recommend Conversationally, the assistants are so useful!",
+            img: "",
+            stars: 5,
+            name: "- Emily C",
+        },
+
+        {
+            text: "Really interesting platform with great potential, excited to see the what comes next. ",
+            img: "",
+            stars: 4,
+            name: "- Michael P",
+        },
+
+        {
+            text: "The future is now, Conversationally has been very helpful for my daily tasks!",
+            img: "",
+            stars: 5,
+            name: "-Morgan D",
+        },
+
+
+    ];
 }
 
 
@@ -36,8 +61,8 @@ const LandingPage = () => {
     return (
         <>
             <Navbar />
-            <Fold 
-                headline="Create characters you can talk with" 
+            <Fold
+                headline="Create characters you can talk with"
                 subheadline="Some things are easier to get done in a conversation rather than writing them down. We make it easy to create voice assistants that can help you with those tasks."
                 benefits={[
                     "⚡️ Talk in real time",
@@ -46,6 +71,7 @@ const LandingPage = () => {
                 ]}
                 background={bkg}
             />
+            <Testimonials testimonials={testimonialData} headline="Customers can't stop raving about their personal assistants" />
         </>
     )
 }
