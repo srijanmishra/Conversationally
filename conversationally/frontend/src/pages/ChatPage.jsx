@@ -24,6 +24,7 @@ import { getUser } from "../utils/client";
 import { useAuth0 } from '@auth0/auth0-react';
 import { useNavigate, Link } from "react-router-dom";
 import PaymentIcon from '@mui/icons-material/Payment';
+import CTAButton from "../components/CTAButton";
 
 const API_ROOT = import.meta.env.VITE_API_ROOT;
 
@@ -62,12 +63,8 @@ const styles = {
 
 export const ChatPage = () => {
 
-    //get the query string. 
     const queryString = window.location.search;
-    //configure the queryString so that it is easier to deal with.
     const urlParameters = new URLSearchParams(queryString);
-    
-    //get information from query strings and store in variables for use.
     const urlSysMsg = urlParameters.get('sysMsg');
     const urlImg = urlParameters.get('img');
     const urlVoice = urlParameters.get('voice')
@@ -119,24 +116,25 @@ export const ChatPage = () => {
 
             <Grow in={true} mountOnEnter unmountOnExit>
                 <div style={styles.container}>
-                <Slide direction="right" in={true} mountOnEnter unmountOnExit>
-                    <div style={styles.menu}>
-                        <div>
-                            <Customisation config={config} updateConfig={updateConfig} />
-                            <Link to="https://billing.stripe.com/p/login/00g8wSfGWdyU36w144">
-                                <div style={{margin: "5px"}}>
-                                    <Button variant="text" size="large" color="secondary">
-                                        <div style={{fontSize: "14px"}}>
-                                            Your Subscription
-                                        </div>
-                                        <PaymentIcon style={{fontSize: "16px", marginLeft: "10px"}} />
-                                    </Button>
-                                </div>
-                            </Link>
-                            <LogoutButton />
+                    <Slide direction="right" in={true} mountOnEnter unmountOnExit>
+                        <div style={styles.menu}>
+                            <div>
+                                <Customisation config={config} updateConfig={updateConfig} />
+                                <Share config={config} />
+                                <Link to="https://billing.stripe.com/p/login/00g8wSfGWdyU36w144">
+                                    <div style={{margin: "5px"}}>
+                                        <Button variant="text" size="large" color="secondary">
+                                            <div style={{fontSize: "14px"}}>
+                                                Your Subscription
+                                            </div>
+                                            <PaymentIcon style={{fontSize: "16px", marginLeft: "10px"}} />
+                                        </Button>
+                                    </div>
+                                </Link>
+                                <LogoutButton />
+                            </div>
                         </div>
-                    </div>
-                </Slide> 
+                    </Slide> 
                     <Avatar src={config.avatarSrc} style={styles.avatar}/>
                     <UserActionButton status={conversationState} onClick={() => {
                         if (subscribed) {
@@ -289,7 +287,7 @@ const Customisation = (props) => {
                 }} value={sysMsgValue} InputProps={{style: {color: theme.palette.secondary.main, fontSize: "14px"}}} style={{marginTop: "14px"}}/>
             </DialogContent>
             <DialogActions>
-                <Button onClick={save} variant="contained">Save</Button>
+                <CTAButton onClick={save} variant="contained">Save</CTAButton>
             </DialogActions>
         </Dialog>
         <Backdrop open={loadingState} sx={{zIndex: 1000, backgroundColor: "rgba(0, 0, 0, 0.9)"}}>
@@ -320,7 +318,7 @@ const Share = (props) => {
     }
 
     return <>
-        <div style={{margin: "10px"}}>
+        <div style={{margin: "5px"}}>
             <Button onClick={shareButtonClicked} variant="text" size="large" color="secondary">
                 <div style={{fontSize: "16px"}}>
                     Copy Link
