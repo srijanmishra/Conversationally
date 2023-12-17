@@ -4,6 +4,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import AddIcon from '@mui/icons-material/Add';
+import { Card } from '@mui/material';
 
 
 
@@ -13,57 +14,60 @@ const FAQs = (props) => {
     container: {
       display: 'flex',
       alignItems: 'flex-start',
-      justifyContent: 'flex-start',
+      justifyContent: 'space-between',
+      maxWidth: '1000px',
+      margin: '60px',
+      position: 'relative',
+      flexWrap: 'wrap',
     },
     imageContainer: {
-      marginRight: '20px',
+      marginRight: '0px',
+
     },
     image: {
-      width: '300px',
+      width: '100%',
       height: 'auto',
+
+
     },
     accordionContainer: {
-      flex: 1,
-    },
-    accordion: {
-      backgroundColor: 'transparent',
+
+      width: '100%',
+      marginLeft: '00px',
+
     },
   };
 
 
-
   return (
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <Card style={styles.container}>
+        {props.img && (
+          <div style={styles.imageContainer}>
+            <img src={props.img} alt="FAQ Section" style={styles.image} />
+          </div>
+        )}
 
-    <div style={styles.container}>
-      {props.img && (
-        <div style={styles.imageContainer}>
-          <img src={props.img} style={styles.image} />
+        <div style={styles.accordionContainer}>
+          {props.faqs.map((faq, index) => (
+            <Accordion key={index}>
+              <AccordionSummary
+                expandIcon={<AddIcon />}
+                aria-controls={`panel${index}a-content`}
+                id={`panel${index}a-header`}
+              >
+                <Typography variant="h4">{faq.question}</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography variant='h4'>
+                  {faq.answer}
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+          ))}
         </div>
-      )}
-
-      <div style={styles.accordionContainer}>
-
-        {props.faqs.map((faq, index) => ( // Map over the faqs array to render an Accordion for each
-          <Accordion key={index} >
-
-            <AccordionSummary
-              expandIcon={<AddIcon />} // Changed to a plus icon
-              aria-controls={`panel${index}a-content`}
-              id={`panel${index}a-header`}
-            >
-              <Typography variant="h7">{faq.question}</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography variant='h7'>
-                {faq.answer}
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
-
-        ))}
-      </div>
+      </Card>
     </div>
-
   );
 
 }
