@@ -2,8 +2,10 @@ import LoginButton from "../../components/Auth/LoginButton";
 import { AppBar, Toolbar, Button } from "@mui/material";
 import Fold from "./sections/Fold";
 import bkg from "../../../public/assistants.png";
+import image from "../../../public/source.png";
 import { useAuth0 } from "@auth0/auth0-react";
 import CTAButton from "../../components/CTAButton";
+import CTASection from "./sections/CTASection";
 
 const Navbar = () => {
 
@@ -46,6 +48,18 @@ const LandingPage = () => {
                 ]}
                 background={bkg}
             />
+            <CTASection
+            title={"Start taking AI photos now"} 
+            description={"Generate photorealistic images of people with AI.Save money and use AI to da photo shoot from your laptop or phone instead of hirining an expensive photographer"}
+            benefits={[{title:'Upload selfies and create photorealistic AI characters', id:1},
+            {title:'Take 100% AI photos in any pose, place or action', id:2},
+            {title:'Get photo packs like AI Yearbook, Old Money and Naughty Halloween',id:3}, 
+            {title:'Create AI-generated fashion designs with Sketch2image',id:4}]} 
+             ctaPrompt={"Try it out now"}
+             img={image}
+            />
+
+            
         </>
     )
 }
