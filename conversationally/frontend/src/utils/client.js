@@ -7,8 +7,8 @@ const getUser = async (user) => {
             'Content-Type': 'application/json' // necessary
         },
     });
-    const data = await response.json();
-    console.log(data)
+    let data = await response.json();
+    data = JSON.parse(data)
     return data;
 }
 

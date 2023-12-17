@@ -10,11 +10,12 @@ from mangum import Mangum
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from workbench.voice.transcribe import audio_bytes_to_text
-from workbench.LLM import Chat, request
+from workbench.LLM import Chat, request, voice_request
 from workbench.voice.generate import speak
 from workbench.image import generate_image
 import stripe
 import os
+
 stripe.api_key = os.getenv("STRIPE_API_KEY")
 
 origins = [
@@ -25,7 +26,7 @@ handler = Mangum(api)
 
 api.add_middleware(
     CORSMiddleware,
-    # allow_origins=origins,
+    #allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -36,6 +37,7 @@ api.add_middleware(
 class Payload(BaseModel):
     audio: str # base64 encoded audio bytes
     messages: str # the messages so far
+    voice: str
     
 class GenerateAvatarPayload(BaseModel):
     system_message: str
@@ -82,7 +84,7 @@ async def listen(payload: Payload):
     messages = json.loads(messages)
     #print(messages)
     
-    message = {"role": "user", "content": text}
+    #message = {"role": "user", "content": text}
     #print(message)
     chat.messages = messages # add chat history to chat
     #print(chat.messages)
@@ -93,15 +95,16 @@ async def listen(payload: Payload):
     chat.messages.append({"role": "assistant", "content": response})
     #print(chat.messages)
 
+    print(payload.voice)
+        
     print("Generating speech...")
     # response = text.text
-    audio = speak(response, voice="Nicole", play=False)
+    audio = speak(response, voice=payload.voice, play=False)
     # print(audio)
     audio = base64.b64encode(audio).decode()
 
     print('Returning response...')
 
-    response = {"audio": audio, "messages": chat.messages}
     # response = {
     #  'headers': {
     #         'Access-Control-Allow-Headers': 'Content-Type',
@@ -111,8 +114,21 @@ async def listen(payload: Payload):
     #  "statusCode": 200,
     # "body": response
     #  }
-    return json.dumps(response)
 
+    return json.dumps({"audio": audio, "messages": chat.messages})
+
+@api.post("/generate_voice")
+async def generate_voice(payload: GenerateAvatarPayload):
+    system_message = payload.system_message
+
+    print("DEBUG: finding best voice")
+    
+    voice_dict_response = voice_request(system_message=system_message) #get the response from the ai in the form "{'voice':'name'}"
+    voice_dict = json.loads(voice_dict_response)#convert the string response into a dictionary
+    print(voice_dict_response)
+    print(voice_dict)
+
+    return json.dumps(voice_dict)
 
 @api.post("/generate_avatar")
 async def generate_avatar(payload: GenerateAvatarPayload):
@@ -141,7 +157,9 @@ No background.
     print(img_prompt)
 
 
-    url = generate_image(prompt=img_prompt, provider="DALL_E_3", format="url")
+    url = generate_image(prompt=img_prompt, provider="DALL-E", format="url")
+
+    print(url)
 
     return json.dumps({"url": url})
 

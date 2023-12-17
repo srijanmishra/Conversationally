@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import LandingPage from "./pages/landingPage/LandingPage";
 import { ChatPage } from "./pages/ChatPage";
 import { Settings } from "./pages/Settings";
+import { ExamplesPage } from "./pages/ExamplesPage";
 import { Payment } from "./pages/Payment";
 import { useAuth0 } from '@auth0/auth0-react';
 
@@ -43,6 +44,7 @@ const App = () => {
           {
             isAuthenticated?
             <>
+              <Route path="examples" element={<ExamplesPage />} />
               <Route path="chat" element={<ChatPage />} />
               <Route path="settings" element={<Settings />} />
               <Route path="payment" element={<Payment />} />
