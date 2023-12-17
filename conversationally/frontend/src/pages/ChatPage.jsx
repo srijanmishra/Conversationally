@@ -30,6 +30,7 @@ const styles = {
         display: "flex",
         flexDirection: "column",
         paddingTop: "150px",
+        paddingBottom: "20px",
         justifyContent: "space-around",
         height: "100vh",
         alignItems: "center",
