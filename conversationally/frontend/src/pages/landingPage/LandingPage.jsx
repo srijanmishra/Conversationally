@@ -56,6 +56,7 @@ const LandingPage = () => {
             {title:'Get photo packs like AI Yearbook, Old Money and Naughty Halloween',id:3}, 
             {title:'Create AI-generated fashion designs with Sketch2image',id:4}]} 
              ctaPrompt={"Try it out now"}
+             background={bkg}
              img={image}
             />
 
