@@ -8,7 +8,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import { Avatar, Snackbar, TextField, Typography } from "@mui/material";
 import AudioRecordingHandler from "../utils/audio";
-import img from "/AI_portrait.png";
+import img from "../images/AI_portrait.png";
 import useTheme from '@mui/material/styles/useTheme';
 import EditIcon from '@mui/icons-material/Edit';
 import Slide from '@mui/material/Slide';
@@ -19,7 +19,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { getChatPageURL } from "../utils/link";
 import LogoutButton from "../components/Auth/LogoutButton";
 import Alert from '@mui/material/Alert';
-import bkg from "../../public/gradient.jpeg"
+import bkg from "../images/gradient.jpeg"
 import { getUser } from "../utils/client";
 import { useAuth0 } from '@auth0/auth0-react';
 import { useNavigate, Link } from "react-router-dom";
