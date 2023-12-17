@@ -20,6 +20,7 @@ import Alert from '@mui/material/Alert';
 import bkg from "../../public/gradient.jpeg"
 import { getUser } from "../utils/client";
 import { useAuth0 } from '@auth0/auth0-react';
+import { useNavigate } from "react-router-dom";
 
 const API_ROOT = import.meta.env.VITE_API_ROOT;
 
@@ -57,8 +58,10 @@ const styles = {
 export const ChatPage = () => {
     
     const { user } = useAuth0();
-
-    useEffect(() => {getUser(user)}, [user])
+    const [subscribed, setSubscribed] = useState(true)
+    useEffect(() => {
+        getUser(user).then((res) => {setSubscribed(res.subscribed)})
+    }, [user])
     
     const [config, setConfig] = useState({
         "avatarSrc": img,
@@ -93,6 +96,8 @@ export const ChatPage = () => {
         setConversationState("idle")
     }
     const [audioHandler, _] = useState(new AudioRecordingHandler(setConversationState, onFailure));
+    
+    const navigate = useNavigate()
 
     return (
         <>
@@ -114,7 +119,13 @@ export const ChatPage = () => {
                             {/* <audio id="player-user" src={audioSrc} controls></audio> */}
                             </div>
                             <div className="col-8">
-                                <UserActionButton status={conversationState} onClick={toggleRecording} />
+                                <UserActionButton status={conversationState} onClick={() => {
+                                    if (subscribed)
+                                        toggleRecording()
+                                    else {
+                                        navigate("/Conversationally/payment")
+                                    }
+                                }} />
                             </div>
                         </div>
                     </div>
