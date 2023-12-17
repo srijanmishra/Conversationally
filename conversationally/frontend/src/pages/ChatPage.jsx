@@ -20,7 +20,8 @@ import Alert from '@mui/material/Alert';
 import bkg from "../../public/gradient.jpeg"
 import { getUser } from "../utils/client";
 import { useAuth0 } from '@auth0/auth0-react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import PaymentIcon from '@mui/icons-material/Payment';
 
 const API_ROOT = import.meta.env.VITE_API_ROOT;
 
@@ -109,6 +110,16 @@ export const ChatPage = () => {
                         <div>
                             <Customisation config={config} updateConfig={updateConfig} />
                             <LogoutButton />
+                                <Link to="https://billing.stripe.com/p/login/00g8wSfGWdyU36w144">
+                                    <div style={{margin: "5px"}}>
+                                        <Button variant="text" size="large" color="secondary">
+                                            <div style={{fontSize: "14px"}}>
+                                                Your Subscription
+                                            </div>
+                                            <PaymentIcon style={{fontSize: "16px", marginLeft: "10px"}} />
+                                        </Button>
+                                    </div>
+                                </Link>
                         </div>
                     </div>
                 </Slide> 
