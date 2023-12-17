@@ -2,6 +2,9 @@ import { Mic as MicIcon, Square as SquareIcon } from "react-feather";
 import "./UserActionButton.scss";
 import PropTypes from "prop-types";
 import { Typography } from "@mui/material";
+import { LiveAudioVisualizer } from 'react-audio-visualize';
+import { useState } from 'react';
+
 
 const UserActionButton = (props) => {
 
@@ -18,12 +21,18 @@ const UserActionButton = (props) => {
         statusIconCommonProps = { className: "UserActionButton_icon" },
         isDisabled = false;
 
+    const [mediaRecorder, setMediaRecorder] = useState(null);
+
     switch (props.status) {
         case "listening":
             statusIcon = <SquareIcon {...statusIconCommonProps} />;
             statusText = "Recording your voice note...";
+            navigator.mediaDevices.getUserMedia({ audio: true }).then((mediaStream) => {
+                setMediaRecorder(new MediaRecorder(mediaStream));
+            })
             break;
         case "thinking":
+            setMediaRecorder(null);
             statusIcon = <MicIcon {...statusIconCommonProps} />;
             statusText = "Thinking...";
             isDisabled = true;
@@ -43,6 +52,7 @@ const UserActionButton = (props) => {
     return (
         <>
             <div style={styles}>
+                {mediaRecorder && <LiveAudioVisualizer mediaRecorder={mediaRecorder} width={200} height={75}/>}
                 <button
                     className={`UserActionButton UserActionButton-${props.status} ${
                         isDisabled ? "disabled" : ""
