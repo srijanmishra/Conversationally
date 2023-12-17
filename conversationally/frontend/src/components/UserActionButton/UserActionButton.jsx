@@ -1,10 +1,14 @@
-import { Mic as MicIcon, Square as SquareIcon } from "react-feather";
-import "./UserActionButton.scss";
+// import { Mic as MicIcon, Square as SquareIcon } from "react-feather";
 import PropTypes from "prop-types";
 import { Grow, Typography, useTheme } from "@mui/material";
 import { LiveAudioVisualizer } from 'react-audio-visualize';
 import { useState } from 'react';
 import { AudioRecorder, useAudioRecorder } from 'react-audio-voice-recorder';
+import SendRoundedIcon from '@mui/icons-material/SendRounded';
+import PsychologyRoundedIcon from '@mui/icons-material/PsychologyRounded';
+
+import "./UserActionButton.scss";
+import { Mic as MicIcon, Square as SquareIcon } from "react-feather";
 
 
 const UserActionButton = (props) => {
@@ -63,7 +67,7 @@ const UserActionButton = (props) => {
 
     let statusIcon,
         statusText,
-        statusIconCommonProps = { className: "UserActionButton_icon" },
+        statusIconCommonProps = { sx: {fontSize: "50px"}, className: "UserActionButton_icon" },
         isDisabled = false;
 
     // const [mediaRecorder, setMediaRecorder] = useState(null);
@@ -88,11 +92,11 @@ const UserActionButton = (props) => {
 
     switch (props.status) {
         case "listening":
-            statusIcon = <SquareIcon {...statusIconCommonProps} />;
+            statusIcon = <SendRoundedIcon sx={{fontSize: "18px"}}/>;
             statusText = "Recording your voice note...";
             break;
         case "thinking":
-            statusIcon = <MicIcon {...statusIconCommonProps} />;
+            statusIcon = <PsychologyRoundedIcon {...statusIconCommonProps} />;
             statusText = "Thinking...";
             isDisabled = true;
             break;
