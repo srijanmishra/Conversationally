@@ -2,10 +2,11 @@ import { Avatar } from "@mui/material";
 import { useState, useEffect } from "react";
 
 const avatarDiameter = 200;
+const maxAvatarDiameter = 300;
 
 const AudioVisualisingAvatar = (props) => {
     
-    const [r, setR] = useState(0);
+    const [deltaRadius, setDeltaRadius] = useState(0);
 
     const styles = {  
         container: {
@@ -17,18 +18,21 @@ const AudioVisualisingAvatar = (props) => {
         },
         avatar: {
             height: avatarDiameter,
-            width: avatarDiameter
+            width: avatarDiameter,
+            opacity: "0.2",
         },
         circle: {
             position: "absolute",
-            height: avatarDiameter + r,
-            width: avatarDiameter + r,
+            height: avatarDiameter + deltaRadius,
+            width: avatarDiameter + deltaRadius,
             borderRadius: "50%",
             // backgroundColor: "red",
             opacity: "0.5",
             border: "1px solid lightgrey",
         }
     }
+
+
 
     useEffect(() => {
 
@@ -42,11 +46,10 @@ const AudioVisualisingAvatar = (props) => {
             const arrayBuffer = reader.result;
             let bytes = Array.from(new Uint8Array(arrayBuffer))
             console.log(bytes.length)
-            // set radius increase (r) to each value of the array, at the right freuqnecy to show the audio whilst it is being played
             bytes.push(0)
             for (let i = 0; i < bytes.length; i++) {
                 setTimeout(() => {
-                    setR(bytes[i])
+                    setDeltaRadius(bytes[i] / 255 * (maxAvatarDiameter - avatarDiameter))
                 }, i / 44100)
             }
         }
