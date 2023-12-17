@@ -110,16 +110,16 @@ export const ChatPage = () => {
                         <div>
                             <Customisation config={config} updateConfig={updateConfig} />
                             <LogoutButton />
-                                <Link to="https://billing.stripe.com/p/login/00g8wSfGWdyU36w144">
-                                    <div style={{margin: "5px"}}>
-                                        <Button variant="text" size="large" color="secondary">
-                                            <div style={{fontSize: "14px"}}>
-                                                Your Subscription
-                                            </div>
-                                            <PaymentIcon style={{fontSize: "16px", marginLeft: "10px"}} />
-                                        </Button>
-                                    </div>
-                                </Link>
+                            <Link to="https://billing.stripe.com/p/login/00g8wSfGWdyU36w144">
+                                <div style={{margin: "5px"}}>
+                                    <Button variant="text" size="large" color="secondary">
+                                        <div style={{fontSize: "14px"}}>
+                                            Your Subscription
+                                        </div>
+                                        <PaymentIcon style={{fontSize: "16px", marginLeft: "10px"}} />
+                                    </Button>
+                                </div>
+                            </Link>
                         </div>
                     </div>
                 </Slide> 
