@@ -27,29 +27,34 @@ const DemoPaper = styled(Paper)(({ theme }) => (
 const Testimonials = (props) => {
     return (
         <>
-            <Typography variant="h3" align="center" gutterBottom sx={{ typography: { sm: "h2", xs: "h3" } }}>
+            <Typography variant="h3" align="center" style={{ marginTop: '30px', marginBottom: '30px' }} sx={{ typography: { sm: "h2", xs: "h3" } }}>
                 {props.headline}
             </Typography>
 
             <Stack direction="row" spacing={4} sx={{ flexWrap: 'wrap', justifyContent: 'center' }}>
                 {props.testimonials.map((testimonial, index) => (
-                    <DemoPaper key={index} elevation={3}>
+                    <DemoPaper key={index} elevation={3} style={{ maxWidth: '400px', maxHeight: '400px', margin: '10px' }}>
 
                         {testimonial.img && (
                             <img src={testimonial.img} style={{ width: '100%', height: 'auto' }} />
                         )}
 
-                        <Rating name={`read-only-${index}`} value={testimonial.stars} readOnly />
-                        <Typography variant="h6" sx={{ margin: '10px 0' }}>
-                            {testimonial.text}
-                        </Typography>
+                        <div style={{ maxWidth: '200px', margin: '10px' }} >
 
-                        <Typography variant="h6" sx={{ margin: '10px 0' }} style={{ fontWeight: 700 }}>
-                            {testimonial.name}
-                        </Typography>
+                            <Rating name={`read-only-${index}`} value={testimonial.stars} readOnly />
+                            <Typography variant="h4" sx={{ margin: '10px ', typography: { sm: "h4", xs: "h5" } }}>
+                                {testimonial.text}
+                            </Typography>
+
+                            <Typography variant="h4" sx={{ margin: '10px ', typography: { sm: "h4", xs: "h6" } }} style={{ fontWeight: 700 }}>
+                                {testimonial.name}
+                            </Typography>
+
+                        </div>
+
                     </DemoPaper>
                 ))}
-            </Stack>
+            </Stack >
         </>
     );
 };
