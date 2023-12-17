@@ -50,11 +50,11 @@ export const ExamplesPage = () => {
   return (
     <div style={styles.container}>
         <div>
-            <ProfileCard sysMsg="gym trainer test system message" imgURL={VirtualAssistantImg} title="Gym Trainer" description="I am trainer blahbla a df asdf asd fas dfa sdf asd fsad fasd fsa ad fasdfasdfsa"/>
-            <ProfileCard sysMsg="girlfriend test system message" imgURL={VirtualAssistantImg} title="AI GF" description="I am ur gd adf asdf adf afas df ad fa sdfa sdfas das df ad fas dfas f ad asd as dasdfas"/>
-            <ProfileCard sysMsg="assistant test system message" imgURL={VirtualAssistantImg} title="Virtual Assistant" description="I am assistant adfsdf ad adf asdf asd ada sdfa sdfa sdf asdf asd fas dfa d as dfa df af as da fs "/>
-            <ProfileCard sysMsg="assistant test system message" imgURL={VirtualAssistantImg} title="Virtual Assistant" description="I am assistant adfsdf ad adf asdf asd ada sdfa sdfa sdf asdf asd fas dfa d as dfa df af as da fs "/>
-            <ProfileCard sysMsg="assistant test system message" imgURL={VirtualAssistantImg} title="Virtual Assistant" description="I am assistant adfsdf ad adf asdf asd ada sdfa sdfa sdf asdf asd fas dfa d as dfa df af as da fs "/>
+            <ProfileCard sysMsg="gym trainer test system message" imgURL={VirtualAssistantImg} voice="Dave" title="Gym Trainer" description="I am trainer blahbla a df asdf asd fas dfa sdf asd fsad fasd fsa ad fasdfasdfsa"/>
+            <ProfileCard sysMsg="girlfriend test system message" imgURL={VirtualAssistantImg} voice="Charlotte" title="AI GF" description="I am ur gd adf asdf adf afas df ad fa sdfa sdfas das df ad fas dfas f ad asd as dasdfas"/>
+            <ProfileCard sysMsg="assistant test system message" imgURL={VirtualAssistantImg} voice="Charlotte" title="Virtual Assistant" description="I am assistant adfsdf ad adf asdf asd ada sdfa sdfa sdf asdf asd fas dfa d as dfa df af as da fs "/>
+            <ProfileCard sysMsg="assistant test system message" imgURL={VirtualAssistantImg} voice="Nicole" title="Virtual Assistant" description="I am assistant adfsdf ad adf asdf asd ada sdfa sdfa sdf asdf asd fas dfa d as dfa df af as da fs "/>
+            <ProfileCard sysMsg="assistant test system message" imgURL={VirtualAssistantImg} voice="Fin" title="Virtual Assistant" description="I am assistant adfsdf ad adf asdf asd ada sdfa sdfa sdf asdf asd fas dfa d as dfa df af as da fs "/>
         </div>
     </div>
   );
@@ -82,7 +82,7 @@ const ProfileCard = (props) => {
                 </Typography>
                 </CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'center', pr: 1, pb: 1, justifyContent: 'flex-end'}} style={{}}>
-                    <Link to={getChatPageURL(props.sysMsg, props.imgURL)}>
+                    <Link to={getChatPageURL(props.sysMsg, props.imgURL, props.voice)}>
                         <Button onClick={buttonClicked} variant="text" size="large" color="secondary" >
                         <div style={{fontSize: "16px"}}>
                             Chat
