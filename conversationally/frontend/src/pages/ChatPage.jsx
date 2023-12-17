@@ -15,6 +15,8 @@ import Slide from '@mui/material/Slide';
 import Grow from '@mui/material/Grow';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import { getChatPageURL } from "../utils/link";
 import LogoutButton from "../components/Auth/LogoutButton";
 import Alert from '@mui/material/Alert';
 import bkg from "../../public/gradient.jpeg"
@@ -60,6 +62,11 @@ const styles = {
 
 
 export const ChatPage = () => {
+
+    const queryString = window.location.search;
+    const urlParameters = new URLSearchParams(queryString);
+    const urlSysMsg = urlParameters.get('sysMsg');
+    const urlImg = urlParameters.get('img');
     
     const { user } = useAuth0();
     const navigate = useNavigate()
@@ -69,8 +76,8 @@ export const ChatPage = () => {
     }, [user])
     
     const [config, setConfig] = useState({
-        "avatarSrc": img,
-        "systemMessage": "You are a helpful and friendly assistant with a charming and witty personality. You're straight to the point and don't waste time. Respond in less than two sentences."
+        "avatarSrc": urlImg ? urlImg : img, //if urlImg exists then use that instead of the default image.
+        "systemMessage": urlSysMsg ? urlSysMsg : "You are a helpful and friendly assistant with a charming and witty personality. You're straight to the point and don't waste time. Respond in less than two sentences."
     })
     
     const [conversationState, setConversationState] = useState("idle") // "idle", "listening", "thinking", "speaking"
@@ -107,24 +114,25 @@ export const ChatPage = () => {
 
             <Grow in={true} mountOnEnter unmountOnExit>
                 <div style={styles.container}>
-                <Slide direction="right" in={true} mountOnEnter unmountOnExit>
-                    <div style={styles.menu}>
-                        <div>
-                            <Customisation config={config} updateConfig={updateConfig} />
-                            <Link to="https://billing.stripe.com/p/login/00g8wSfGWdyU36w144">
-                                <div style={{margin: "5px"}}>
-                                    <Button variant="text" size="large" color="secondary">
-                                        <div style={{fontSize: "14px"}}>
-                                            Your Subscription
-                                        </div>
-                                        <PaymentIcon style={{fontSize: "16px", marginLeft: "10px"}} />
-                                    </Button>
-                                </div>
-                            </Link>
-                            <LogoutButton />
+                    <Slide direction="right" in={true} mountOnEnter unmountOnExit>
+                        <div style={styles.menu}>
+                            <div>
+                                <Customisation config={config} updateConfig={updateConfig} />
+                                <Share config={config} />
+                                <Link to="https://billing.stripe.com/p/login/00g8wSfGWdyU36w144">
+                                    <div style={{margin: "5px"}}>
+                                        <Button variant="text" size="large" color="secondary">
+                                            <div style={{fontSize: "14px"}}>
+                                                Your Subscription
+                                            </div>
+                                            <PaymentIcon style={{fontSize: "16px", marginLeft: "10px"}} />
+                                        </Button>
+                                    </div>
+                                </Link>
+                                <LogoutButton />
+                            </div>
                         </div>
-                    </div>
-                </Slide> 
+                    </Slide> 
                     <Avatar src={config.avatarSrc} style={styles.avatar}/>
                     <UserActionButton status={conversationState} onClick={() => {
                         if (subscribed) {
@@ -160,7 +168,7 @@ const Customisation = (props) => {
     const [open, setOpen] = useState(false);
     const [loadingState, setLoadingState] = useState(false);
 
-    const toggleOpen = () => {
+    const toggleOpen = (event) => {
         setOpen(!open);
         setSysMsgValue(props.config.systemMessage) // resets to original value if escaped, but also updates internal state if saved
     }
@@ -262,5 +270,33 @@ const Customisation = (props) => {
                 </Typography>
             </div>
         </Backdrop>
+    </>
+}
+
+const Share = (props) => {
+
+    const urlToCopy = getChatPageURL(props.config.systemMessage, props.config.avatarSrc);
+
+    const shareButtonClicked = () => {
+        navigator.clipboard.writeText(urlToCopy)
+            .then(() => {
+            // Success! Text has been copied to clipboard
+            alert('Text has been copied to clipboard: ' + urlToCopy);
+            })
+            .catch(err => {
+            // Unable to copy to clipboard
+            console.error('Unable to copy:', err);
+            });
+    }
+
+    return <>
+        <div style={{margin: "5px"}}>
+            <Button onClick={shareButtonClicked} variant="text" size="large" color="secondary">
+                <div style={{fontSize: "16px"}}>
+                    Copy Link
+                </div>
+                <ContentCopyIcon style={{fontSize: "20px", marginLeft: "10px"}} />
+            </Button>
+        </div>
     </>
 }
