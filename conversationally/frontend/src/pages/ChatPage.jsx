@@ -29,6 +29,7 @@ const styles = {
     container: {
         display: "flex",
         flexDirection: "column",
+        paddingTop: "150px",
         justifyContent: "space-around",
         height: "100vh",
         alignItems: "center",
