@@ -20,6 +20,11 @@ import { getChatPageURL } from "../utils/link";
 import LogoutButton from "../components/Auth/LogoutButton";
 import Alert from '@mui/material/Alert';
 import bkg from "../../public/gradient.jpeg"
+import { getUser } from "../utils/client";
+import { useAuth0 } from '@auth0/auth0-react';
+import { useNavigate, Link } from "react-router-dom";
+import PaymentIcon from '@mui/icons-material/Payment';
+import CTAButton from "../components/CTAButton";
 
 const API_ROOT = import.meta.env.VITE_API_ROOT;
 
@@ -27,6 +32,8 @@ const styles = {
     container: {
         display: "flex",
         flexDirection: "column",
+        paddingTop: "150px",
+        paddingBottom: "20px",
         justifyContent: "space-around",
         height: "100vh",
         alignItems: "center",
@@ -56,17 +63,18 @@ const styles = {
 
 export const ChatPage = () => {
 
-    //get the query string. 
     const queryString = window.location.search;
-    //configure the queryString so that it is easier to deal with.
     const urlParameters = new URLSearchParams(queryString);
-    
-    //get information from query strings and store in variables for use.
     const urlSysMsg = urlParameters.get('sysMsg');
     const urlImg = urlParameters.get('img');
-
-    console.log(urlImg)
-
+    
+    const { user } = useAuth0();
+    const navigate = useNavigate()
+    const [subscribed, setSubscribed] = useState(true)
+    useEffect(() => {
+        getUser(user).then((res) => {setSubscribed(res.subscribed)})
+    }, [user])
+    
     const [config, setConfig] = useState({
         "avatarSrc": urlImg ? urlImg : img, //if urlImg exists then use that instead of the default image.
         "systemMessage": urlSysMsg ? urlSysMsg : "You are a helpful and friendly assistant with a charming and witty personality. You're straight to the point and don't waste time. Respond in less than two sentences."
@@ -100,7 +108,7 @@ export const ChatPage = () => {
         setConversationState("idle")
     }
     const [audioHandler, _] = useState(new AudioRecordingHandler(setConversationState, onFailure));
-
+    
     return (
         <>
 
@@ -110,21 +118,30 @@ export const ChatPage = () => {
                         <div style={styles.menu}>
                             <div>
                                 <Customisation config={config} updateConfig={updateConfig} />
+                                <Share config={config} />
+                                <Link to="https://billing.stripe.com/p/login/00g8wSfGWdyU36w144">
+                                    <div style={{margin: "5px"}}>
+                                        <Button variant="text" size="large" color="secondary">
+                                            <div style={{fontSize: "14px"}}>
+                                                Your Subscription
+                                            </div>
+                                            <PaymentIcon style={{fontSize: "16px", marginLeft: "10px"}} />
+                                        </Button>
+                                    </div>
+                                </Link>
                                 <LogoutButton />
                             </div>
                         </div>
                     </Slide> 
-                        <Avatar src={config.avatarSrc} style={styles.avatar}/>
-                        <div className="container">
-                            <div className="row justify-content-center">
-                                <div className="col-12 text-center">
-                                {/* <audio id="player-user" src={audioSrc} controls></audio> */}
-                                </div>
-                                <div className="col-8">
-                                    <UserActionButton status={conversationState} onClick={toggleRecording} />
-                                </div>
-                            </div>
-                        </div>
+                    <Avatar src={config.avatarSrc} style={styles.avatar}/>
+                    <UserActionButton status={conversationState} onClick={() => {
+                        if (subscribed) {
+                            toggleRecording()
+                        }
+                        else {
+                            navigate("/Conversationally/payment")
+                        }
+                    }} />
                 </div>
             </Grow>
             <Snackbar open={errorSnackBarOpen} autoHideDuration={1000} onClose={()=>{setErrorSnackBarOpen(false)}}>
@@ -140,6 +157,13 @@ export const ChatPage = () => {
 };
 
 const Customisation = (props) => {
+    
+    const { user } = useAuth0();
+    const navigate = useNavigate()
+    const [subscribed, setSubscribed] = useState(true)
+    useEffect(() => {
+        getUser(user).then((res) => {setSubscribed(res.subscribed)})
+    }, [user])
 
     const [open, setOpen] = useState(false);
     const [loadingState, setLoadingState] = useState(false);
@@ -155,13 +179,22 @@ const Customisation = (props) => {
     const [sysMsgValue, setSysMsgValue] = useState(props.config.systemMessage)
 
     const save = async () => {
+
+        if (!subscribed) {
+            navigate("/Conversationally/payment")
+            return
+        }        
+
         toggleOpen()
 
         // bullshit loading mode
         setLoadingState("🧠 Processing personality...")
         setTimeout(() => {
             setLoadingState("📸 Taking assistant headshot...")
-        }, 3000);
+        }, 2000);
+        setTimeout(() => {
+            setLoadingState("🔊 Generating voice...")
+        }, 4000);
         setTimeout(() => {
             setLoadingState("✨ Putting on the finishing touches...")
         }, 6000);
@@ -196,6 +229,8 @@ const Customisation = (props) => {
             .catch(error => console.log(error));
     }
 
+    console.log('rendering. Subscribed?', subscribed)
+
     return <>
         <div style={{margin: "5px"}}>
             <Button onClick={toggleOpen} variant="text" size="large" color="secondary">
@@ -228,7 +263,7 @@ const Customisation = (props) => {
                 }} value={sysMsgValue} InputProps={{style: {color: theme.palette.secondary.main, fontSize: "14px"}}} style={{marginTop: "14px"}}/>
             </DialogContent>
             <DialogActions>
-                <Button onClick={save} variant="contained">Save</Button>
+                <CTAButton onClick={save} variant="contained">Save</CTAButton>
             </DialogActions>
         </Dialog>
         <Backdrop open={loadingState} sx={{zIndex: 1000, backgroundColor: "rgba(0, 0, 0, 0.9)"}}>
@@ -259,7 +294,7 @@ const Share = (props) => {
     }
 
     return <>
-        <div style={{margin: "10px"}}>
+        <div style={{margin: "5px"}}>
             <Button onClick={shareButtonClicked} variant="text" size="large" color="secondary">
                 <div style={{fontSize: "16px"}}>
                     Copy Link
