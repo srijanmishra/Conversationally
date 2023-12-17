@@ -182,7 +182,10 @@ const Customisation = (props) => {
         setLoadingState("🧠 Processing personality...")
         setTimeout(() => {
             setLoadingState("📸 Taking assistant headshot...")
-        }, 3000);
+        }, 2000);
+        setTimeout(() => {
+            setLoadingState("🔊 Generating voice...")
+        }, 4000);
         setTimeout(() => {
             setLoadingState("✨ Putting on the finishing touches...")
         }, 6000);
