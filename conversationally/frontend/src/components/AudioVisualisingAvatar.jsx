@@ -26,11 +26,9 @@ const AudioVisualisingAvatar = (props) => {
             borderRadius: "50%",
             // backgroundColor: "red",
             opacity: "0.5",
-            border: "1px solid red",
+            border: "1px solid lightgrey",
         }
     }
-
-    console.log(props.generatedAudio)
 
     useEffect(() => {
 
@@ -43,29 +41,15 @@ const AudioVisualisingAvatar = (props) => {
         reader.onloadend = function() {
             const arrayBuffer = reader.result;
             let bytes = Array.from(new Uint8Array(arrayBuffer))
+            console.log(bytes.length)
             // set radius increase (r) to each value of the array, at the right freuqnecy to show the audio whilst it is being played
             bytes.push(0)
             for (let i = 0; i < bytes.length; i++) {
                 setTimeout(() => {
                     setR(bytes[i])
-                }, i / 1000 / 4)
+                }, i / 44100)
             }
-            console.log('bytes', bytes)
         }
-
-
-
-
-        // const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        // const analyser = audioCtx.createAnalyser();
-        // analyser.fftSize = 128; 
-
-        // const bufferLength = analyser.frequencyBinCount; 
-        // const dataArray = new Uint8Array(bufferLength);
-        // analyser.getByteFrequencyData(dataArray);
-        // console.log('data array', dataArray)
-
-// )
 
     }, [props.generatedAudio])
 
