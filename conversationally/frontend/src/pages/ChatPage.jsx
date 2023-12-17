@@ -16,6 +16,7 @@ import Grow from '@mui/material/Grow';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import { getChatPageURL } from "../utils/link";
 import LogoutButton from "../components/Auth/LogoutButton";
 import Alert from '@mui/material/Alert';
 import bkg from "../../public/gradient.jpeg"
@@ -62,17 +63,10 @@ const styles = {
 
 export const ChatPage = () => {
 
-    //get the query string. 
     const queryString = window.location.search;
-    //configure the queryString so that it is easier to deal with.
     const urlParameters = new URLSearchParams(queryString);
-    
-    //get information from query strings and store in variables for use.
     const urlSysMsg = urlParameters.get('sysMsg');
     const urlImg = urlParameters.get('img');
-
-    console.log(urlImg)
-
     
     const { user } = useAuth0();
     const navigate = useNavigate()
@@ -120,25 +114,25 @@ export const ChatPage = () => {
 
             <Grow in={true} mountOnEnter unmountOnExit>
                 <div style={styles.container}>
-                <Slide direction="right" in={true} mountOnEnter unmountOnExit>
-                    <div style={styles.menu}>
-                        <div>
-                            <Customisation config={config} updateConfig={updateConfig} />
-                            <Share config={config} />
-                            <Link to="https://billing.stripe.com/p/login/00g8wSfGWdyU36w144">
-                                <div style={{margin: "5px"}}>
-                                    <Button variant="text" size="large" color="secondary">
-                                        <div style={{fontSize: "14px"}}>
-                                            Your Subscription
-                                        </div>
-                                        <PaymentIcon style={{fontSize: "16px", marginLeft: "10px"}} />
-                                    </Button>
-                                </div>
-                            </Link>
-                            <LogoutButton />
+                    <Slide direction="right" in={true} mountOnEnter unmountOnExit>
+                        <div style={styles.menu}>
+                            <div>
+                                <Customisation config={config} updateConfig={updateConfig} />
+                                <Share config={config} />
+                                <Link to="https://billing.stripe.com/p/login/00g8wSfGWdyU36w144">
+                                    <div style={{margin: "5px"}}>
+                                        <Button variant="text" size="large" color="secondary">
+                                            <div style={{fontSize: "14px"}}>
+                                                Your Subscription
+                                            </div>
+                                            <PaymentIcon style={{fontSize: "16px", marginLeft: "10px"}} />
+                                        </Button>
+                                    </div>
+                                </Link>
+                                <LogoutButton />
+                            </div>
                         </div>
-                    </div>
-                </Slide> 
+                    </Slide> 
                     <Avatar src={config.avatarSrc} style={styles.avatar}/>
                     <UserActionButton status={conversationState} onClick={() => {
                         if (subscribed) {
@@ -174,7 +168,7 @@ const Customisation = (props) => {
     const [open, setOpen] = useState(false);
     const [loadingState, setLoadingState] = useState(false);
 
-    const toggleOpen = () => {
+    const toggleOpen = (event) => {
         setOpen(!open);
         setSysMsgValue(props.config.systemMessage) // resets to original value if escaped, but also updates internal state if saved
         console.log(props.config.systemMessage)
@@ -285,10 +279,7 @@ const Customisation = (props) => {
 
 const Share = (props) => {
 
-    const urlBase = window.location.origin 
-    const urlPathName = window.location.pathname
-
-    let urlToCopy = urlBase + urlPathName + "?sysMsg=" + encodeURIComponent(props.config.systemMessage) + "&img=" + encodeURIComponent(props.config.avatarSrc)
+    const urlToCopy = getChatPageURL(props.config.systemMessage, props.config.avatarSrc);
 
     const shareButtonClicked = () => {
         navigator.clipboard.writeText(urlToCopy)
