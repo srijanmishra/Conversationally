@@ -172,9 +172,16 @@ const Customisation = (props) => {
         // setLoadingState("📸 Taking assistant headshot...")
         let img = await generateAvatarImgURL(sysMsgValue)
         // setLoadingState("✨ Putting on the finishing touches...")
+
+        //setting the voice 
+        console.log("voice is being generated")
+        let voice = await generateAvatarVoice(sysMsgValue)
+        console.log("generated voice is: " + voice)
+
         props.updateConfig({
             "systemMessage": sysMsgValue,
-            "avatarSrc": img
+            "avatarSrc": img,
+            "voice": voice
         })
         console.log(sysMsgValue)
         
@@ -194,6 +201,23 @@ const Customisation = (props) => {
                 data = JSON.parse(data)
                 const img = data.url
                 return img
+            })
+            .catch(error => console.log(error));
+    }
+
+    const generateAvatarVoice = (inputSysMsgValue) => {
+        return fetch(API_ROOT + "/generate_voice", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json' // necessary
+            },
+            body: JSON.stringify({system_message: inputSysMsgValue})
+        })
+            .then(response => response.json())
+            .then(data => {
+                data = JSON.parse(data)
+                const voice = data.voice
+                return voice
             })
             .catch(error => console.log(error));
     }

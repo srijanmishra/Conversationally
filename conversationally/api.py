@@ -93,26 +93,11 @@ async def listen(payload: Payload):
     chat.messages.append({"role": "assistant", "content": response})
     #print(chat.messages)
 
-    #I am using this code to reliably get the system message
-    for index, dict in enumerate(chat.messages):
-        if dict['role']=="system":
-            system_message = chat.messages[index]["content"]
-            print("DEBUG: found system message")
-    
-    print("DEBUG: finding best voice")
-    voice_request(system_message=system_message)
-    
-    voice_dict_response = voice_request(system_message=system_message) #get the response from the ai in the form "{'voice':'name'}"
-    voice_dict = json.loads(voice_dict_response)#convert the string response into a dictionary
-    print(voice_dict_response)
-    print(voice_dict)
-    
-    payload_voice = payload.voice
-    print(payload_voice)
+    print(payload.voice)
         
     print("Generating speech...")
     # response = text.text
-    audio = speak(response, voice=voice_dict["voice"], play=False)
+    audio = speak(response, voice=payload.voice, play=False)
     # print(audio)
     audio = base64.b64encode(audio).decode()
 
@@ -130,6 +115,18 @@ async def listen(payload: Payload):
 
     return json.dumps({"audio": audio, "messages": chat.messages})
 
+@api.post("/generate_voice")
+async def generate_voice(payload: GenerateAvatarPayload):
+    system_message = payload.system_message
+
+    print("DEBUG: finding best voice")
+    
+    voice_dict_response = voice_request(system_message=system_message) #get the response from the ai in the form "{'voice':'name'}"
+    voice_dict = json.loads(voice_dict_response)#convert the string response into a dictionary
+    print(voice_dict_response)
+    print(voice_dict)
+
+    return json.dumps(voice_dict)
 
 @api.post("/generate_avatar")
 async def generate_avatar(payload: GenerateAvatarPayload):
