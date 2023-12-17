@@ -18,6 +18,10 @@ import CircularProgress from '@mui/material/CircularProgress';
 import LogoutButton from "../components/Auth/LogoutButton";
 import Alert from '@mui/material/Alert';
 import bkg from "../../public/gradient.jpeg"
+import { getUser } from "../utils/client";
+import { useAuth0 } from '@auth0/auth0-react';
+import { useNavigate, Link } from "react-router-dom";
+import PaymentIcon from '@mui/icons-material/Payment';
 
 const API_ROOT = import.meta.env.VITE_API_ROOT;
 
@@ -54,6 +58,12 @@ const styles = {
 
 export const ChatPage = () => {
     
+    const { user } = useAuth0();
+    const navigate = useNavigate()
+    const [subscribed, setSubscribed] = useState(true)
+    useEffect(() => {
+        getUser(user).then((res) => {setSubscribed(res.subscribed)})
+    }, [user])
     
     const [config, setConfig] = useState({
         "avatarSrc": img,
@@ -99,6 +109,16 @@ export const ChatPage = () => {
                         <div>
                             <Customisation config={config} updateConfig={updateConfig} />
                             <LogoutButton />
+                            <Link to="https://billing.stripe.com/p/login/00g8wSfGWdyU36w144">
+                                <div style={{margin: "5px"}}>
+                                    <Button variant="text" size="large" color="secondary">
+                                        <div style={{fontSize: "14px"}}>
+                                            Your Subscription
+                                        </div>
+                                        <PaymentIcon style={{fontSize: "16px", marginLeft: "10px"}} />
+                                    </Button>
+                                </div>
+                            </Link>
                         </div>
                     </div>
                 </Slide> 
@@ -109,7 +129,13 @@ export const ChatPage = () => {
                             {/* <audio id="player-user" src={audioSrc} controls></audio> */}
                             </div>
                             <div className="col-8">
-                                <UserActionButton status={conversationState} onClick={toggleRecording} />
+                                <UserActionButton status={conversationState} onClick={() => {
+                                    if (subscribed)
+                                        toggleRecording()
+                                    else {
+                                        navigate("/Conversationally/payment")
+                                    }
+                                }} />
                             </div>
                         </div>
                     </div>
@@ -128,6 +154,13 @@ export const ChatPage = () => {
 };
 
 const Customisation = (props) => {
+    
+    const { user } = useAuth0();
+    const navigate = useNavigate()
+    const [subscribed, setSubscribed] = useState(true)
+    useEffect(() => {
+        getUser(user).then((res) => {setSubscribed(res.subscribed)})
+    }, [user])
 
     const [open, setOpen] = useState(false);
     const [loadingState, setLoadingState] = useState(false);
@@ -143,6 +176,12 @@ const Customisation = (props) => {
     const [sysMsgValue, setSysMsgValue] = useState(props.config.systemMessage)
 
     const save = async () => {
+
+        if (!subscribed) {
+            navigate("/Conversationally/payment")
+            return
+        }        
+
         toggleOpen()
 
         // bullshit loading mode
