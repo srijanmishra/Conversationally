@@ -24,7 +24,10 @@ def request(prompt, system_message="you are a helpful assistant", model="gpt-3.5
 def voice_request(prompt, system_message="you are a helpful assistant", model="gpt-3.5-turbo-16k", temperature=0.8):
     
     avaliable_voices = {
-        "Nicole": "Friendly female voice with an american accent."
+        "Nicole": "Soft and soothing female voice with an american accent.",
+        "Charlotte": "Charming female voice with a slightly british accent.",
+        "Dave": "Friendly dynamic male voice with an accent from essex",
+        "Fin": "Robust Irish male accent which is suitable for fun roles."
     }
     
     schema = {
