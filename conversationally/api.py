@@ -10,9 +10,10 @@ from mangum import Mangum
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from workbench.voice.transcribe import audio_bytes_to_text
-from workbench.LLM import Chat, request
+from workbench.LLM import Chat, request, voice_request
 from workbench.voice.generate import speak
 from workbench.image import generate_image
+
 
 origins = [
     "*",
@@ -91,9 +92,23 @@ async def listen(payload: Payload):
     chat.messages.append({"role": "assistant", "content": response})
     #print(chat.messages)
 
+    #I am using this code to reliably get the system message
+    for index, dict in enumerate(chat.messages):
+        if dict['role']=="system":
+            system_message = chat.messages[index]["content"]
+            print("DEBUG: found system message")
+    
+    print("DEBUG: finding best voice")
+    voice_request(system_message=system_message)
+    
+    voice_dict_response = voice_request(system_message=system_message) #get the response from the ai in the form "{'voice':'name'}"
+    voice_dict = json.loads(voice_dict_response)#convert the string response into a dictionary
+    print(voice_dict_response)
+    print(voice_dict)
+        
     print("Generating speech...")
     # response = text.text
-    audio = speak(response, voice="Dave", play=False)
+    audio = speak(response, voice=voice_dict["voice"], play=False)
     # print(audio)
     audio = base64.b64encode(audio).decode()
 

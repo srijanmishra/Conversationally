@@ -21,14 +21,9 @@ def request(prompt, system_message="you are a helpful assistant", model="gpt-3.5
 
     return summary.choices[0].message.content
 
-def voice_request(prompt, system_message="you are a helpful assistant", model="gpt-3.5-turbo-16k", temperature=0.8):
+def voice_request(system_message="you are a helpful assistant", model="gpt-3.5-turbo-1106", temperature=0.8):
     
-    avaliable_voices = {
-        "Nicole": "Soft and soothing female voice with an american accent.",
-        "Charlotte": "Charming female voice with a slightly british accent.",
-        "Dave": "Friendly dynamic male voice with an accent from essex",
-        "Fin": "Robust Irish male accent which is suitable for fun roles."
-    }
+    avaliable_voices = {"Nicole": "Soft and soothing female voice with an american accent.","Charlotte": "Charming female voice with a slightly british accent.","Dave": "Friendly dynamic male voice with an accent from essex","Fin": "Robust Irish male accent which is suitable for fun roles."}
     
     schema = {
         "type": "object",
@@ -38,7 +33,7 @@ def voice_request(prompt, system_message="you are a helpful assistant", model="g
         }
     }
     
-    engineered_prompt = f"Based on this description of a character: {prompt}, choose which voice would be most suitable to represent it from this dictionary {avaliable_voices}. The response will be used directly in code and should be in the JSON format, so you must only provide the name of the voice as specified in the key of the dictionary with no changes to capitalisation or punctuation."
+    engineered_prompt = f"Based on this description of a character: {system_message}, choose which voice would be most suitable to represent it from this dictionary {avaliable_voices}. The response will be used directly in code and should be in the JSON format, so you must only provide the name of the voice in a dictionary of the form: 'voice':'name of voice'"
     
     messages=[
         {"role": "system", "content": system_message},
@@ -51,8 +46,8 @@ def voice_request(prompt, system_message="you are a helpful assistant", model="g
         temperature=temperature,
         response_format={ "type": "json_object" }
     )
-    print(response)
-    return response
+    print(response.choices[0].message.content)
+    return response.choices[0].message.content
 
 
 class Chat():
