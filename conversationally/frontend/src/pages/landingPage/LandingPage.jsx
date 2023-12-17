@@ -18,6 +18,7 @@ const Navbar = () => {
             alignItems: "center",
             padding: 5,
             width: "100vw",
+            border:"none",
         }
     }
 
@@ -49,13 +50,12 @@ const LandingPage = () => {
                 background={bkg}
             />
             <CTASection
-            title={"Start taking AI photos now"} 
-            description={"Generate photorealistic images of people with AI.Save money and use AI to da photo shoot from your laptop or phone instead of hirining an expensive photographer"}
-            benefits={[{title:'Upload selfies and create photorealistic AI characters', id:1},
-            {title:'Take 100% AI photos in any pose, place or action', id:2},
-            {title:'Get photo packs like AI Yearbook, Old Money and Naughty Halloween',id:3}, 
-            {title:'Create AI-generated fashion designs with Sketch2image',id:4}]} 
-             ctaPrompt={"Try it out now"}
+            title={"Become an amazing AI character creator!"} 
+            description={"Ever wondered what its like to have your own personalized AI assistant? Well wonder no more!"}
+            benefits={[{title:'⚡️ Engage in live conversations', id:1},
+            {title:'📩 Bring your voice assistant into the spotlight and share the magic with others!', id:2},
+            {title:"🔊 Tailor your voice assistant's charm to match your style.",id:3}]} 
+             ctaPrompt={"Try it out!"}
              background={bkg}
              img={image}
             />

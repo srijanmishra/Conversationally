@@ -38,12 +38,12 @@ function CTASection(props) {
     return(
     <Card>
         <div style={{display:"flex", flexDirection:"row",backgroundColor:"black" }}>    
-            <div style={{padding: "40px"}}>  
+            <div style={{padding: "40px", alignSelf: "center"}}>  
                 <CardContent>
                     <Typography variant="h1">
                         <h1 style={{fontSize: '48px', marginBottom:"15px"}}>{props.title}</h1>
                     </Typography>
-                    <Typography variant="h5">   
+                    <Typography variant="h4">   
                         <p style={{marginBottom:"15px"}}>{props.description}</p>
                         <ul>{benefits}</ul>
                     </Typography> 
