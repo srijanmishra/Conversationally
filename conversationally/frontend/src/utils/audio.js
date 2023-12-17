@@ -23,7 +23,7 @@ export default class AudioRecordingHandler {
         this.recorder.start(); // Start recording
     };
 
-    stopRecording = (messages, setMessages) => {
+    stopRecording = (messages, setMessages, voice) => {
         console.log("stop button clicked");
         this.recorder.stop().getMp3().then(([buffer, blob]) => {
             const reader = new FileReader();
@@ -37,7 +37,8 @@ export default class AudioRecordingHandler {
                 let str_messages = JSON.stringify(messages)
                 let payload = JSON.stringify({
                     "audio": base64StringAudio,
-                    "messages": str_messages
+                    "messages": str_messages,
+                    "voice": voice
                 })
                 fetch(API_ROOT + "/listen", {
                     method: "POST",

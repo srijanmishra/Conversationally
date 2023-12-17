@@ -67,7 +67,8 @@ export const ChatPage = () => {
     const urlParameters = new URLSearchParams(queryString);
     const urlSysMsg = urlParameters.get('sysMsg');
     const urlImg = urlParameters.get('img');
-    
+    const urlVoice = urlParameters.get('voice')
+
     const { user } = useAuth0();
     const navigate = useNavigate()
     const [subscribed, setSubscribed] = useState(true)
@@ -77,7 +78,8 @@ export const ChatPage = () => {
     
     const [config, setConfig] = useState({
         "avatarSrc": urlImg ? urlImg : img, //if urlImg exists then use that instead of the default image.
-        "systemMessage": urlSysMsg ? urlSysMsg : "You are a helpful and friendly assistant with a charming and witty personality. You're straight to the point and don't waste time. Respond in less than two sentences."
+        "systemMessage": urlSysMsg ? urlSysMsg : "You are a helpful and friendly assistant with a charming and witty personality. You're straight to the point and don't waste time. Respond in less than two sentences.",
+        "voice": urlVoice ? urlVoice : "Nicole"
     })
     
     const [conversationState, setConversationState] = useState("idle") // "idle", "listening", "thinking", "speaking"
@@ -93,7 +95,7 @@ export const ChatPage = () => {
     
     const toggleRecording = () => {
         if (recording) {
-            audioHandler.stopRecording(messages, setMessages);
+            audioHandler.stopRecording(messages, setMessages, config.voice);
             setConversationState("thinking")
         } else {
             audioHandler.startRecording();
@@ -203,9 +205,16 @@ const Customisation = (props) => {
         // setLoadingState("📸 Taking assistant headshot...")
         let img = await generateAvatarImgURL(sysMsgValue)
         // setLoadingState("✨ Putting on the finishing touches...")
+
+        //setting the voice 
+        console.log("voice is being generated")
+        let voice = await generateAvatarVoice(sysMsgValue)
+        console.log("generated voice is: " + voice)
+
         props.updateConfig({
             "systemMessage": sysMsgValue,
-            "avatarSrc": img
+            "avatarSrc": img,
+            "voice": voice
         })
         console.log(sysMsgValue)
         
@@ -229,7 +238,22 @@ const Customisation = (props) => {
             .catch(error => console.log(error));
     }
 
-    console.log('rendering. Subscribed?', subscribed)
+    const generateAvatarVoice = (inputSysMsgValue) => {
+        return fetch(API_ROOT + "/generate_voice", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json' // necessary
+            },
+            body: JSON.stringify({system_message: inputSysMsgValue})
+        })
+            .then(response => response.json())
+            .then(data => {
+                data = JSON.parse(data)
+                const voice = data.voice
+                return voice
+            })
+            .catch(error => console.log(error));
+    }
 
     return <>
         <div style={{margin: "5px"}}>
