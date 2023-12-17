@@ -18,6 +18,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import LogoutButton from "../components/Auth/LogoutButton";
 import Alert from '@mui/material/Alert';
 import bkg from "../../public/gradient.jpeg"
+import { getUser } from "../utils/client";
+import { useAuth0 } from '@auth0/auth0-react';
 
 const API_ROOT = import.meta.env.VITE_API_ROOT;
 
@@ -54,6 +56,9 @@ const styles = {
 
 export const ChatPage = () => {
     
+    const { user } = useAuth0();
+
+    useEffect(() => {getUser(user)}, [user])
     
     const [config, setConfig] = useState({
         "avatarSrc": img,

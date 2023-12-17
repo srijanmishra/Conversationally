@@ -1,5 +1,5 @@
-# %%
 # a fastapi api running on localhost:8080 that calls a python function
+# %%
 from dotenv import load_dotenv
 load_dotenv(override=True) # noqa
 import json
@@ -13,6 +13,9 @@ from workbench.voice.transcribe import audio_bytes_to_text
 from workbench.LLM import Chat, request
 from workbench.voice.generate import speak
 from workbench.image import generate_image
+import stripe
+import os
+stripe.api_key = os.getenv("STRIPE_API_KEY")
 
 origins = [
     "*",
@@ -22,7 +25,7 @@ handler = Mangum(api)
 
 api.add_middleware(
     CORSMiddleware,
-    # allow_origins=origins,
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -36,6 +39,9 @@ class Payload(BaseModel):
     
 class GenerateAvatarPayload(BaseModel):
     system_message: str
+
+class User(BaseModel):
+    email: str
 
 
 # @app.post("/chat")
@@ -109,7 +115,6 @@ async def listen(payload: Payload):
     #  "statusCode": 200,
     # "body": response
     #  }
-
     return json.dumps(response)
 
 
@@ -143,6 +148,35 @@ No background.
     url = generate_image(prompt=img_prompt, provider="DALL_E_3", format="url")
 
     return json.dumps({"url": url})
+
+
+
+@api.get("/user")
+async def get_user_info(email ):
+    print("hello world")
+
+    user = {}
+
+    # GET USER PLAN FROM STRIPE
+
+    customer = stripe.Customer.list(limit=1, email=email)
+    try:
+        customer_id = customer.data[0].id
+    except IndexError:
+        user["subscribed"] = False
+        print("No user found (hence no subscription)")
+        return json.dumps(user)
+    
+    subscription = stripe.Subscription.list(customer_id=customer_id, limit=3)
+    subscription = subscription.data
+    if len(subscription) > 0:
+        user["subscribed"] = True
+    else:
+        user["subscribed"] = False
+
+    print(user)
+
+    return json.dumps(user)
 
 
 if __name__ == "__main__":
