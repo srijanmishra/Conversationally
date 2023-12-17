@@ -109,7 +109,6 @@ export const ChatPage = () => {
                     <div style={styles.menu}>
                         <div>
                             <Customisation config={config} updateConfig={updateConfig} />
-                            <LogoutButton />
                             <Link to="https://billing.stripe.com/p/login/00g8wSfGWdyU36w144">
                                 <div style={{margin: "5px"}}>
                                     <Button variant="text" size="large" color="secondary">
@@ -120,6 +119,7 @@ export const ChatPage = () => {
                                     </Button>
                                 </div>
                             </Link>
+                            <LogoutButton />
                         </div>
                     </div>
                 </Slide> 
