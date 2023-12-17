@@ -10,6 +10,7 @@ const UserActionButton = (props) => {
         "flexDirection": "column",
         "alignItems": "center",
         "justifyContent": "center",
+        textAlign: "center",
     }
 
     let statusIcon,
@@ -41,7 +42,7 @@ const UserActionButton = (props) => {
 
     return (
         <>
-            <div style={{"display": "flex", "flexDirection": "column", "alignItems": "center"}}>
+            <div style={styles}>
                 <button
                     className={`UserActionButton UserActionButton-${props.status} ${
                         isDisabled ? "disabled" : ""
