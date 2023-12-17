@@ -24,7 +24,6 @@ export default class AudioRecordingHandler {
     };
 
     stopRecording = (messages, setMessages, voice) => {
-        console.log("stop button clicked");
         this.recorder.stop().getMp3().then(([buffer, blob]) => {
             const reader = new FileReader();
             reader.readAsArrayBuffer(blob);
@@ -54,14 +53,11 @@ export default class AudioRecordingHandler {
                         messages = data.messages
                         setMessages(messages)
                         let audio = data.audio
-                        // log first 10 characters of the string
-                        console.log(audio.substring(0, 10))
                         let fetchableUrl = 'data:audio/wav;base64,' + audio;
                         fetch(fetchableUrl)
                             .then(response => response.blob())
                             .then(blob => {
                                 let url = URL.createObjectURL(blob);
-                                console.log('audio url:', url)
                                 let audio = new Audio(url)
                                 audio.play()
                                 this.setConversationState("speaking")
