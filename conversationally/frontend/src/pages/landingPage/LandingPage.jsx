@@ -58,7 +58,7 @@ const LandingPage = () => {
                 background={bkg}
 
             />
-            <FAQs img='conversationally/frontend/public/FAQ.png' faqs={faqData} />
+            <FAQs img='./public/FAQ.png' faqs={faqData} />
         </>
     )
 }
