@@ -49,15 +49,17 @@ const LandingPage = () => {
                 ]}
                 background={bkg}
             />
+            
             <CTASection
-            title={"Become an amazing AI character creator!"} 
-            description={"Ever wondered what its like to have your own personalized AI assistant? Well wonder no more!"}
-            benefits={[{title:'⚡️ Engage in live conversations', id:1},
-            {title:'📩 Bring your voice assistant into the spotlight and share the magic with others!', id:2},
-            {title:"🔊 Tailor your voice assistant's charm to match your style.",id:3}]} 
-             ctaPrompt={"Try it out!"}
-             background={bkg}
-             img={image}
+                title={"Become an amazing AI character creator!"} 
+                description={"Ever wondered what it is like to have your own personalized AI assistant? Well, wonder no more!"}
+                benefits={[
+                    "⚡️ Engage in live conversations",
+                    "📩 Bring your voice assistant into the spotlight and share the magic with others", 
+                    "🔊 Tailor your voice assistant's charm to match your style"]} 
+                ctaPrompt={"Try it out!"}
+                background={bkg}
+                img={image}
             />
 
             

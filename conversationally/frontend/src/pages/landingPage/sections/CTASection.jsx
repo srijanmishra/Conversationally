@@ -1,24 +1,7 @@
 
-import {Card, CardActions, CardContent, CardMedia, Typography} from '@mui/material'
-
-
-const style = {
-    fontSize: "16px",
-    backgroundImage: "linear-gradient(to right, #DA22FF 0%, #9733EE  51%, #DA22FF  100%)",
-    margin: "10px",
-    padding: "10px 45px",
-    textAlign: "center",
-    textTransform: "uppercase",
-    transition: "0.5s",
-    backgroundSize: "200% auto",
-    color: "white",            
-    boxShadow: "0 0 20px #eee",
-    borderRadius: "10px",
-    display: "block",
-    textDecoration: "none",
-    size:"large",
-     edge:"end",
-}
+import {Box, Card, CardActions, CardContent, CardMedia, Typography} from '@mui/material'
+import CTAButton from "../../../components/CTAButton";
+import { useAuth0 } from "@auth0/auth0-react";
 const styles = {
         container: {
             position: "absolute",
@@ -33,34 +16,38 @@ const styles = {
 
 function CTASection(props) {
 
-    const benefits=props.benefits.map(benefit=>
-        <li key={benefit.id}>{benefit.title}</li>)
+    const { loginWithRedirect } = useAuth0();
     return(
-    <Card>
-        <div style={{display:"flex", flexDirection:"row",backgroundColor:"black" }}>    
-            <div style={{padding: "40px", alignSelf: "center"}}>  
-                <CardContent>
-                    <Typography variant="h1">
-                        <h1 style={{fontSize: '48px', marginBottom:"15px"}}>{props.title}</h1>
+    <Card sx={{display:"flex", flexWrap:{sm: "none", xs: "none"},backgroundColor:"black", margin:"20px" }}>  
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignSelf: "center" }}>
+            <div style={{padding: "20px",  maxWidth:"800px"}}>  
+                <CardContent sx={{ flex: '1 0 auto' }}>
+                    <Typography sx={{typography: {sm: "h2", xs: "h3"}}}>
+                        {props.title}
                     </Typography>
                     <Typography variant="h4">   
-                        <p style={{marginBottom:"15px"}}>{props.description}</p>
-                        <ul>{benefits}</ul>
+                        <p style={{marginBottom:"15px", marginTop:"15px"}}>{props.description}</p>
                     </Typography> 
+                    {props.benefits.map((benefit, index) => {
+                    return <div style={styles.benefit} key={index} >
+                        <Typography variant="h4">{benefit}</Typography>
+                    </div>
+                    })}
                 </CardContent>
                 <CardActions>
                     <Typography variant="body1">
-                        <button style={style} onClick={props.handleClick}>{props.ctaPrompt}</button>
+                        <CTAButton size="large" edge="end" onClick={loginWithRedirect}>{props.ctaPrompt}</CTAButton>
                     </Typography> 
                 </CardActions>
                 
             </div>
-                <CardMedia>
-                <img src={props.img} style={{}}/>
-                </CardMedia>
-            
-        </div>
-    </Card>
+        </Box>
+        <CardMedia
+            component="img"
+            sx={{ width:  500}}
+            image={props.img}
+        />
+     </Card>
     )
     
 }
