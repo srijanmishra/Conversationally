@@ -158,16 +158,18 @@ async def get_user_info(email ):
     user = {}
 
     # GET USER PLAN FROM STRIPE
+    print(email)
 
     customer = stripe.Customer.list(limit=1, email=email)
     try:
         customer_id = customer.data[0].id
-    except IndexError:
+    except IndexError as e:
+        print(e)
         user["subscribed"] = False
         print("No user found (hence no subscription)")
         return json.dumps(user)
     
-    subscription = stripe.Subscription.list(customer_id=customer_id, limit=3)
+    subscription = stripe.Subscription.list(customer=customer_id, limit=3)
     subscription = subscription.data
     if len(subscription) > 0:
         user["subscribed"] = True
