@@ -22,6 +22,7 @@ import { getUser } from "../utils/client";
 import { useAuth0 } from '@auth0/auth0-react';
 import { useNavigate, Link } from "react-router-dom";
 import PaymentIcon from '@mui/icons-material/Payment';
+import CTAButton from "../components/CTAButton";
 
 const API_ROOT = import.meta.env.VITE_API_ROOT;
 
@@ -254,7 +255,7 @@ const Customisation = (props) => {
                 }} value={sysMsgValue} InputProps={{style: {color: theme.palette.secondary.main, fontSize: "14px"}}} style={{marginTop: "14px"}}/>
             </DialogContent>
             <DialogActions>
-                <Button onClick={save} variant="contained">Save</Button>
+                <CTAButton onClick={save} variant="contained">Save</CTAButton>
             </DialogActions>
         </Dialog>
         <Backdrop open={loadingState} sx={{zIndex: 1000, backgroundColor: "rgba(0, 0, 0, 0.9)"}}>
