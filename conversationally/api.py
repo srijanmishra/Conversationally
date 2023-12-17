@@ -1,5 +1,5 @@
-# %%
 # a fastapi api running on localhost:8080 that calls a python function
+# %%
 from dotenv import load_dotenv
 load_dotenv(override=True) # noqa
 import json
@@ -13,7 +13,10 @@ from workbench.voice.transcribe import audio_bytes_to_text
 from workbench.LLM import Chat, request, voice_request
 from workbench.voice.generate import speak
 from workbench.image import generate_image
+import stripe
+import os
 
+stripe.api_key = os.getenv("STRIPE_API_KEY")
 
 origins = [
     "*",
@@ -38,7 +41,6 @@ class Payload(BaseModel):
     
 class GenerateAvatarPayload(BaseModel):
     system_message: str
-
 
 # @app.post("/chat")
 # async def chat(text: Text):
@@ -160,6 +162,36 @@ No background.
     print(url)
 
     return json.dumps({"url": url})
+
+
+
+@api.get("/user")
+async def get_user_info(email):
+
+    user = {}
+
+    # GET USER PLAN FROM STRIPE
+    print(email)
+
+    customer = stripe.Customer.list(limit=1, email=email)
+    try:
+        customer_id = customer.data[0].id
+    except IndexError as e:
+        print(e)
+        user["subscribed"] = False
+        print("No user found (hence no subscription)")
+        return json.dumps(user)
+    
+    subscription = stripe.Subscription.list(customer=customer_id, limit=3)
+    subscription = subscription.data
+    if len(subscription) > 0:
+        user["subscribed"] = True
+    else:
+        user["subscribed"] = False
+
+    print(user)
+
+    return json.dumps(user)
 
 
 if __name__ == "__main__":
