@@ -51,7 +51,7 @@ const FAQs = (props) => {
               aria-controls={`panel${index}a-content`}
               id={`panel${index}a-header`}
             >
-              <Typography>{faq.question}</Typography>
+              <Typography variant="h1">{faq.question}</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Typography>
