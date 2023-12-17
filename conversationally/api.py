@@ -34,6 +34,7 @@ api.add_middleware(
 class Payload(BaseModel):
     audio: str # base64 encoded audio bytes
     messages: str # the messages so far
+    voice: str
     
 class GenerateAvatarPayload(BaseModel):
     system_message: str
@@ -105,6 +106,9 @@ async def listen(payload: Payload):
     voice_dict = json.loads(voice_dict_response)#convert the string response into a dictionary
     print(voice_dict_response)
     print(voice_dict)
+    
+    payload_voice = payload.voice
+    print(payload_voice)
         
     print("Generating speech...")
     # response = text.text

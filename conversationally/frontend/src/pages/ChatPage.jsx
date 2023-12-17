@@ -64,12 +64,14 @@ export const ChatPage = () => {
     //get information from query strings and store in variables for use.
     const urlSysMsg = urlParameters.get('sysMsg');
     const urlImg = urlParameters.get('img');
+    const urlVoice = urlParameters.get('voice')
 
     console.log(urlImg)
 
     const [config, setConfig] = useState({
         "avatarSrc": urlImg ? urlImg : img, //if urlImg exists then use that instead of the default image.
-        "systemMessage": urlSysMsg ? urlSysMsg : "You are a helpful and friendly assistant with a charming and witty personality. You're straight to the point and don't waste time. Respond in less than two sentences."
+        "systemMessage": urlSysMsg ? urlSysMsg : "You are a helpful and friendly assistant with a charming and witty personality. You're straight to the point and don't waste time. Respond in less than two sentences.",
+        "voice": urlVoice ? urlVoice : "Nicole"
     })
     
     const [conversationState, setConversationState] = useState("idle") // "idle", "listening", "thinking", "speaking"
@@ -85,7 +87,7 @@ export const ChatPage = () => {
     
     const toggleRecording = () => {
         if (recording) {
-            audioHandler.stopRecording(messages, setMessages);
+            audioHandler.stopRecording(messages, setMessages, config.voice);
             setConversationState("thinking")
         } else {
             audioHandler.startRecording();
