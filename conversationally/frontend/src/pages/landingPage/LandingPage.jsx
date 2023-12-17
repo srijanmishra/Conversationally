@@ -37,7 +37,7 @@ const LandingPage = () => {
         <>
             <Navbar />
             <Fold 
-                headline="Create custom voice assistants you can talk with" 
+                headline="Create characters you can talk with" 
                 subheadline="Some things are easier to get done in a conversation rather than writing them down. We make it easy to create voice assistants that can help you with those tasks."
                 benefits={[
                     "⚡️ Talk in real time",
