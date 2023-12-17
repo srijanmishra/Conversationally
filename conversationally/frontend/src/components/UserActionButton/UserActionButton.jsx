@@ -43,11 +43,11 @@ const UserActionButton = (props) => {
         <>
             <div style={{"display": "flex", "flexDirection": "column", "alignItems": "center"}}>
                 <button
-                  className={`UserActionButton UserActionButton-${props.status} ${
-                    isDisabled ? "disabled" : ""
-                  } mb-2`}
-                  onClick={props.onClick}
-                  disabled={isDisabled}
+                    className={`UserActionButton UserActionButton-${props.status} ${
+                        isDisabled ? "disabled" : ""
+                    } mb-2`}
+                    onClick={props.onClick}
+                    disabled={isDisabled}
                 >
                     {statusIcon}
                 </button>
