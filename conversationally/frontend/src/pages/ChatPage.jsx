@@ -98,7 +98,7 @@ export const ChatPage = () => {
         setConversationState("idle")
     }
     const [audioHandler, _] = useState(new AudioRecordingHandler(setConversationState, onFailure));
-
+    
     return (
         <>
 
@@ -130,8 +130,9 @@ export const ChatPage = () => {
                             </div>
                             <div className="col-8">
                                 <UserActionButton status={conversationState} onClick={() => {
-                                    if (subscribed)
+                                    if (subscribed) {
                                         toggleRecording()
+                                    }
                                     else {
                                         navigate("/Conversationally/payment")
                                     }
@@ -222,6 +223,8 @@ const Customisation = (props) => {
             })
             .catch(error => console.log(error));
     }
+
+    console.log('rendering. Subscribed?', subscribed)
 
     return <>
         <div style={{margin: "5px"}}>
