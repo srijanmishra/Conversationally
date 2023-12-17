@@ -163,7 +163,6 @@ const Customisation = (props) => {
     const toggleOpen = () => {
         setOpen(!open);
         setSysMsgValue(props.config.systemMessage) // resets to original value if escaped, but also updates internal state if saved
-        console.log(props.config.systemMessage)
     }
 
     const theme = useTheme();
@@ -199,7 +198,6 @@ const Customisation = (props) => {
             "systemMessage": sysMsgValue,
             "avatarSrc": img
         })
-        console.log(sysMsgValue)
         
         setLoadingState(false)
     }
@@ -220,8 +218,6 @@ const Customisation = (props) => {
             })
             .catch(error => console.log(error));
     }
-
-    console.log('rendering. Subscribed?', subscribed)
 
     return <>
         <div style={{margin: "5px"}}>
