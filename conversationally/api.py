@@ -80,7 +80,7 @@ async def listen(payload: Payload):
     messages = json.loads(messages)
     #print(messages)
     
-    message = {"role": "user", "content": text}
+    #message = {"role": "user", "content": text}
     #print(message)
     chat.messages = messages # add chat history to chat
     #print(chat.messages)
@@ -93,13 +93,12 @@ async def listen(payload: Payload):
 
     print("Generating speech...")
     # response = text.text
-    audio = speak(response, voice="Nicole", play=False)
+    audio = speak(response, voice="Dave", play=False)
     # print(audio)
     audio = base64.b64encode(audio).decode()
 
     print('Returning response...')
 
-    response = {"audio": audio, "messages": chat.messages}
     # response = {
     #  'headers': {
     #         'Access-Control-Allow-Headers': 'Content-Type',
@@ -110,7 +109,7 @@ async def listen(payload: Payload):
     # "body": response
     #  }
 
-    return json.dumps(response)
+    return json.dumps({"audio": audio, "messages": chat.messages})
 
 
 @api.post("/generate_avatar")
