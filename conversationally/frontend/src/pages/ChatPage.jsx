@@ -15,6 +15,7 @@ import Slide from '@mui/material/Slide';
 import Grow from '@mui/material/Grow';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LogoutButton from "../components/Auth/LogoutButton";
 import Alert from '@mui/material/Alert';
 import bkg from "../../public/gradient.jpeg"
@@ -60,6 +61,18 @@ const styles = {
 
 
 export const ChatPage = () => {
+
+    //get the query string. 
+    const queryString = window.location.search;
+    //configure the queryString so that it is easier to deal with.
+    const urlParameters = new URLSearchParams(queryString);
+    
+    //get information from query strings and store in variables for use.
+    const urlSysMsg = urlParameters.get('sysMsg');
+    const urlImg = urlParameters.get('img');
+
+    console.log(urlImg)
+
     
     const { user } = useAuth0();
     const navigate = useNavigate()
@@ -69,8 +82,8 @@ export const ChatPage = () => {
     }, [user])
     
     const [config, setConfig] = useState({
-        "avatarSrc": img,
-        "systemMessage": "You are a helpful and friendly assistant with a charming and witty personality. You're straight to the point and don't waste time. Respond in less than two sentences."
+        "avatarSrc": urlImg ? urlImg : img, //if urlImg exists then use that instead of the default image.
+        "systemMessage": urlSysMsg ? urlSysMsg : "You are a helpful and friendly assistant with a charming and witty personality. You're straight to the point and don't waste time. Respond in less than two sentences."
     })
     
     const [conversationState, setConversationState] = useState("idle") // "idle", "listening", "thinking", "speaking"
@@ -111,6 +124,7 @@ export const ChatPage = () => {
                     <div style={styles.menu}>
                         <div>
                             <Customisation config={config} updateConfig={updateConfig} />
+                            <Share config={config} />
                             <Link to="https://billing.stripe.com/p/login/00g8wSfGWdyU36w144">
                                 <div style={{margin: "5px"}}>
                                     <Button variant="text" size="large" color="secondary">
@@ -266,5 +280,36 @@ const Customisation = (props) => {
                 </Typography>
             </div>
         </Backdrop>
+    </>
+}
+
+const Share = (props) => {
+
+    const urlBase = window.location.origin 
+    const urlPathName = window.location.pathname
+
+    let urlToCopy = urlBase + urlPathName + "?sysMsg=" + encodeURIComponent(props.config.systemMessage) + "&img=" + encodeURIComponent(props.config.avatarSrc)
+
+    const shareButtonClicked = () => {
+        navigator.clipboard.writeText(urlToCopy)
+            .then(() => {
+            // Success! Text has been copied to clipboard
+            alert('Text has been copied to clipboard: ' + urlToCopy);
+            })
+            .catch(err => {
+            // Unable to copy to clipboard
+            console.error('Unable to copy:', err);
+            });
+    }
+
+    return <>
+        <div style={{margin: "5px"}}>
+            <Button onClick={shareButtonClicked} variant="text" size="large" color="secondary">
+                <div style={{fontSize: "16px"}}>
+                    Copy Link
+                </div>
+                <ContentCopyIcon style={{fontSize: "20px", marginLeft: "10px"}} />
+            </Button>
+        </div>
     </>
 }
