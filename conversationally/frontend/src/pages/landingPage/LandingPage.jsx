@@ -1,7 +1,7 @@
 import LoginButton from "../../components/Auth/LoginButton";
 import { AppBar, Toolbar, Button } from "@mui/material";
 import Fold from "./sections/Fold";
-import bkg from "../../../public/assistants.png";
+import bkg from "../../images/assistants.png";
 import { useAuth0 } from "@auth0/auth0-react";
 import CTAButton from "../../components/CTAButton";
 
