@@ -124,23 +124,14 @@ export const ChatPage = () => {
                     </div>
                 </Slide> 
                     <Avatar src={config.avatarSrc} style={styles.avatar}/>
-                    <div className="container">
-                        <div className="row justify-content-center">
-                            <div className="col-12 text-center">
-                            {/* <audio id="player-user" src={audioSrc} controls></audio> */}
-                            </div>
-                            <div className="col-8">
-                                <UserActionButton status={conversationState} onClick={() => {
-                                    if (subscribed) {
-                                        toggleRecording()
-                                    }
-                                    else {
-                                        navigate("/Conversationally/payment")
-                                    }
-                                }} />
-                            </div>
-                        </div>
-                    </div>
+                    <UserActionButton status={conversationState} onClick={() => {
+                        if (subscribed) {
+                            toggleRecording()
+                        }
+                        else {
+                            navigate("/Conversationally/payment")
+                        }
+                    }} />
                 </div>
             </Grow>
             <Snackbar open={errorSnackBarOpen} autoHideDuration={1000} onClose={()=>{setErrorSnackBarOpen(false)}}>
