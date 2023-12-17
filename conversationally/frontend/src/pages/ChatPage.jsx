@@ -106,25 +106,25 @@ export const ChatPage = () => {
 
             <Grow in={true} mountOnEnter unmountOnExit>
                 <div style={styles.container}>
-                <Slide direction="right" in={true} mountOnEnter unmountOnExit>
-                    <div style={styles.menu}>
-                        <div>
-                            <Customisation config={config} updateConfig={updateConfig} />
-                            <LogoutButton />
-                        </div>
-                    </div>
-                </Slide> 
-                    <Avatar src={config.avatarSrc} style={styles.avatar}/>
-                    <div className="container">
-                        <div className="row justify-content-center">
-                            <div className="col-12 text-center">
-                            {/* <audio id="player-user" src={audioSrc} controls></audio> */}
-                            </div>
-                            <div className="col-8">
-                                <UserActionButton status={conversationState} onClick={toggleRecording} />
+                    <Slide direction="right" in={true} mountOnEnter unmountOnExit>
+                        <div style={styles.menu}>
+                            <div>
+                                <Customisation config={config} updateConfig={updateConfig} />
+                                <LogoutButton />
                             </div>
                         </div>
-                    </div>
+                    </Slide> 
+                        <Avatar src={config.avatarSrc} style={styles.avatar}/>
+                        <div className="container">
+                            <div className="row justify-content-center">
+                                <div className="col-12 text-center">
+                                {/* <audio id="player-user" src={audioSrc} controls></audio> */}
+                                </div>
+                                <div className="col-8">
+                                    <UserActionButton status={conversationState} onClick={toggleRecording} />
+                                </div>
+                            </div>
+                        </div>
                 </div>
             </Grow>
             <Snackbar open={errorSnackBarOpen} autoHideDuration={1000} onClose={()=>{setErrorSnackBarOpen(false)}}>
@@ -144,7 +144,7 @@ const Customisation = (props) => {
     const [open, setOpen] = useState(false);
     const [loadingState, setLoadingState] = useState(false);
 
-    const toggleOpen = () => {
+    const toggleOpen = (event) => {
         setOpen(!open);
         setSysMsgValue(props.config.systemMessage) // resets to original value if escaped, but also updates internal state if saved
         console.log(props.config.systemMessage)
