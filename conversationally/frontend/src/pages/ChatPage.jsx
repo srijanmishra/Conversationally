@@ -301,7 +301,7 @@ const Customisation = (props) => {
 
 const Share = (props) => {
 
-    const urlToCopy = getChatPageURL(props.config.systemMessage, props.config.avatarSrc);
+    const urlToCopy = getChatPageURL(props.config.systemMessage, props.config.avatarSrc, props.config.voice);
 
     const shareButtonClicked = () => {
         navigator.clipboard.writeText(urlToCopy)
