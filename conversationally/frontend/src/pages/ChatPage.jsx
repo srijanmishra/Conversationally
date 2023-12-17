@@ -318,10 +318,10 @@ const Share = (props) => {
     return <>
         <div style={{margin: "5px"}}>
             <Button onClick={shareButtonClicked} variant="text" size="large" color="secondary">
-                <div style={{fontSize: "16px"}}>
+                <div style={{fontSize: "14px"}}>
                     Copy Link
                 </div>
-                <ContentCopyIcon style={{fontSize: "20px", marginLeft: "10px"}} />
+                <ContentCopyIcon style={{fontSize: "16px", marginLeft: "10px"}} />
             </Button>
         </div>
     </>
