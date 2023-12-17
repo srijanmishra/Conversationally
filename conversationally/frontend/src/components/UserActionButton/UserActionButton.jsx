@@ -11,8 +11,9 @@ const UserActionButton = (props) => {
     const theme = useTheme();
 
     const listeningStyles = props.status === "listening" ? {
-        width:  "500px",
+        width:  "400px",
         padding: "10px",
+        height: "70px"
     } : {
         width:  "100px",
     }
@@ -26,7 +27,8 @@ const UserActionButton = (props) => {
             textAlign: "center",
         },
         recorder: {
-            backgroundColor: "lightgrey",
+            maxWidth: "75%",
+            backgroundColor: "#18181b",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -42,6 +44,7 @@ const UserActionButton = (props) => {
         recorderWaveformContainer: {
             transitionDuration: "0.5s",
             overflow: "hidden",
+            boxShadow: "inset 0 0 10px 10px #18181b",
             width: props.status === "listening" ? "400px" : "0px"
         },
         button: {
@@ -53,7 +56,7 @@ const UserActionButton = (props) => {
             // height: "100px",
             aspectRatio: "1",
             border: "none",
-            backgroundColor: theme.palette.primary.main,
+            backgroundColor: "#f76565",
             color: theme.palette.secondary.main,
         }
     }
@@ -121,7 +124,7 @@ const UserActionButton = (props) => {
                                 <LiveAudioVisualizer mediaRecorder={recorder.mediaRecorder} 
                                         // blob={blob}
                                     width={400}
-                                    height={200}
+                                    // height={100}
                                     barWidth={2}
                                     gap={3}
                                     barColor={'#f76565'}
