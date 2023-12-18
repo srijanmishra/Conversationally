@@ -6,8 +6,6 @@ import Typography from '@mui/material/Typography';
 import AddIcon from '@mui/icons-material/Add';
 import { Card } from '@mui/material';
 
-
-
 const FAQs = (props) => {
 
   const styles = {
