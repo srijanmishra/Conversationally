@@ -4,6 +4,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 import { Card } from '@mui/material';
 
 const FAQs = (props) => {
@@ -33,6 +34,11 @@ const FAQs = (props) => {
     },
   };
 
+  const [expanded, setExpanded] = React.useState(null);
+
+  const toggleAccordion = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : null);
+  };
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -45,9 +51,15 @@ const FAQs = (props) => {
 
         <div style={styles.accordionContainer}>
           {props.faqs.map((faq, index) => (
-            <Accordion key={index}>
+            <Accordion
+              key={index}
+              expanded={expanded === `panel${index}`}
+              onChange={toggleAccordion(`panel${index}`)}
+            >
               <AccordionSummary
-                expandIcon={<AddIcon />}
+                expandIcon={
+                  expanded === `panel${index}` ? <RemoveIcon /> : <AddIcon />
+                }
                 aria-controls={`panel${index}a-content`}
                 id={`panel${index}a-header`}
               >
