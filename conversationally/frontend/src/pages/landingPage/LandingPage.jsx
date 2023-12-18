@@ -4,7 +4,8 @@ import Fold from "./sections/Fold";
 import bkg from "../../../public/assistants.png";
 import { useAuth0 } from "@auth0/auth0-react";
 import CTAButton from "../../components/CTAButton";
-import FAQs from "./sections/FAQs"
+import Testimonials from "./sections/Testimonials";
+import FAQs from "./sections/FAQs";
 
 const Navbar = () => {
 
@@ -27,8 +28,32 @@ const Navbar = () => {
             <CTAButton size="large" edge="end" onClick={loginWithRedirect}>Login</CTAButton>
         </div>
     )
-}
 
+}
+const testimonialData = [
+    {
+        text: "Highly recommend Conversationally, the assistants are so useful!",
+        img: "",
+        stars: 5,
+        name: "- Emily C",
+    },
+
+    {
+        text: "Really interesting platform with great potential, excited to see the what comes next. ",
+        img: "",
+        stars: 4,
+        name: "- Michael P",
+    },
+
+    {
+        text: "The future is now, Conversationally has been very helpful for my daily tasks!",
+        img: "",
+        stars: 5,
+        name: "-Morgan D",
+    },
+
+
+];
 
 const LandingPage = () => {
 
@@ -59,7 +84,9 @@ const LandingPage = () => {
                 background={bkg}
 
             />
+            <Testimonials testimonials={testimonialData} headline="Customers can't stop raving about their personal assistants" />
             <FAQs img='./public/FAQ.png' faqs={faqData} />
+
         </>
     )
 }
