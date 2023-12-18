@@ -39,7 +39,7 @@ const AudioVisualisingAvatar = (props) => {
         const blob = props.generatedAudio
         const reader = new FileReader();
         reader.readAsArrayBuffer(blob);
-        reader.onloadend = function() {
+        reader.onloadend = () => {
             const arrayBuffer = reader.result;
             let bytes = Array.from(new Uint8Array(arrayBuffer))
             // let duration = bytes.length / 44100
