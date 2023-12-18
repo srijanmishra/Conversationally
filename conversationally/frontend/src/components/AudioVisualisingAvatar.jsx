@@ -41,11 +41,11 @@ const AudioVisualisingAvatar = (props) => {
         reader.readAsArrayBuffer(blob);
         reader.onloadend = () => {
             const arrayBuffer = reader.result;
-            let bytes = Array.from(new Uint8Array(arrayBuffer))
+            const bytes = Array.from(new Uint8Array(arrayBuffer))
             // let duration = bytes.length / 44100
             // console.log('duration', duration)
             let deltaRadii = bytes.map(byte => Math.round(byte / 255 * (maxAvatarDiameter - avatarDiameter)))
-            deltaRadii.push(0)
+            deltaRadii.push(0) // you want the final change to be back to 0
             for (let i = 0; i < deltaRadii.length; i++) {
                 let dr = deltaRadii[i]
                 setTimeout(() => {
