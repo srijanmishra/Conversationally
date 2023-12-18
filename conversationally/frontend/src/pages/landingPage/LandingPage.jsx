@@ -84,8 +84,9 @@ const LandingPage = () => {
                 background={bkg}
 
             />
-            <Testimonials testimonials={testimonialData} headline="Customers can't stop raving about their personal assistants" />
             <FAQs img='./public/FAQ.png' faqs={faqData} />
+            <Testimonials testimonials={testimonialData} headline="Customers can't stop raving about their personal assistants" />
+
 
         </>
     )
