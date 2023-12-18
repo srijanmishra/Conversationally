@@ -19,7 +19,6 @@ const AudioVisualisingAvatar = (props) => {
         avatar: {
             height: avatarDiameter,
             width: avatarDiameter,
-            // opacity: "0.2",
         },
         circle: {
             position: "absolute",
@@ -28,21 +27,9 @@ const AudioVisualisingAvatar = (props) => {
             borderRadius: "50%",
             opacity: "0.5",
             backgroundColor: "lightgrey",
-            // border: "1px solid lightgrey",
             transitionDuration: "0.1s",
         }
     }
-
-    // const [currentTime, setTime ] = useState(0);
-    // const [currIndex,setIndex] = useState(0)
-    // useEffect(() => {
-    //  const interval = setInterval(() => {
-    //     const newIndex = currIndex +1;
-    //     setTime(data[currIndex]);
-    //     setIndex(newIndex);
-    //   }, 500)
-    //   return () => clearInterval(interval)
-    // },[currIndex]) 
 
     useEffect(() => {
 
@@ -72,12 +59,10 @@ const AudioVisualisingAvatar = (props) => {
 
     return (
         <>
-        <div style={styles.container}>
-            <div style={styles.circle}>
-
+            <div style={styles.container}>
+                <div style={styles.circle}></div>
+                <Avatar src={props.avatarSrc} style={styles.avatar}/>
             </div>
-            <Avatar src={props.avatarSrc} style={styles.avatar}/>
-        </div>
         </>
     )
 }
