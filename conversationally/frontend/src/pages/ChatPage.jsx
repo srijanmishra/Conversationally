@@ -284,7 +284,14 @@ const Customisation = (props) => {
                     setSysMsgValue(e.target.value)
                 }} value={sysMsgValue} InputProps={{style: {color: theme.palette.secondary.main, fontSize: "14px"}}} style={{marginTop: "14px"}}/>
             </DialogContent>
-            <DialogActions>
+            <DialogActions style={{justifyContent: "space-between"}}>
+                <Link to={window.location.origin + '/Conversationally/examples'}>
+                    <Button variant="text" fontSize="16px" color="secondary" style={{margin:"10px"}}>
+                        <div style={{fontSize: "16px"}}>
+                            See Examples?
+                        </div>
+                    </Button>
+                </Link>
                 <CTAButton onClick={save} variant="contained">Save</CTAButton>
             </DialogActions>
         </Dialog>
