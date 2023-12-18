@@ -42,10 +42,10 @@ const theme = createTheme({
                 fullWidth: true,
                 sx: {
                     '& .MuiTextField-root': {
-                            color: secondary,
-                            borderColor: secondary,
-                            fontSize: "20px"
-                        },
+                        color: secondary,
+                        borderColor: secondary,
+                        fontSize: "20px"
+                    },
                 },
             },
         },
@@ -75,4 +75,3 @@ const theme = createTheme({
 export default theme;
 
 
-         
