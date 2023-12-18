@@ -14,27 +14,24 @@ const FAQs = (props) => {
     container: {
       display: 'flex',
       alignItems: 'flex-start',
-      justifyContent: 'space-between',
+      width: '100%',
       maxWidth: '1000px',
       margin: '60px',
       position: 'relative',
       flexWrap: 'wrap',
     },
     imageContainer: {
-      marginRight: '0px',
-
     },
     image: {
-      width: '100%',
-      height: 'auto',
-
-
+      minWidth: '350px',
+      width: '30%',
+      // height: 'auto',
     },
     accordionContainer: {
-
-      width: '100%',
-      marginLeft: '00px',
-
+      minWidth: "300px",
+      // minWidth: '300px',
+      width: "7%",
+      flexGrow: 1,
     },
   };
 
@@ -43,9 +40,9 @@ const FAQs = (props) => {
     <div style={{ display: 'flex', justifyContent: 'center' }}>
       <Card style={styles.container}>
         {props.img && (
-          <div style={styles.imageContainer}>
+          // <div style={styles.imageContainer}>
             <img src={props.img} alt="FAQ Section" style={styles.image} />
-          </div>
+          // </div>
         )}
 
         <div style={styles.accordionContainer}>
