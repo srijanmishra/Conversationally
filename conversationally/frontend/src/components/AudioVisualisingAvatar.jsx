@@ -26,9 +26,9 @@ const AudioVisualisingAvatar = (props) => {
             height: avatarDiameter + deltaRadius,
             width: avatarDiameter + deltaRadius,
             borderRadius: "50%",
-            // backgroundColor: "red",
             opacity: "0.5",
-            border: "1px solid lightgrey",
+            backgroundColor: "lightgrey",
+            // border: "1px solid lightgrey",
             transitionDuration: "0.1s",
         }
     }
@@ -55,23 +55,15 @@ const AudioVisualisingAvatar = (props) => {
         reader.onloadend = function() {
             const arrayBuffer = reader.result;
             let bytes = Array.from(new Uint8Array(arrayBuffer))
-            let duration = bytes.length / 44100
-            console.log('duration', duration)
-            // const refreshRate = 1000 / 60
-            // const updateFrequency = 1000 / 60
-            // bytes = bytes.filter((byte, i) => i % 100 == 0)
+            // let duration = bytes.length / 44100
+            // console.log('duration', duration)
             let deltaRadii = bytes.map(byte => Math.round(byte / 255 * (maxAvatarDiameter - avatarDiameter)))
             deltaRadii.push(0)
-            console.log('setting radii :', deltaRadii)
             for (let i = 0; i < deltaRadii.length; i++) {
                 let dr = deltaRadii[i]
-                console.log('setting delta radius', dr, 'for index', i)
                 setTimeout(() => {
                     setDeltaRadius(dr)
                 }, i / (44100) * 1000)
-                // setTimeout(() => {
-                //     setDeltaRadius(bytes[i] / 255 * (maxAvatarDiameter - avatarDiameter))
-                // }, i / (44100))
             }
         }
 
