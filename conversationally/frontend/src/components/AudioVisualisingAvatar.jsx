@@ -19,7 +19,7 @@ const AudioVisualisingAvatar = (props) => {
         avatar: {
             height: avatarDiameter,
             width: avatarDiameter,
-            opacity: "0.2",
+            // opacity: "0.2",
         },
         circle: {
             position: "absolute",
@@ -29,10 +29,20 @@ const AudioVisualisingAvatar = (props) => {
             // backgroundColor: "red",
             opacity: "0.5",
             border: "1px solid lightgrey",
+            transitionDuration: "0.1s",
         }
     }
 
-
+    // const [currentTime, setTime ] = useState(0);
+    // const [currIndex,setIndex] = useState(0)
+    // useEffect(() => {
+    //  const interval = setInterval(() => {
+    //     const newIndex = currIndex +1;
+    //     setTime(data[currIndex]);
+    //     setIndex(newIndex);
+    //   }, 500)
+    //   return () => clearInterval(interval)
+    // },[currIndex]) 
 
     useEffect(() => {
 
@@ -45,12 +55,23 @@ const AudioVisualisingAvatar = (props) => {
         reader.onloadend = function() {
             const arrayBuffer = reader.result;
             let bytes = Array.from(new Uint8Array(arrayBuffer))
-            console.log(bytes.length)
-            bytes.push(0)
-            for (let i = 0; i < bytes.length; i++) {
+            let duration = bytes.length / 44100
+            console.log('duration', duration)
+            // const refreshRate = 1000 / 60
+            // const updateFrequency = 1000 / 60
+            // bytes = bytes.filter((byte, i) => i % 100 == 0)
+            let deltaRadii = bytes.map(byte => Math.round(byte / 255 * (maxAvatarDiameter - avatarDiameter)))
+            deltaRadii.push(0)
+            console.log('setting radii :', deltaRadii)
+            for (let i = 0; i < deltaRadii.length; i++) {
+                let dr = deltaRadii[i]
+                console.log('setting delta radius', dr, 'for index', i)
                 setTimeout(() => {
-                    setDeltaRadius(bytes[i] / 255 * (maxAvatarDiameter - avatarDiameter))
-                }, i / 44100)
+                    setDeltaRadius(dr)
+                }, i / (44100) * 1000)
+                // setTimeout(() => {
+                //     setDeltaRadius(bytes[i] / 255 * (maxAvatarDiameter - avatarDiameter))
+                // }, i / (44100))
             }
         }
 
