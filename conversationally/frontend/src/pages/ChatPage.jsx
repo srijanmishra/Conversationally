@@ -8,21 +8,24 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import { Avatar, Snackbar, TextField, Typography } from "@mui/material";
 import AudioRecordingHandler from "../utils/audio";
-import img from "/AI_portrait.png";
+import img from "../images/AI_portrait.png";
 import useTheme from '@mui/material/styles/useTheme';
 import EditIcon from '@mui/icons-material/Edit';
 import Slide from '@mui/material/Slide';
 import Grow from '@mui/material/Grow';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import { getChatPageURL } from "../utils/link";
 import LogoutButton from "../components/Auth/LogoutButton";
 import Alert from '@mui/material/Alert';
-import bkg from "../../public/gradient.jpeg"
+import bkg from "../images/gradient.jpeg"
 import { getUser } from "../utils/client";
 import { useAuth0 } from '@auth0/auth0-react';
 import { useNavigate, Link } from "react-router-dom";
 import PaymentIcon from '@mui/icons-material/Payment';
 import CTAButton from "../components/CTAButton";
+import AudioVisualisingAvatar from "../components/AudioVisualisingAvatar";
 
 const API_ROOT = import.meta.env.VITE_API_ROOT;
 
@@ -40,10 +43,6 @@ const styles = {
         backgroundSize: "cover",
         boxShadow: "inset 0 0 0 2000px rgba(0, 0, 0, 0.7)",
     },
-    avatar: {
-        height: "200px",
-        width: "200px"
-    },
     backdrop: {
         display: "flex",
         flexDirection: "column",
@@ -60,7 +59,13 @@ const styles = {
 
 
 export const ChatPage = () => {
-    
+
+    const queryString = window.location.search;
+    const urlParameters = new URLSearchParams(queryString);
+    const urlSysMsg = urlParameters.get('sysMsg');
+    const urlImg = urlParameters.get('img');
+    const urlVoice = urlParameters.get('voice')
+
     const { user } = useAuth0();
     const navigate = useNavigate()
     const [subscribed, setSubscribed] = useState(true)
@@ -69,8 +74,9 @@ export const ChatPage = () => {
     }, [user])
     
     const [config, setConfig] = useState({
-        "avatarSrc": img,
-        "systemMessage": "You are a helpful and friendly assistant with a charming and witty personality. You're straight to the point and don't waste time. Respond in less than two sentences."
+        "avatarSrc": urlImg ? urlImg : img, //if urlImg exists then use that instead of the default image.
+        "systemMessage": urlSysMsg ? urlSysMsg : "You are a helpful and friendly assistant with a charming and witty personality. You're straight to the point and don't waste time. Respond in less than two sentences.",
+        "voice": urlVoice ? urlVoice : "Nicole"
     })
     
     const [conversationState, setConversationState] = useState("idle") // "idle", "listening", "thinking", "speaking"
@@ -86,7 +92,7 @@ export const ChatPage = () => {
     
     const toggleRecording = () => {
         if (recording) {
-            audioHandler.stopRecording(messages, setMessages);
+            audioHandler.stopRecording(messages, setMessages, config.voice);
             setConversationState("thinking")
         } else {
             audioHandler.startRecording();
@@ -100,32 +106,36 @@ export const ChatPage = () => {
         setErrorSnackBarOpen(true)
         setConversationState("idle")
     }
-    const [audioHandler, _] = useState(new AudioRecordingHandler(setConversationState, onFailure));
+
+    const [generatedAudioForVisualisation, setGeneratedAudioForVisualisation] = useState(null);
+
+    const [audioHandler, _] = useState(new AudioRecordingHandler(setConversationState, onFailure, setGeneratedAudioForVisualisation));
     
     return (
         <>
 
             <Grow in={true} mountOnEnter unmountOnExit>
                 <div style={styles.container}>
-                <Slide direction="right" in={true} mountOnEnter unmountOnExit>
-                    <div style={styles.menu}>
-                        <div>
-                            <Customisation config={config} updateConfig={updateConfig} />
-                            <Link to="https://billing.stripe.com/p/login/00g8wSfGWdyU36w144">
-                                <div style={{margin: "5px"}}>
-                                    <Button variant="text" size="large" color="secondary">
-                                        <div style={{fontSize: "14px"}}>
-                                            Your Subscription
-                                        </div>
-                                        <PaymentIcon style={{fontSize: "16px", marginLeft: "10px"}} />
-                                    </Button>
-                                </div>
-                            </Link>
-                            <LogoutButton />
+                    <Slide direction="right" in={true} mountOnEnter unmountOnExit>
+                        <div style={styles.menu}>
+                            <div>
+                                <Customisation config={config} updateConfig={updateConfig} />
+                                <Share config={config} />
+                                <Link to="https://billing.stripe.com/p/login/00g8wSfGWdyU36w144">
+                                    <div style={{margin: "5px"}}>
+                                        <Button variant="text" size="large" color="secondary">
+                                            <div style={{fontSize: "14px"}}>
+                                                Your Subscription
+                                            </div>
+                                            <PaymentIcon style={{fontSize: "16px", marginLeft: "10px"}} />
+                                        </Button>
+                                    </div>
+                                </Link>
+                                <LogoutButton />
+                            </div>
                         </div>
-                    </div>
-                </Slide> 
-                    <Avatar src={config.avatarSrc} style={styles.avatar}/>
+                    </Slide> 
+                    <AudioVisualisingAvatar avatarSrc={config.avatarSrc} generatedAudio={generatedAudioForVisualisation} />
                     <UserActionButton status={conversationState} onClick={() => {
                         if (subscribed) {
                             toggleRecording()
@@ -160,10 +170,9 @@ const Customisation = (props) => {
     const [open, setOpen] = useState(false);
     const [loadingState, setLoadingState] = useState(false);
 
-    const toggleOpen = () => {
+    const toggleOpen = (event) => {
         setOpen(!open);
         setSysMsgValue(props.config.systemMessage) // resets to original value if escaped, but also updates internal state if saved
-        console.log(props.config.systemMessage)
     }
 
     const theme = useTheme();
@@ -195,11 +204,17 @@ const Customisation = (props) => {
         // setLoadingState("📸 Taking assistant headshot...")
         let img = await generateAvatarImgURL(sysMsgValue)
         // setLoadingState("✨ Putting on the finishing touches...")
+
+        //setting the voice 
+        console.log("voice is being generated")
+        let voice = await generateAvatarVoice(sysMsgValue)
+        console.log("generated voice is: " + voice)
+
         props.updateConfig({
             "systemMessage": sysMsgValue,
-            "avatarSrc": img
+            "avatarSrc": img,
+            "voice": voice
         })
-        console.log(sysMsgValue)
         
         setLoadingState(false)
     }
@@ -221,7 +236,22 @@ const Customisation = (props) => {
             .catch(error => console.log(error));
     }
 
-    console.log('rendering. Subscribed?', subscribed)
+    const generateAvatarVoice = (inputSysMsgValue) => {
+        return fetch(API_ROOT + "/generate_voice", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json' // necessary
+            },
+            body: JSON.stringify({system_message: inputSysMsgValue})
+        })
+            .then(response => response.json())
+            .then(data => {
+                data = JSON.parse(data)
+                const voice = data.voice
+                return voice
+            })
+            .catch(error => console.log(error));
+    }
 
     return <>
         <div style={{margin: "5px"}}>
@@ -266,5 +296,33 @@ const Customisation = (props) => {
                 </Typography>
             </div>
         </Backdrop>
+    </>
+}
+
+const Share = (props) => {
+
+    const urlToCopy = getChatPageURL(props.config.systemMessage, props.config.avatarSrc, props.config.voice);
+
+    const shareButtonClicked = () => {
+        navigator.clipboard.writeText(urlToCopy)
+            .then(() => {
+            // Success! Text has been copied to clipboard
+            alert('Text has been copied to clipboard: ' + urlToCopy);
+            })
+            .catch(err => {
+            // Unable to copy to clipboard
+            console.error('Unable to copy:', err);
+            });
+    }
+
+    return <>
+        <div style={{margin: "5px"}}>
+            <Button onClick={shareButtonClicked} variant="text" size="large" color="secondary">
+                <div style={{fontSize: "14px"}}>
+                    Copy Link
+                </div>
+                <ContentCopyIcon style={{fontSize: "16px", marginLeft: "10px"}} />
+            </Button>
+        </div>
     </>
 }
