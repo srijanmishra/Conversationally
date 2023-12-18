@@ -6,9 +6,9 @@ import { useState } from 'react';
 import { AudioRecorder, useAudioRecorder } from 'react-audio-voice-recorder';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import PsychologyRoundedIcon from '@mui/icons-material/PsychologyRounded';
-
 import "./UserActionButton.scss";
 import { Mic as MicIcon, Square as SquareIcon } from "react-feather";
+import GridLoader from "react-spinners/GridLoader";
 
 
 const UserActionButton = (props) => {
@@ -60,8 +60,10 @@ const UserActionButton = (props) => {
             // height: "100px",
             aspectRatio: "1",
             border: "none",
-            backgroundColor: "#f76565",
+            backgroundColor: props.status === "thinking" ? theme.palette.info.light : "#f76565",
             color: theme.palette.secondary.main,
+            transitionDuration: "0.1s",
+            cursor: "pointer",
         }
     }
 
@@ -96,7 +98,7 @@ const UserActionButton = (props) => {
             statusText = "Recording your voice note...";
             break;
         case "thinking":
-            statusIcon = <PsychologyRoundedIcon {...statusIconCommonProps} />;
+            statusIcon = <GridLoader size={10} color={"#ffffff"}/>;
             statusText = "Thinking...";
             isDisabled = true;
             break;
