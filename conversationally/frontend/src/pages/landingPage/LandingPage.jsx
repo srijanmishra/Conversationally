@@ -1,9 +1,11 @@
 import LoginButton from "../../components/Auth/LoginButton";
 import { AppBar, Toolbar, Button } from "@mui/material";
 import Fold from "./sections/Fold";
-import bkg from "../../images/assistants.png";
+import image from "../../../public/source.png";
 import { useAuth0 } from "@auth0/auth0-react";
 import CTAButton from "../../components/CTAButton";
+import CTASection from "./sections/CTASection";
+import bkg from "../../images/assistants.png";
 import Testimonials from "./sections/Testimonials";
 import FAQs from "./sections/FAQs";
 
@@ -18,6 +20,7 @@ const Navbar = () => {
             alignItems: "center",
             padding: 5,
             width: "100vw",
+            border:"none",
         }
     }
 
@@ -84,10 +87,19 @@ const LandingPage = () => {
                 background={bkg}
 
             />
-            <FAQs img='./public/FAQ.png' faqs={faqData} />
             <Testimonials testimonials={testimonialData} headline="Customers can't stop raving about their personal assistants" />
-
-
+            <FAQs img='./public/FAQ.png' faqs={faqData} />
+            <CTASection
+                title={"Become an amazing AI character creator!"} 
+                description={"Ever wondered what it is like to have your own personalized AI assistant? Well, wonder no more!"}
+                benefits={[
+                    "⚡️ Engage in live conversations",
+                    "📩 Bring your voice assistant into the spotlight and share the magic with others", 
+                    "🔊 Tailor your voice assistant's charm to match your style"]} 
+                ctaPrompt={"Try it out!"}
+                background={bkg}
+                img={image}
+            />
         </>
     )
 }
