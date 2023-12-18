@@ -23,8 +23,7 @@ const FAQs = (props) => {
     imageContainer: {
     },
     image: {
-      // minWidth: '100px',
-      minWidth: '300px',
+      minWidth: '350px',
       width: '30%',
       // height: 'auto',
     },
