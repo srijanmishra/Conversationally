@@ -8,7 +8,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import { Avatar, Snackbar, TextField, Typography } from "@mui/material";
 import AudioRecordingHandler from "../utils/audio";
-import img from "/AI_portrait.png";
+import img from "../images/AI_portrait.png";
 import useTheme from '@mui/material/styles/useTheme';
 import EditIcon from '@mui/icons-material/Edit';
 import Slide from '@mui/material/Slide';
@@ -19,12 +19,13 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { getChatPageURL } from "../utils/link";
 import LogoutButton from "../components/Auth/LogoutButton";
 import Alert from '@mui/material/Alert';
-import bkg from "../../public/gradient.jpeg"
+import bkg from "../images/gradient.jpeg"
 import { getUser } from "../utils/client";
 import { useAuth0 } from '@auth0/auth0-react';
 import { useNavigate, Link } from "react-router-dom";
 import PaymentIcon from '@mui/icons-material/Payment';
 import CTAButton from "../components/CTAButton";
+import AudioVisualisingAvatar from "../components/AudioVisualisingAvatar";
 
 const API_ROOT = import.meta.env.VITE_API_ROOT;
 
@@ -41,10 +42,6 @@ const styles = {
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
         boxShadow: "inset 0 0 0 2000px rgba(0, 0, 0, 0.7)",
-    },
-    avatar: {
-        height: "200px",
-        width: "200px"
     },
     backdrop: {
         display: "flex",
@@ -109,7 +106,10 @@ export const ChatPage = () => {
         setErrorSnackBarOpen(true)
         setConversationState("idle")
     }
-    const [audioHandler, _] = useState(new AudioRecordingHandler(setConversationState, onFailure));
+
+    const [generatedAudioForVisualisation, setGeneratedAudioForVisualisation] = useState(null);
+
+    const [audioHandler, _] = useState(new AudioRecordingHandler(setConversationState, onFailure, setGeneratedAudioForVisualisation));
     
     return (
         <>
@@ -135,7 +135,7 @@ export const ChatPage = () => {
                             </div>
                         </div>
                     </Slide> 
-                    <Avatar src={config.avatarSrc} style={styles.avatar}/>
+                    <AudioVisualisingAvatar avatarSrc={config.avatarSrc} generatedAudio={generatedAudioForVisualisation} />
                     <UserActionButton status={conversationState} onClick={() => {
                         if (subscribed) {
                             toggleRecording()

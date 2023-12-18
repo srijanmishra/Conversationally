@@ -3,13 +3,14 @@ import MicRecorder from 'mic-recorder-to-mp3';
 const API_ROOT = import.meta.env.VITE_API_ROOT;
 
 export default class AudioRecordingHandler {
-    constructor(setConversationState, onFailure) {
+    constructor(setConversationState, onFailure, setGeneratedAudio) {
         // this.chunks = []; // here we will store all received chunks of our audio stream
         // this.recorder; // MediaRecorder instance to capture audio
         // this.mediaStream; // MediaStream instance to feed the recorder
         // testRootEndpoint() // testing the GET request to the root endpoint
         this.setConversationState = setConversationState
         this.onFailure = onFailure
+        this.setGeneratedAudio = setGeneratedAudio
     }
     
     startRecording = async () => {
@@ -24,7 +25,6 @@ export default class AudioRecordingHandler {
     };
 
     stopRecording = (messages, setMessages, voice) => {
-        console.log("stop button clicked");
         this.recorder.stop().getMp3().then(([buffer, blob]) => {
             const reader = new FileReader();
             reader.readAsArrayBuffer(blob);
@@ -54,15 +54,15 @@ export default class AudioRecordingHandler {
                         messages = data.messages
                         setMessages(messages)
                         let audio = data.audio
-                        // log first 10 characters of the string
-                        console.log(audio.substring(0, 10))
                         let fetchableUrl = 'data:audio/wav;base64,' + audio;
                         fetch(fetchableUrl)
                             .then(response => response.blob())
                             .then(blob => {
+                                this.setGeneratedAudio(blob)
+                                console.log('set audio')
                                 let url = URL.createObjectURL(blob);
-                                console.log('audio url:', url)
                                 let audio = new Audio(url)
+                                console.log('audio', audio)
                                 audio.play()
                                 this.setConversationState("speaking")
                                 audio.onended = () => {

@@ -4,11 +4,11 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import VirtualAssistantImg from "/AI_portrait.png";
+import VirtualAssistantImg from "../images/AI_portrait.png";
 import Button from '@mui/material/Button';
 import { getChatPageURL } from '../utils/link';
 import { Link } from 'react-router-dom';
-import bkg from "../../public/gradient.jpeg"
+import bkg from "../images/gradient.jpeg"
 import MicNoneIcon from '@mui/icons-material/MicNone';
 import { Avatar, Snackbar, TextField, Typography } from "@mui/material";
 
