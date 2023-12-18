@@ -112,7 +112,7 @@ export const ChatPage = () => {
     const [audioHandler, _] = useState(new AudioRecordingHandler(setConversationState, onFailure, setGeneratedAudioForVisualisation));
     
     return (
-        <>
+        <div onTouchMove="event.preventDefault()">
 
             <Grow in={true} mountOnEnter unmountOnExit>
                 <div style={styles.container}>
@@ -153,7 +153,7 @@ export const ChatPage = () => {
                     </Typography>
                 </Alert>
             </Snackbar>
-        </>
+        </div>
   );
 
 };
